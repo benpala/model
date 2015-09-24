@@ -22,7 +22,7 @@ namespace model.Views
     /// </summary>
     public partial class GestionProjetView : UserControl
     {
-        private ProjetView _projet;
+        private Projet _projet;
 
         public GestionProjetView()
         {
@@ -32,7 +32,7 @@ namespace model.Views
 
         public GestionProjetView(IDictionary<string,object> parameters):this()
         {
-            Projet = parameters["Projet"] as ProjetView;
+            Projet = parameters["Projet"] as Projet;
         }
 
         
@@ -41,7 +41,7 @@ namespace model.Views
         /// Sets and gets the Propriete property.
         /// Changes to that property's value raise the PropertyChanged event. 
         /// </summary>
-        public ProjetView Projet
+        public Projet Projet
         {
             get
             {

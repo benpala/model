@@ -106,7 +106,7 @@ namespace model.Views
 
         private void click_modifierProject(object sender, RoutedEventArgs e)
         {
-            var Projet = (ProjetView)((sender as Button).CommandParameter);
+            var Projet = (Projet)((sender as Button).CommandParameter);
 
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
