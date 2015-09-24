@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="model.Views.AjoutEmployeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="720" Width="1280">
+    <UserControl.Resources>
+        <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource styleHeader}"/>
+        </Style>
+        <Style x:Name="styleHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Opacity" Value="0.8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderBrush" Value="#cccccc"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="16,3,16,3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Chrome"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter Name="Presenter" Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#333333" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#dddddd" />
+                                <Setter Property="BorderBrush" Value="#cccccc" />
+                                <Setter Property="Foreground" Value="#cccccc" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF6F746C" />
+                                <Setter Property="BorderBrush" Value="#cccccc"/>
+                                <Setter Property="Foreground" Value="#ffffff"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter TargetName="Chrome" Property="BorderBrush" Value="#FF8A9499" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Vertical" Margin="50,0,50,00">
+        <StackPanel Orientation="Horizontal" Height="200" >
+            <Label VerticalAlignment="Top" Width="250"  Height="50" FontSize="22">Photo :</Label>
+            <Rectangle Width="200" Height="200" Margin="5,5,5,5" >
+                <Rectangle.Fill>
+                    <ImageBrush ImageSource="/image/employe.png"/>
+                </Rectangle.Fill>
+             </Rectangle>
+            <StackPanel Orientation="Vertical" Height="200" >
+                <Label VerticalAlignment="Top" Width="300"  Height="46" FontSize="22" Margin="200,0,0,0" BorderBrush="Gray" BorderThickness="2" Content="Projets"/>
+                <StackPanel Orientation="Horizontal" >
+                    <Label VerticalAlignment="Top" Width="150"  Height="149" FontSize="22" Margin="200,0,0,0" BorderBrush="Gray" BorderThickness="2" Content="Garage"/>
+                    <CheckBox Width="50" VerticalAlignment="Top" Margin="100,10,0,0" HorizontalContentAlignment="Center" Height="30"  />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label VerticalAlignment="Top" Width="250"  Height="50" FontSize="22">Nom de famille :</Label>
+            <TextBox Name="txtAjoutNom" Width="250"  Height="50" FontSize="22" Text="Laverdure (exemple)"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label VerticalAlignment="Top" Width="250"  Height="50" FontSize="22">Prenom  :</Label>
+            <TextBox Name="txtAjoutPrenom" Width="250"  Height="50" FontSize="22" Text="Benjamin (exemple)"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Width="250" Height="50" FontSize="22">Poste :</Label>
+            <TextBox Name="txtAjoutPoste" Width="250"  Height="50" FontSize="22" Text="Contrôleur (exemple)"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Width="250"  Height="50" FontSize="22">Salaire :</Label>
+            <TextBox Name="txtAjoutSalaire" Width="250"  Height="50" FontSize="22" Text="50/Heures (exemple)"></TextBox>
+        </StackPanel>
+
+        <Button Style="{StaticResource BaseButtonStyle}" Content="Ajouter"  Click="AjouterEmploye" Width="200" Height="50" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Button Style="{StaticResource BaseButtonStyle}" Content="Retour"  Width="200" Click="retourMenu" Height="50" HorizontalAlignment="left" VerticalAlignment="Bottom"/>
+    </StackPanel>
+</UserControl>
