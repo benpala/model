@@ -259,7 +259,7 @@
         <Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
       
-        <StackPanel HorizontalAlignment="left" Orientation="Horizontal" Width="400" >
+        <StackPanel HorizontalAlignment="left" Orientation="Horizontal" Width="600" >
 
             <Button Style="{StaticResource BouttonEmploye}" Grid.Row="0"  Width="80" Height="70" Margin="50,10,10,0" Click="employeLst">
                 <Button.ToolTip>
@@ -280,6 +280,15 @@
                     <TextBlock>Paies</TextBlock>
                 </Button.ToolTip>
 
+            </Button>
+            <Button Grid.Row="0" Width="75" Height="70" Margin="25,10,10,0" >
+                <Button.ToolTip>
+                    <TextBlock>Les rapports</TextBlock></Button.ToolTip>
+            </Button>
+            <Button Grid.Row="0" Width="75" Height="70" Margin="25,10,10,0" >
+                <Button.ToolTip>
+                    <TextBlock>Effectuer une simulation</TextBlock>
+                </Button.ToolTip>
             </Button>
         </StackPanel>
        
