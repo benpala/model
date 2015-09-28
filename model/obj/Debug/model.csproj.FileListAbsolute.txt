@@ -64,3 +64,6 @@ H:\Mes Documents\GitHub\model\model\obj\Debug\model_MarkupCompile.cache
 H:\Mes Documents\GitHub\model\model\obj\Debug\model.g.resources
 H:\Mes Documents\GitHub\model\model\obj\Debug\model.Properties.Resources.resources
 H:\Mes Documents\GitHub\model\model\obj\Debug\model.csproj.GenerateResource.Cache
+C:\Users\0949748\Desktop\model\model\bin\Debug\model.exe.config
+C:\Users\0949748\Desktop\model\model\obj\Debug\model.exe
+C:\Users\0949748\Desktop\model\model\obj\Debug\model.pdb
