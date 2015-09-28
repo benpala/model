@@ -64,3 +64,36 @@ H:\Mes Documents\GitHub\model\model\obj\Debug\model_MarkupCompile.cache
 H:\Mes Documents\GitHub\model\model\obj\Debug\model.g.resources
 H:\Mes Documents\GitHub\model\model\obj\Debug\model.Properties.Resources.resources
 H:\Mes Documents\GitHub\model\model\obj\Debug\model.csproj.GenerateResource.Cache
+H:\model\model\bin\Debug\model.exe.config
+H:\model\model\obj\Debug\model.exe
+H:\model\model\obj\Debug\model.pdb
+H:\model\model\bin\Debug\model.exe
+H:\model\model\bin\Debug\model.pdb
+H:\model\model\bin\Debug\Iesi.Collections.dll
+H:\model\model\bin\Debug\NHibernate.dll
+H:\model\model\bin\Debug\Iesi.Collections.xml
+H:\model\model\bin\Debug\NHibernate.xml
+H:\model\model\obj\Debug\model.csprojResolveAssemblyReference.cache
+H:\model\model\obj\Debug\MainWindow.baml
+H:\model\model\obj\Debug\Views\AjoutEmployeView.baml
+H:\model\model\obj\Debug\Views\ConfigurationView.baml
+H:\model\model\obj\Debug\Views\GestionProjetView.baml
+H:\model\model\obj\Debug\Views\DetailPaieView.baml
+H:\model\model\obj\Debug\Views\EmployeView.baml
+H:\model\model\obj\Debug\Views\ListePaieView.baml
+H:\model\model\obj\Debug\Views\ModifierEmpView.baml
+H:\model\model\obj\Debug\Views\ProjetView.baml
+H:\model\model\obj\Debug\MainWindow.g.cs
+H:\model\model\obj\Debug\Views\AjoutEmployeView.g.cs
+H:\model\model\obj\Debug\Views\ConfigurationView.g.cs
+H:\model\model\obj\Debug\Views\GestionProjetView.g.cs
+H:\model\model\obj\Debug\Views\DetailPaieView.g.cs
+H:\model\model\obj\Debug\Views\EmployeView.g.cs
+H:\model\model\obj\Debug\Views\ListePaieView.g.cs
+H:\model\model\obj\Debug\Views\ModifierEmpView.g.cs
+H:\model\model\obj\Debug\Views\ProjetView.g.cs
+H:\model\model\obj\Debug\App.g.cs
+H:\model\model\obj\Debug\model_MarkupCompile.cache
+H:\model\model\obj\Debug\model.g.resources
+H:\model\model\obj\Debug\model.Properties.Resources.resources
+H:\model\model\obj\Debug\model.csproj.GenerateResource.Cache

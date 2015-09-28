@@ -206,6 +206,8 @@
                 <TextBlock>Ajouté un projet</TextBlock>
             </Button.ToolTip>
         </Button>
+        <Label Margin="-50,0,0,210" VerticalAlignment="Bottom" Width="75">Recherche</Label>
+        <TextBox Width="500" Height="25" Margin="525,0,0,210" VerticalAlignment="Bottom"></TextBox>
 
     </Grid>
 </UserControl>
