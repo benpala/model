@@ -113,5 +113,11 @@ namespace model.Views
             Dictionary<string,object> parametres = new Dictionary<string,object>() { { "Projet" , Projet} };
             applicationService.ChangeView<GestionProjetView>(new GestionProjetView(parametres));
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //var filtre = (TextBox)(sender as Button);
+            MessageBox.Show(/*filtre.Text*/"");
+        }
     }
 }
