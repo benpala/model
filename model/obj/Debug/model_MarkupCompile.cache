@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-H:\Mes Documents\GitHub\model\model\obj\Debug\
+D:\model\model\obj\Debug\
 model
 none
 false
 DEBUG;TRACE
-H:\Mes Documents\GitHub\model\model\App.xaml
+D:\model\model\App.xaml
 9224858717
 
 2991648574
-14-403412328
+14-789581557
 MainWindow.xaml;Views\AjoutEmployeView.xaml;Views\ConfigurationView.xaml;Views\GestionProjetView.xaml;Views\DetailPaieView.xaml;Views\EmployeView.xaml;Views\ListePaieView.xaml;Views\ModifierEmpView.xaml;Views\ProjetView.xaml;
 
 False
