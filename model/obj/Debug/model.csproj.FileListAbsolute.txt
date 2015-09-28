@@ -99,7 +99,6 @@ H:\model\model\obj\Debug\model.g.resources
 H:\model\model\obj\Debug\model.Properties.Resources.resources
 H:\model\model\obj\Debug\model.csproj.GenerateResource.Cache
 =======
-<<<<<<< HEAD
 D:\model\model\bin\Debug\model.exe.config
 D:\model\model\obj\Debug\model.exe
 D:\model\model\obj\Debug\model.pdb
@@ -133,9 +132,7 @@ D:\model\model\obj\Debug\model_MarkupCompile.cache
 D:\model\model\obj\Debug\model.g.resources
 D:\model\model\obj\Debug\model.Properties.Resources.resources
 D:\model\model\obj\Debug\model.csproj.GenerateResource.Cache
-=======
 C:\Users\0949748\Desktop\model\model\bin\Debug\model.exe.config
 C:\Users\0949748\Desktop\model\model\obj\Debug\model.exe
 C:\Users\0949748\Desktop\model\model\obj\Debug\model.pdb
->>>>>>> origin/master
 >>>>>>> origin/master
