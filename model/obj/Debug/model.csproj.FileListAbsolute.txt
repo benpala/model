@@ -64,6 +64,7 @@ H:\Mes Documents\GitHub\model\model\obj\Debug\model_MarkupCompile.cache
 H:\Mes Documents\GitHub\model\model\obj\Debug\model.g.resources
 H:\Mes Documents\GitHub\model\model\obj\Debug\model.Properties.Resources.resources
 H:\Mes Documents\GitHub\model\model\obj\Debug\model.csproj.GenerateResource.Cache
+<<<<<<< HEAD
 H:\model\model\bin\Debug\model.exe.config
 H:\model\model\obj\Debug\model.exe
 H:\model\model\obj\Debug\model.pdb
@@ -97,3 +98,44 @@ H:\model\model\obj\Debug\model_MarkupCompile.cache
 H:\model\model\obj\Debug\model.g.resources
 H:\model\model\obj\Debug\model.Properties.Resources.resources
 H:\model\model\obj\Debug\model.csproj.GenerateResource.Cache
+=======
+<<<<<<< HEAD
+D:\model\model\bin\Debug\model.exe.config
+D:\model\model\obj\Debug\model.exe
+D:\model\model\obj\Debug\model.pdb
+D:\model\model\bin\Debug\model.exe
+D:\model\model\bin\Debug\model.pdb
+D:\model\model\bin\Debug\Iesi.Collections.dll
+D:\model\model\bin\Debug\NHibernate.dll
+D:\model\model\bin\Debug\Iesi.Collections.xml
+D:\model\model\bin\Debug\NHibernate.xml
+D:\model\model\obj\Debug\model.csprojResolveAssemblyReference.cache
+D:\model\model\obj\Debug\MainWindow.baml
+D:\model\model\obj\Debug\Views\AjoutEmployeView.baml
+D:\model\model\obj\Debug\Views\ConfigurationView.baml
+D:\model\model\obj\Debug\Views\GestionProjetView.baml
+D:\model\model\obj\Debug\Views\DetailPaieView.baml
+D:\model\model\obj\Debug\Views\EmployeView.baml
+D:\model\model\obj\Debug\Views\ListePaieView.baml
+D:\model\model\obj\Debug\Views\ModifierEmpView.baml
+D:\model\model\obj\Debug\Views\ProjetView.baml
+D:\model\model\obj\Debug\MainWindow.g.cs
+D:\model\model\obj\Debug\Views\AjoutEmployeView.g.cs
+D:\model\model\obj\Debug\Views\ConfigurationView.g.cs
+D:\model\model\obj\Debug\Views\GestionProjetView.g.cs
+D:\model\model\obj\Debug\Views\DetailPaieView.g.cs
+D:\model\model\obj\Debug\Views\EmployeView.g.cs
+D:\model\model\obj\Debug\Views\ListePaieView.g.cs
+D:\model\model\obj\Debug\Views\ModifierEmpView.g.cs
+D:\model\model\obj\Debug\Views\ProjetView.g.cs
+D:\model\model\obj\Debug\App.g.cs
+D:\model\model\obj\Debug\model_MarkupCompile.cache
+D:\model\model\obj\Debug\model.g.resources
+D:\model\model\obj\Debug\model.Properties.Resources.resources
+D:\model\model\obj\Debug\model.csproj.GenerateResource.Cache
+=======
+C:\Users\0949748\Desktop\model\model\bin\Debug\model.exe.config
+C:\Users\0949748\Desktop\model\model\obj\Debug\model.exe
+C:\Users\0949748\Desktop\model\model\obj\Debug\model.pdb
+>>>>>>> origin/master
+>>>>>>> origin/master
