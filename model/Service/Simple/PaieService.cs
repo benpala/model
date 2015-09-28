@@ -15,10 +15,8 @@ namespace model.Service
         {
             _paie = new List<Paie>();
 
-            _paie.Add(new Paie() { ID = "1000", UnEmploye = new Employe("Boby", "chose"), DateGenerationRapport = "2015-01-03" });
-            _paie.Add(new Paie() { ID = "1001", UnEmploye = new Employe("Boby", "chose"), DateGenerationRapport = "2015-01-03" });
-            _paie.Add(new Paie() { ID = "1002", UnEmploye = new Employe("Boby", "chose"), DateGenerationRapport = "2015-01-03" });
-            _paie.Add(new Paie() { ID = "1002", UnEmploye = new Employe("Boby", "chose"), DateGenerationRapport = "2015-01-03" });
+            _paie.Add(new Paie() { ID = "1000", DateGenerationRapport = "2015-01-03", UnEmploye = new Employe("Boby", "chose"), MontantBrute= (float)50.25, MontantNet= (float)60.24  });
+           
         }
         public IList<Paie> RetrieveAll()
         {
