@@ -191,7 +191,6 @@
                 <DataGridTemplateColumn  Width="0.3*" Header="ID" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-
                             <TextBox Text="{Binding ID}"></TextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

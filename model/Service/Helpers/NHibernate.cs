@@ -13,7 +13,6 @@ namespace Immobilus.Logic.Services.Helpers
     public class NHibernateConnexion
     {
         private static ISessionFactory _sessionFactory;
-        private static readonly bool IS_FLUENT = false;
 
         static NHibernateConnexion()
         {

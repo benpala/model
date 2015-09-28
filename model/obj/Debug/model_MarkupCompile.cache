@@ -4,40 +4,16 @@
 winexe
 C#
 .cs
-<<<<<<< HEAD
 C:\Users\0949748\Desktop\model\model\obj\Debug\
-=======
-<<<<<<< HEAD
-H:\model\model\obj\Debug\
-=======
-D:\model\model\obj\Debug\
->>>>>>> origin/master
->>>>>>> origin/master
 model
 none
 false
 DEBUG;TRACE
-<<<<<<< HEAD
 C:\Users\0949748\Desktop\model\model\App.xaml
 9224858717
 
 2991648574
 141521834655
-=======
-<<<<<<< HEAD
-H:\model\model\App.xaml
-9224858717
-
-2991648574
-141781748421
-=======
-D:\model\model\App.xaml
-9224858717
-
-2991648574
-14-789581557
->>>>>>> origin/master
->>>>>>> origin/master
 MainWindow.xaml;Views\AjoutEmployeView.xaml;Views\ConfigurationView.xaml;Views\GestionProjetView.xaml;Views\DetailPaieView.xaml;Views\EmployeView.xaml;Views\ListePaieView.xaml;Views\ModifierEmpView.xaml;Views\ProjetView.xaml;
 
 False
