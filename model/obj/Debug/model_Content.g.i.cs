@@ -8,6 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+<<<<<<< HEAD
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("image/filter.ico")]
+=======
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("image/rapport.png")]
+>>>>>>> 7c42d9f319d0cf88f90ec94805f03d9ce59ef665
 
 
