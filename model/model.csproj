@@ -81,6 +81,9 @@
     <Compile Include="Views\ConfigurationView.xaml.cs">
       <DependentUpon>ConfigurationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FenetreRecherche.xaml.cs">
+      <DependentUpon>FenetreRecherche.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GestionProjetView.xaml.cs">
       <DependentUpon>GestionProjetView.xaml</DependentUpon>
     </Compile>
@@ -124,6 +127,10 @@
     <Page Include="Views\ConfigurationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FenetreRecherche.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\GestionProjetView.xaml">
       <SubType>Designer</SubType>

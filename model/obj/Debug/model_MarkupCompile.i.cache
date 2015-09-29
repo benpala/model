@@ -10,11 +10,19 @@ none
 false
 DEBUG;TRACE
 D:\model\model\App.xaml
+<<<<<<< HEAD
 11511946322
 
 351871441321
 14-789581557
 MainWindow.xaml;Views\AjoutEmployeView.xaml;Views\ConfigurationView.xaml;Views\GestionProjetView.xaml;Views\DetailPaieView.xaml;Views\EmployeView.xaml;Views\ListePaieView.xaml;Views\ModifierEmpView.xaml;Views\ProjetView.xaml;Views\RapportView.xaml;Views\SimulationView.xaml;
+=======
+10-928208287
+
+34-136889263
+14-789581557
+MainWindow.xaml;Views\AjoutEmployeView.xaml;Views\ConfigurationView.xaml;Views\FenetreRecherche.xaml;Views\GestionProjetView.xaml;Views\DetailPaieView.xaml;Views\EmployeView.xaml;Views\ListePaieView.xaml;Views\ModifierEmpView.xaml;Views\ProjetView.xaml;
+>>>>>>> 48c0736406a7ac83d4cc77f92e800def84ef3bb2
 
 False
 

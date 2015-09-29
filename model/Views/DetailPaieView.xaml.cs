@@ -87,5 +87,11 @@ namespace model.Views
         }
         #endregion
 
+        private void click_retour(object sender, RoutedEventArgs e)
+        {
+            IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
+            applicationService.ChangeView<ListePaieView>(new ListePaieView());
+        }
+
     }
 }
