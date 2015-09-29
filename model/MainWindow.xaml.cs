@@ -74,6 +74,18 @@ namespace model
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
             applicationService.ChangeView<ConfigurationView>(new ConfigurationView());
         }
+
+        private void rapportView(object sender, RoutedEventArgs e)
+        {
+            IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
+            applicationService.ChangeView<RapportView>(new RapportView());
+        }
+
+        private void simulationView(object sender, RoutedEventArgs e)
+        {
+            IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
+            applicationService.ChangeView<SimulationView>(new SimulationView());
+        }
         
     }
   

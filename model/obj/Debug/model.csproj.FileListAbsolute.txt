@@ -166,7 +166,17 @@ C:\Users\0949748\Desktop\model\model\obj\Debug\model_MarkupCompile.cache
 C:\Users\0949748\Desktop\model\model\obj\Debug\model.g.resources
 C:\Users\0949748\Desktop\model\model\obj\Debug\model.Properties.Resources.resources
 C:\Users\0949748\Desktop\model\model\obj\Debug\model.csproj.GenerateResource.Cache
+<<<<<<< HEAD
+D:\model\model\obj\Debug\Views\RapportView.baml
+D:\model\model\obj\Debug\Views\SimulationView.baml
+D:\model\model\obj\Debug\Views\RapportView.g.cs
+D:\model\model\obj\Debug\Views\SimulationView.g.cs
+=======
 D:\model\model\obj\Debug\Views\FenetreRecherche.baml
 D:\model\model\obj\Debug\Views\FenetreRecherche.g.cs
+<<<<<<< HEAD
 C:\Users\0949748\Desktop\model\model\obj\Debug\Views\FenetreRecherche.baml
 C:\Users\0949748\Desktop\model\model\obj\Debug\Views\FenetreRecherche.g.cs
+=======
+>>>>>>> 48c0736406a7ac83d4cc77f92e800def84ef3bb2
+>>>>>>> 7c42d9f319d0cf88f90ec94805f03d9ce59ef665

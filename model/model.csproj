@@ -102,6 +102,12 @@
     <Compile Include="Views\ProjetView.xaml.cs">
       <DependentUpon>ProjetView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RapportView.xaml.cs">
+      <DependentUpon>RapportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SimulationView.xaml.cs">
+      <DependentUpon>SimulationView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -147,6 +153,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProjetView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RapportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SimulationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -234,7 +248,14 @@
     <Resource Include="image\apple-xcode-icon.png" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Resource Include="image\filter.ico" />
+=======
+    <Resource Include="image\simulation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\rapport.png" />
+>>>>>>> 7c42d9f319d0cf88f90ec94805f03d9ce59ef665
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
