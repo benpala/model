@@ -16,7 +16,7 @@ namespace model.Service
             _paie = new List<Paie>();
             _paie.Add(new Paie() { ID = "1000", 
                                    DateGenerationRapport = "2015-01-03", 
-                                   UnEmploye = new Employe("Benjamin", "Laverdure"), 
+                                   Nom = "Benjamin pageot", 
                                    MontantBrute= (float)50.25, 
                                    MontantNet= (float)60.24, 
                                    NombreHeure=3, 
@@ -29,7 +29,7 @@ namespace model.Service
                                 {
                                     ID = "1000",
                                     DateGenerationRapport = "2015-01-03",
-                                    UnEmploye = new Employe("Alain", "Martel"),
+                                    Nom = "Alain Martel",
                                     MontantBrute = (float)50.25,
                                     MontantNet = (float)60.24,
                                     NombreHeure = 3,

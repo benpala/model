@@ -9,10 +9,10 @@ namespace model.Service.Simple
 {
     public class EmployeService : IEmployeService
     {
-        private IList<Employe> _Employe;
+        private IList<Employe> _Employe = new List<Employe>();
         public EmployeService()
         { 
-            _Employe = new List<Employe>();
+            
 
             _Employe.Add(new Employe {ID = "00",Prenom = "Pei", Nom = "Li", Photo = "01", Poste = "Chef", Salaire = "40$"});
             _Employe.Add(new Employe { ID = "01", Prenom = "Théo", Nom = "xxx", Photo = "02", Poste = "Chef", Salaire = "50$" });
@@ -22,6 +22,10 @@ namespace model.Service.Simple
         public IList<Employe> RetrieveAll()
         {
             return _Employe;
+        }
+        public void addOneEmploye(Employe unEmploye)
+        {
+            _Employe.Add(unEmploye);
         }
     }
 }

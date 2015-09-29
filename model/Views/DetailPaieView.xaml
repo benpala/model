@@ -106,9 +106,7 @@
             <Label  Width="200" Height="25" >Numéro du relevé :</Label>
             <TextBox IsReadOnly="false"  Name="numeroReleve"  Height="20" Width="200" Text="{Binding Paies.ID}" ></TextBox>
             <Label  Width="200" Height="25" >Nom de l'employé :</Label>
-            <TextBox IsReadOnly="false"  Name="nomEmploye"  Height="20" Width="200" Text="{Binding Paies.UnEmploye.Nom}" ></TextBox>
-            <Label  Width="200" Height="25" >Prénom de l'employé :</Label>
-            <TextBox IsReadOnly="false"  Name="prenomEmploye"  Height="20" Width="200" Text="{Binding Paies.UnEmploye.Prenom}" ></TextBox>
+            <TextBox IsReadOnly="false"  Name="nomEmploye"  Height="20" Width="200" Text="{Binding Paies.Nom}" ></TextBox>
             <Label  Width="200" Height="25" >Date du rapport :</Label>
             <TextBox IsReadOnly="false"  Name="dateGenerationRapport"  Height="20" Width="200" Text="{Binding Paies.DateGenerationRapport}" ></TextBox>
             <Button Style="{StaticResource BaseButtonStyle}" Content="Retour" Margin="10"  HorizontalAlignment="Center"  Width="208" Height="50" VerticalAlignment="Bottom" Click="click_retour"/>

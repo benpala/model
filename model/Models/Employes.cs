@@ -24,10 +24,13 @@ namespace model.Models
             Salaire = String.Empty;
             Photo = String.Empty;
         }
-        public Employe(string c_nom, string p_prenom):this()
+        public Employe(string c_id, string c_nom, string p_prenom, string c_poste, string c_salaire):this()
         {
+            ID = c_id;
             Nom = c_nom;
             Prenom = p_prenom;
+            Poste = c_poste;
+            Salaire = c_salaire;
         }
     }
 }

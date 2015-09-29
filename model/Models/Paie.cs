@@ -13,7 +13,7 @@ namespace model.Models
         public virtual string ID { get; set; }
         public virtual string DateGenerationRapport { get; set; }
         // Comme l'employé à une liste d'heure nous savons ici c'est quoi les heures pour l'employé.
-        public Employe UnEmploye { get; set; }
+        public virtual string Nom { get; set; }
 
         public virtual float MontantBrute { get; set; }
         public virtual float MontantNet { get; set; }
@@ -29,7 +29,7 @@ namespace model.Models
             ID = String.Empty;
             DateGenerationRapport = String.Empty;
 
-            UnEmploye = new Employe();
+            Nom = String.Empty;
             MontantBrute = 0;
 
             MontantNet = 0;
