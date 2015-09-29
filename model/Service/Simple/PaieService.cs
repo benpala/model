@@ -25,6 +25,20 @@ namespace model.Service
                                    MontantIndemites=(float)0.00,
                                    MontantAllocations=(float)0.00,
                                    MontantPourboire=(float)0.00 });
+            _paie.Add(new Paie()
+                                {
+                                    ID = "1000",
+                                    DateGenerationRapport = "2015-01-03",
+                                    UnEmploye = new Employe("Alain", "Martel"),
+                                    MontantBrute = (float)50.25,
+                                    MontantNet = (float)60.24,
+                                    NombreHeure = 3,
+                                    NombreHeureSupp = 0,
+                                    MontantPrime = (float)0.00,
+                                    MontantIndemites = (float)0.00,
+                                    MontantAllocations = (float)0.00,
+                                    MontantPourboire = (float)0.00
+                                });
            
         }
         public IList<Paie> RetrieveAll()
