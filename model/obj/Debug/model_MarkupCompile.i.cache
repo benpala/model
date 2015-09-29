@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\0949748\Desktop\model\model\obj\Debug\
+D:\model\model\obj\Debug\
 model
 none
 false
 DEBUG;TRACE
-C:\Users\0949748\Desktop\model\model\App.xaml
-9224858717
+D:\model\model\App.xaml
+11511946322
 
-33230200975
-141521834655
-MainWindow.xaml;Views\AjoutEmployeView.xaml;Views\ConfigurationView.xaml;Views\GestionProjetView.xaml;Views\DetailPaieView.xaml;Views\EmployeView.xaml;Views\ListePaieView.xaml;Views\ModifierEmpView.xaml;Views\ProjetView.xaml;
+351871441321
+14-789581557
+MainWindow.xaml;Views\AjoutEmployeView.xaml;Views\ConfigurationView.xaml;Views\GestionProjetView.xaml;Views\DetailPaieView.xaml;Views\EmployeView.xaml;Views\ListePaieView.xaml;Views\ModifierEmpView.xaml;Views\ProjetView.xaml;Views\RapportView.xaml;Views\SimulationView.xaml;
 
 False
 
