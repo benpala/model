@@ -168,3 +168,5 @@ C:\Users\0949748\Desktop\model\model\obj\Debug\model.Properties.Resources.resour
 C:\Users\0949748\Desktop\model\model\obj\Debug\model.csproj.GenerateResource.Cache
 D:\model\model\obj\Debug\Views\FenetreRecherche.baml
 D:\model\model\obj\Debug\Views\FenetreRecherche.g.cs
+C:\Users\0949748\Desktop\model\model\obj\Debug\Views\FenetreRecherche.baml
+C:\Users\0949748\Desktop\model\model\obj\Debug\Views\FenetreRecherche.g.cs
