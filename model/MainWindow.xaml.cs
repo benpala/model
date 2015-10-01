@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using model.Service;
+using model.Service.MySql;
 using model.Service.Simple;
 using model.Views;
 namespace model
@@ -32,11 +33,11 @@ namespace model
         }
         private void Configure()
         {
-
+            
             //Déclaration du ApplicationService
             ServiceFactory.Instance.Register<IApplicationService, MainWindow>(this);
             ServiceFactory.Instance.Register<IPaiesService, PaieService>(new PaieService());
-            ServiceFactory.Instance.Register<IProjetService, ProjetService>(new ProjetService());
+            ServiceFactory.Instance.Register<IProjetService, MySqlProjetService>(new MySqlProjetService());
             ServiceFactory.Instance.Register<IEmployeService, EmployeService>(new EmployeService());
         }
 
@@ -73,18 +74,6 @@ namespace model
         {
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
             applicationService.ChangeView<ConfigurationView>(new ConfigurationView());
-        }
-
-        private void rapportView(object sender, RoutedEventArgs e)
-        {
-            IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
-            applicationService.ChangeView<RapportView>(new RapportView());
-        }
-
-        private void simulationView(object sender, RoutedEventArgs e)
-        {
-            IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
-            applicationService.ChangeView<SimulationView>(new SimulationView());
         }
         
     }
