@@ -36,7 +36,7 @@ namespace model
             
             //Déclaration du ApplicationService
             ServiceFactory.Instance.Register<IApplicationService, MainWindow>(this);
-            ServiceFactory.Instance.Register<IPaiesService, PaieService>(new PaieService());
+            ServiceFactory.Instance.Register<IPaiesService, MySqlPaieService>(new MySqlPaieService());
             ServiceFactory.Instance.Register<IProjetService, MySqlProjetService>(new MySqlProjetService());
             ServiceFactory.Instance.Register<IEmployeService, EmployeService>(new EmployeService());
         }

@@ -11,22 +11,25 @@ namespace model.Models
         // ceci est une simple classe de test pour les vues. Elle sera détruitre lors de la programmation.
        
         public virtual string ID { get; set; }
+        public virtual string Periode { get; set; }
         public virtual string DateGenerationRapport { get; set; }
         // Comme l'employé à une liste d'heure nous savons ici c'est quoi les heures pour l'employé.
         public virtual string Nom { get; set; }
 
         public virtual float MontantBrute { get; set; }
         public virtual float MontantNet { get; set; }
-        public virtual int NombreHeure { get; set; }
-        public virtual int NombreHeureSupp { get; set; }
+        public virtual float NombreHeure { get; set; }
+        public virtual float NombreHeureSupp { get; set; }
         public virtual float MontantPrime { get; set; }
         public virtual float MontantIndemites { get; set; }
         public virtual float MontantAllocations { get; set; }
+        public virtual float MontantCommission { get; set; }
         public virtual float MontantPourboire { get; set; }
         
         public Paie()
         {
             ID = String.Empty;
+            Periode = String.Empty;
             DateGenerationRapport = String.Empty;
 
             Nom = String.Empty;
@@ -40,7 +43,7 @@ namespace model.Models
 
             MontantIndemites = 0;
             MontantAllocations = 0;
-
+            MontantCommission = 0;
             MontantPourboire = 0;
             
         }
