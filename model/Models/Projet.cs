@@ -14,6 +14,7 @@ namespace model.Models
         public string datedeux { get; set; }
         public int nbHeures { get; set; }
         public bool abandonne { get; set;}
+        public float prixSimulation { get; set;}
 
         public Projet()
         {

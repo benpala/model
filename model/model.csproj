@@ -37,10 +37,9 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
-    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,9 +65,10 @@
     <Compile Include="Models\Projet.cs" />
     <Compile Include="Models\Args\RetrievePaieArgs.cs" />
     <Compile Include="Service\BaseViewModel.cs" />
-    <Compile Include="Service\Helpers\NHibernate.cs" />
+    <Compile Include="Service\Helpers\MySqlConnexion.cs" />
     <Compile Include="Service\IEmployeService.cs" />
     <Compile Include="Service\IProjetService.cs" />
+    <Compile Include="Service\MySql\MySqlProjetService.cs" />
     <Compile Include="Service\Simple\EmployeService.cs" />
     <Compile Include="Service\Simple\PaieService.cs" />
     <Compile Include="Service\IApplicationService.cs" />
@@ -201,7 +201,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Service\BD\" />
-    <Folder Include="Service\MySql\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="image\closeTransparent.png" />
