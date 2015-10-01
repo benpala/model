@@ -41,11 +41,11 @@ namespace model.Views
             _ServiceEmploye = ServiceFactory.Instance.GetService<IEmployeService>();
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
-            Employes = new ObservableCollection<Employe>(_ServiceEmploye.RetrieveAll());
+            Employe = new ObservableCollection<Employe>(_ServiceEmploye.RetrieveAll());
             
         }
 
-        public ObservableCollection<Employe> Employes
+        public ObservableCollection<Employe> Employe
         {
             get
             {
@@ -114,6 +114,8 @@ namespace model.Views
 
         private void click_Modifier(object sender, RoutedEventArgs e)
         {
+            Employe Employe = (Employe)((sender as Button).CommandParameter);
+            Dictionary<string, object> parametre = new Dictionary<string, object>() { { "Employe", Employe } };
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
             applicationService.ChangeView<ModifierEmpView>(new ModifierEmpView());
         }

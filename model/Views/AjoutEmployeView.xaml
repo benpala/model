@@ -71,7 +71,7 @@
                     <ImageBrush ImageSource="/image/employe.png"/>
                 </Rectangle.Fill>
             </Rectangle>
-            <StackPanel Height="250" Width="471" Margin="150,0,0,0">
+            <StackPanel Height="250" Width="500" Margin="150,0,0,0">
 
             </StackPanel>
         </StackPanel>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,9 +24,32 @@ namespace model.Views
     /// </summary>
     public partial class ModifierEmpView : UserControl
     {
+        private Employe _Employe;
         public ModifierEmpView()
         {
             InitializeComponent();
+            DataContext = this;
+        }
+        public ModifierEmpView(IDictionary<string, object> parametre): this()
+        {
+            _Employe = parametre["Employe"] as Employe;
+        }
+
+        public Employe Employe
+        {
+            get
+            {
+                return _Employe;
+            }
+
+            set
+            {
+                if (_Employe == value)
+                {
+                    return;
+                }
+                _Employe = value;
+            }
         }
 
         private void retourMenu(object sender, RoutedEventArgs e)
@@ -35,9 +60,11 @@ namespace model.Views
 
         private void EnregistrerEmp(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Le nouveau employé est ajouté dans la liste");
+            MessageBox.Show("Les informations sont modifiées");
             retourMenu(this, null);
         }
+
+
 
     }
 }
