@@ -19,9 +19,11 @@ namespace model.Views
     /// </summary>
     public partial class FenetreRecherche : Window
     {
-        public FenetreRecherche()
+        public FenetreRecherche(int X, int Y)
         {
             InitializeComponent();
+            Left = X;
+            Top = Y;
         }
     }
 }
