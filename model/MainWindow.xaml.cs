@@ -38,7 +38,7 @@ namespace model
             ServiceFactory.Instance.Register<IApplicationService, MainWindow>(this);
             ServiceFactory.Instance.Register<IPaiesService, PaieService>(new PaieService());
             ServiceFactory.Instance.Register<IProjetService, MySqlProjetService>(new MySqlProjetService());
-            ServiceFactory.Instance.Register<IEmployeService, EmployeService>(new EmployeService());
+            ServiceFactory.Instance.Register<IEmployeService, MySqlEmployeService>(new MySqlEmployeService());
         }
 
 

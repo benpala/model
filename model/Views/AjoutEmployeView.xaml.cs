@@ -36,13 +36,13 @@ namespace model.Views
         }
 
         private void AjouterEmploye(object sender, RoutedEventArgs e)
-        {
+        {/*
             //{ID = "00",Prenom = "Pei", Nom = "Li", Photo = "01", Poste = "Chef", Salaire = "40$"}
             Employe employe = new Employe("5002", txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text); 
             //Enregistre les données et retourne à l'écran d'avant
             EmployeService _serviceEmploye = new EmployeService();
             _serviceEmploye.addOneEmploye(employe);
-            retourMenu(this,null);
+            retourMenu(this,null);*/
         }
     }
 }
