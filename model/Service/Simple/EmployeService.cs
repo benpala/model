@@ -14,7 +14,7 @@ namespace model.Service.Simple
         { 
             
 
-            _Employe.Add(new Employe {ID = "00",Prenom = "Pei", Nom = "Li", Photo = "01", Poste = "Chef", Salaire = "40$"});
+            _Employe.Add(new Employe { ID = "00",Prenom = "Pei", Nom = "Li", Photo = "01", Poste = "Chef", Salaire = "40$"});
             _Employe.Add(new Employe { ID = "01", Prenom = "Théo", Nom = "xxx", Photo = "02", Poste = "Chef", Salaire = "50$" });
             _Employe.Add(new Employe { ID = "02", Prenom = "Ben", Nom = "ooo", Photo = "03", Poste = "Chef", Salaire = "60$" });
             _Employe.Add(new Employe { ID = "03", Prenom = "Jac", Nom = "zzz", Photo = "04", Poste = "Chef", Salaire = "70$" });
