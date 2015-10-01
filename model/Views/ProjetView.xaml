@@ -247,7 +247,7 @@
             </Button.ToolTip>
         </Button>
         <Label Margin="-50,0,0,210" VerticalAlignment="Bottom" Width="75">Recherche</Label>
-        <TextBox Width="500" Height="25" Margin="525,0,0,210" VerticalAlignment="Bottom" TextChanged="TextBox_TextChanged" ></TextBox>
-        <Button Style="{StaticResource BouttonRecherche}" HorizontalAlignment="Right" Margin="0,0,75,208" Width="30" Height="30" VerticalAlignment="Bottom" Click="btnRecherche_Click"></Button>
+        <TextBox  Name="txtRecherche" Width="500" Height="25" Margin="525,0,0,210" VerticalAlignment="Bottom" TextChanged="TextBox_TextChanged" ></TextBox>
+        <Button Name="btnRecherche" Style="{StaticResource BouttonRecherche}" HorizontalAlignment="Right" Margin="0,0,75,208" Width="30" Height="30" VerticalAlignment="Bottom" Click="btnRecherche_Click"></Button>
     </Grid>
 </UserControl>
