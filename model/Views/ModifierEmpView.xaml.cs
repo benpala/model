@@ -63,8 +63,5 @@ namespace model.Views
             MessageBox.Show("Les informations sont modifiées");
             retourMenu(this, null);
         }
-
-
-
     }
 }
