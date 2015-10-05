@@ -112,6 +112,7 @@ namespace model.Views
 
         private void click_genereReleve(object sender, RoutedEventArgs e)
         {
+            
              MessageBox.Show("Bouton en construction");
         }
     }
