@@ -20,9 +20,9 @@ using model.Service;
 namespace model.Views
 {
     /// <summary>
-    /// Logique d'interaction pour ajoutEmploye.xaml
+    /// Logique d'interaction pour ModifierEmpView.xaml
     /// </summary>
-    public partial class ModifierEmpView : UserControl
+    public partial class ModifierEmpView : UserControl, INotifyPropertyChanged, INotifyPropertyChanging
     {
         private Employe _Employe;
         public ModifierEmpView()
@@ -63,5 +63,82 @@ namespace model.Views
             MessageBox.Show("Les informations sont modifiées");
             retourMenu(this, null);
         }
+
+        #region INotifyPropertyChanged INotifyPropertyChanging
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected PropertyChangedEventHandler PropertyChangedHandler
+        {
+            get { return PropertyChanged; }
+        }
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        protected PropertyChangingEventHandler PropertyChangingHandler
+        {
+            get { return PropertyChanging; }
+        }
+
+
+        protected virtual void RaisePropertyChanging([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanging;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
+
+      
+        //Accepter seulement text sans chiffre
+        private void textSeulement(object sender, KeyEventArgs e)
+        {
+            if (e.Key >= Key.A && e.Key <= Key.Z )
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+
+            // If tab is presses, then the focus must go to the
+            // next control.
+            if (e.Key == Key.Tab)
+            {
+                e.Handled = false;
+            }
+        }
+        //Accepter seulement chiffre
+        private void numSeulement(object sender, KeyEventArgs e)
+        {
+            if (e.Key >= Key.D0 && e.Key <= Key.D9 ||
+                e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+
+            // If tab is presses, then the focus must go to the
+            // next control.
+            if (e.Key == Key.Tab)
+            {
+                e.Handled = false;
+            }
+        }
+
     }
 }

@@ -20,7 +20,10 @@ namespace model.Service.MySql
             {
                 connexion = new MySqlConnexion();
 
-                string requete = "SELECT Employes.idEmploye, detailFinancies.employeur, detailFinancies.titreEmploi, detailFinancies.tauxHoraireNormal, detailFinancies.tauxHoraireOver, nom, prenom, horsFonction FROM Employes INNER JOIN detailFinancies ON Employes.idEmploye = detailFinancies.idEmploye ";
+                string requete = "SELECT e.idEmploye, d.employeur, d.titreEmploi, d.tauxHoraireNormal, d.tauxHoraireOver, e.nom, e.prenom, e.horsFonction,  p.nom FROM liaisonprojetemployes l "
+                                + " INNER JOIN Employes e ON e.idEmploye = l.idEmploye" 
+                                + " INNER JOIN Projets p ON p.idProjet = l.idProjet" 
+                                + " INNER JOIN detailfinancies d ON d.idEmploye = e.idEmploye ";
 
                 DataSet dataset = connexion.Query(requete);
                 DataTable table = dataset.Tables[0];
@@ -48,9 +51,10 @@ namespace model.Service.MySql
                 Poste = row["titreEmploi"].ToString(),
                 Salaire = (double)row["tauxHoraireNormal"],
                 SalaireOver = (double)row["tauxHoraireOver"],
-                horsFonction = (bool)row["horsFonction"]
+                HorsFonction = (bool)row["horsFonction"]
             };
         }
+        
     }
 
 }

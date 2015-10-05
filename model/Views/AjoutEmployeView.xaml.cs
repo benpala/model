@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,7 +23,7 @@ namespace model.Views
     /// <summary>
     /// Logique d'interaction pour ajoutEmploye.xaml
     /// </summary>
-    public partial class AjoutEmployeView : UserControl
+    public partial class AjoutEmployeView : UserControl, INotifyPropertyChanged, INotifyPropertyChanging
     {
         public AjoutEmployeView()
         {
@@ -44,5 +46,41 @@ namespace model.Views
             _serviceEmploye.addOneEmploye(employe);
             retourMenu(this,null);*/
         }
+
+        #region INotifyPropertyChanged INotifyPropertyChanging
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected PropertyChangedEventHandler PropertyChangedHandler
+        {
+            get { return PropertyChanged; }
+        }
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        protected PropertyChangingEventHandler PropertyChangingHandler
+        {
+            get { return PropertyChanging; }
+        }
+
+
+        protected virtual void RaisePropertyChanging([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanging;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
+
     }
 }

@@ -31,7 +31,6 @@ namespace model.Views
         public RetrieveEmployeArgs RetrieveArgs { get; set; }
         private ObservableCollection<Employe> _employe = new ObservableCollection<Employe>();
 
-
         public EmployeView()
         {
             InitializeComponent();
@@ -44,26 +43,6 @@ namespace model.Views
             Employe = new ObservableCollection<Employe>(_ServiceEmploye.RetrieveAll());
             
         }
-
-        public ObservableCollection<Employe> Employe
-        {
-            get
-            {
-                return _employe;
-            }
-            set
-            {
-                if (_employe == value)
-                {
-                    return;
-                }
-
-                RaisePropertyChanging();
-                _employe = value;
-                RaisePropertyChanged();
-            }
-        }
-
 
         #region INotifyPropertyChanged INotifyPropertyChanging
         public event PropertyChangedEventHandler PropertyChanged;
@@ -100,8 +79,24 @@ namespace model.Views
         }
         #endregion
 
-        #region BouttonClickAction
-        //Boutton de retour au menu principal.
+        public ObservableCollection<Employe> Employe
+        {
+            get
+            {
+                return _employe;
+            }
+            set
+            {
+                if (_employe == value)
+                {
+                    return;
+                }
+
+                RaisePropertyChanging();
+                _employe = value;
+                RaisePropertyChanged();
+            }
+        }
        
         //Boutton d'ajout d'un employé.
         private void click_addEmploye(object sender, RoutedEventArgs e)
@@ -111,15 +106,12 @@ namespace model.Views
             
         }
         
-
         private void click_Modifier(object sender, RoutedEventArgs e)
         {
-            Employe Employe = (Employe)((sender as Button).CommandParameter);
-            Dictionary<string, object> parametre = new Dictionary<string, object>() { { "Employe", Employe } };
+            Employe obj = (Employe)((sender as Button).CommandParameter);
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
-            applicationService.ChangeView<ModifierEmpView>(new ModifierEmpView());
+            Dictionary<string, object> parametre = new Dictionary<string, object>() { { "Employe", obj } };
+            applicationService.ChangeView<ModifierEmpView>(new ModifierEmpView(parametre));
         }
-        #endregion
-      
     }
 }

@@ -94,19 +94,22 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Nom de famille :"/>
-            <TextBox x:Name="txtAjoutNom" Width="200"  Height="25" FontSize="12" Text="Laverdure (exemple)"/>
+            <TextBox x:Name="txtAjoutNom" Width="200"  Height="25" FontSize="12" Text="" MaxLength="50" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prenom :"/>
-            <TextBox x:Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12" Text="Benjamin (exemple)"/>
+            <TextBox x:Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12" Text="" MaxLength="50"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Width="200" Height="25" FontSize="12" Content="Poste :"/>
-            <TextBox x:Name="txtAjoutPoste" Width="209"  Height="26" FontSize="12" Text="Contrôleur (exemple)"/>
+            <ComboBox Width="200"  ItemsSource="{Binding Employe.Poste}" 
+                DisplayMemberPath="Name" 
+                SelectedValuePath="Name" 
+                SelectedValue="{Binding Employe.poste}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="200"  Height="25" FontSize="12" Content="Salaire :"/>
-            <TextBox x:Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" Text="50/Heures (exemple)"/>
+            <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure:"/>
+            <TextBox x:Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" Text=""/>
         </StackPanel>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="Ajouter"  Click="AjouterEmploye"  Width="200" Height="50"/>

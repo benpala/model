@@ -101,18 +101,26 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Nom de l'employé :</Label>
-            <TextBox Name="txtNom" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.nom}"></TextBox>
+            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Nom de famille :</Label>
+            <TextBox Name="txtNom" Width="200"  Height="25" FontSize="12" Text="{Binding Path=Employe.Nom}" MaxLength="50" KeyDown="textSeulement"></TextBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
+            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Prénom :</Label>
+            <TextBox Name="txtPrenom" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Prenom}" MaxLength="50" KeyDown="textSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label Width="200" Height="25" FontSize="12">Poste :</Label>
-            <TextBox Name="txtPoste" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.poste}"></TextBox>
+            <ComboBox Width="200"  ItemsSource="{Binding Employe.Poste}" 
+                DisplayMemberPath="Name" 
+                SelectedValuePath="Name" 
+                SelectedValue="{Binding Employe.Poste}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label Width="200"  Height="25" FontSize="12">Salaire :</Label>
-            <TextBox Name="txtSalaire" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.salaire}"></TextBox>
+            <Label Width="200"  Height="25" FontSize="12">Salaire par heure:</Label>
+            <TextBox Name="txtSalaire" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Salaire}" KeyDown="numSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">

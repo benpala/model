@@ -14,7 +14,7 @@ namespace model.Models
         public string Poste { get; set; }
         public double Salaire { get; set; }
         public string Photo { get; set; }
-        public bool horsFonction { get; set; }
+        public bool HorsFonction { get; set; }
         public double SalaireOver { get; set; }
 
         public Employe()
@@ -26,7 +26,7 @@ namespace model.Models
             Salaire = 0;
             SalaireOver = 0;
             Photo = String.Empty;
-            horsFonction = false;
+            HorsFonction = false;
         }
 
     }
