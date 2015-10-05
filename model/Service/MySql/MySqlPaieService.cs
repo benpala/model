@@ -12,6 +12,7 @@ namespace model.Service.MySql
     class MySqlPaieService : IPaiesService
     {
         private MySqlConnexion connexion;
+
         public IList<Paie> RetrieveAll()
         {
             IList<Paie> result = new List<Paie>();
@@ -30,9 +31,9 @@ namespace model.Service.MySql
                 DataSet dataset = connexion.Query(requete);
                 DataTable table = dataset.Tables[0];
 
-                foreach (DataRow projet in table.Rows)
+                foreach (DataRow paie in table.Rows)
                 {
-                    result.Add(ConstructProjet(projet));
+                    result.Add(ConstructPaie(paie));
                 }
             }
             catch (MySqlException)
@@ -42,8 +43,45 @@ namespace model.Service.MySql
 
             return result;
         }
+        // Ici nous commençons la génération des différentes paie en fonction des temps.
+        public float RetrieveCompteurs(String id, String periodeDebut, String periodeFin)
+        {
+            try
+            {
+                connexion = new MySqlConnexion();
+                string requete = "SELECT SUM(TIMESTAMPDIFF( MINUTE, dateTimerStart, dateTimerEnd)/60) as temps FROM compteurstemps WHERE idEmploye = '" + id + "'" 
+                                +" AND dateTimerStart >= '"+periodeDebut+"' AND "
+                                + " dateTimerEnd <= '" + periodeFin + "'";
 
-        private Paie ConstructProjet(DataRow row)
+                DataSet dataset = connexion.Query(requete);
+                //dataSet.Tables[tableIndex].Rows[rowIndex][colIndex]
+                float table = (float)dataset.Tables[0].Rows[0][0];
+                return table;
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+        }
+        public DataTable PeriodeTemps()
+        {
+            try
+            {
+                connexion = new MySqlConnexion();
+
+                string requete = "SELECT dateDebut,dateFin FROM periodepaies WHERE aEteGenere IS FALSE ORDER BY dateFin LIMIT 1";
+
+                DataSet dataset = connexion.Query(requete);
+                DataTable table = dataset.Tables[0];
+                return table;
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+        }
+        // fin de la génération.
+        private Paie ConstructPaie(DataRow row)
         {
             return new Paie()
             {
@@ -57,7 +95,7 @@ namespace model.Service.MySql
                 NombreHeure = (float)row["nombreHeure"],
                 NombreHeureSupp = (float)row["nombreHeureSupp"],
                 MontantPrime = (float)row["montantPrime"],
-                MontantIndemites = (float)row["montantIndemnites"],
+                MontantRetenue = (float)row["montantIndemnites"],
                 MontantAllocations = (float)row["montantAllocations"],
                 MontantCommission = (float)row["montantCommissions"],
                 MontantPourboire = (float)row["montantPourboire"]
