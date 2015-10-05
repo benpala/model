@@ -71,8 +71,27 @@
                     <ImageBrush ImageSource="/image/employe.png"/>
                 </Rectangle.Fill>
             </Rectangle>
-            <StackPanel Height="250" Width="500" Margin="150,0,0,0">
 
+            <StackPanel Height="200" Width="400" Margin="150,0,0,0">
+                <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="gridProjet"  ItemsSource="{Binding Projet}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom">
+                    <DataGrid.Columns >
+                        <DataGridTemplateColumn  Width="300" Header="Projet" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+
+                                    <TextBox Text="projet"></TextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="100" Header="Occupé">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox  VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
         </StackPanel>
 
