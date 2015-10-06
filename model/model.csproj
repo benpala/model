@@ -70,6 +70,7 @@
     <Compile Include="Service\IProjetService.cs" />
     <Compile Include="Service\MySql\MySqlEmployeService.cs" />
     <Compile Include="Service\MySql\MySqlPaieService.cs" />
+    <Compile Include="Service\MySql\MysqlProjetEmployeService.cs" />
     <Compile Include="Service\MySql\MySqlProjetService.cs" />
     <Compile Include="Service\IApplicationService.cs" />
     <Compile Include="Service\IPaiesService.cs" />
