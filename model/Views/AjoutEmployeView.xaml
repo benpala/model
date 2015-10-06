@@ -63,7 +63,7 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel Orientation="Vertical" Margin="50,0,0,0">
+    <StackPanel Orientation="Vertical" Margin="50,0,50,0">
         <StackPanel Orientation="Horizontal" Height="250" >
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Photo :"/>
             <Rectangle Width="200" Height="250"  >
@@ -72,7 +72,7 @@
                 </Rectangle.Fill>
             </Rectangle>
             <StackPanel Height="200" Width="400" Margin="150,0,0,0">
-                <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="gridProjet"  ItemsSource="{Binding Projet}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom">
+                <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="gridProjet"  ItemsSource="{Binding ProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom">
                     <DataGrid.Columns >
                         <DataGridTemplateColumn  Width="300" Header="Projet" >
                             <DataGridTemplateColumn.CellTemplate>
@@ -94,22 +94,19 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Nom de famille :"/>
-            <TextBox x:Name="txtAjoutNom" Width="200"  Height="25" FontSize="12" Text="" MaxLength="50" />
+            <TextBox Name="txtAjoutNom" Width="200"  Height="25" FontSize="12"  MaxLength="50" KeyDown="textSeulement"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prenom :"/>
-            <TextBox x:Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12" Text="" MaxLength="50"/>
+            <TextBox Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12"  MaxLength="50" KeyDown="textSeulement"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Width="200" Height="25" FontSize="12" Content="Poste :"/>
-            <ComboBox Width="200"  ItemsSource="{Binding Employe.Poste}" 
-                DisplayMemberPath="Name" 
-                SelectedValuePath="Name" 
-                SelectedValue="{Binding Employe.poste}" />
+            <TextBox Name="txtAjoutPoste" Width="200"  Height="25" FontSize="12"  MaxLength="50" KeyDown="textSeulement"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure:"/>
-            <TextBox x:Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" Text=""/>
+            <TextBox Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" KeyDown="numSeulement"/>
         </StackPanel>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="Ajouter"  Click="AjouterEmploye"  Width="200" Height="50"/>

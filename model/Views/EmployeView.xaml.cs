@@ -108,7 +108,7 @@ namespace model.Views
         
         private void click_Modifier(object sender, RoutedEventArgs e)
         {
-            Employe obj = (Employe)((sender as Button).CommandParameter);
+            var obj = (Employe)((sender as Button).CommandParameter);
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
             Dictionary<string, object> parametre = new Dictionary<string, object>() { { "Employe", obj } };
             applicationService.ChangeView<ModifierEmpView>(new ModifierEmpView(parametre));

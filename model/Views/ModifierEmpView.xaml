@@ -63,7 +63,7 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel Orientation="Vertical"   Margin="20,0,20,0">
+    <StackPanel Orientation="Vertical"  Margin="50,0,50,0">
         <StackPanel Orientation="Horizontal" Height="250" >
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Photo :"/>
             <Rectangle Width="200" Height="250"  >
@@ -73,20 +73,19 @@
             </Rectangle>
 
             <StackPanel Height="200" Width="400" Margin="150,0,0,0">
-                <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="gridProjet"  ItemsSource="{Binding Projet}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom">
+                <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="gridProjet"  ItemsSource="{Binding ProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <DataGrid.Columns >
                         <DataGridTemplateColumn  Width="300" Header="Projet" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-
-                                    <TextBox Text="projet"></TextBox>
+                                    <TextBox TextAlignment="Center" Text="{Binding nom}"></TextBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Width="100" Header="Occupé">
+                        <DataGridTemplateColumn Width="100" Header="Occupé" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox  VerticalAlignment="Center" />
+                                    <CheckBox Margin="35,0,0,0" VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -112,10 +111,7 @@
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label Width="200" Height="25" FontSize="12">Poste :</Label>
-            <ComboBox Width="200"  ItemsSource="{Binding Employe.Poste}" 
-                DisplayMemberPath="Name" 
-                SelectedValuePath="Name" 
-                SelectedValue="{Binding Employe.Poste}" />
+            <TextBox Name="txtPoste" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Poste}" KeyDown="textSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
@@ -125,7 +121,7 @@
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
-            <CheckBox  Margin="100,0,0,0" VerticalAlignment="Center" />
+            <CheckBox Name="cbxFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.horsFonction}"/>
         </StackPanel>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="Enregistrer" Click="EnregistrerEmp"  Width="200" Height="50"/>

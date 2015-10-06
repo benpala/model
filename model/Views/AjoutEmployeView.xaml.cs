@@ -82,5 +82,46 @@ namespace model.Views
         }
         #endregion
 
+        private void textSeulement(object sender, KeyEventArgs e)
+        {
+            if (e.Key >= Key.A && e.Key <= Key.Z)
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+
+            // If tab is presses, then the focus must go to the
+            // next control.
+            if (e.Key == Key.Tab)
+            {
+                e.Handled = false;
+            }
+        }
+
+        private void numSeulement(object sender, KeyEventArgs e)
+        {
+            if (e.Key >= Key.D0 && e.Key <= Key.D9 ||
+                e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9 || e.Key == Key.Decimal)
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+
+            // If tab is presses, then the focus must go to the
+            // next control.
+            if (e.Key == Key.Tab)
+            {
+                e.Handled = false;
+            }
+        }
+
+
+
     }
 }

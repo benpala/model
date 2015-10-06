@@ -68,14 +68,9 @@
     <Compile Include="Service\Helpers\MySqlConnexion.cs" />
     <Compile Include="Service\IEmployeService.cs" />
     <Compile Include="Service\IProjetService.cs" />
+    <Compile Include="Service\MySql\MySqlEmployeService.cs" />
     <Compile Include="Service\MySql\MySqlPaieService.cs" />
     <Compile Include="Service\MySql\MySqlProjetService.cs" />
-
-    <Compile Include="Service\MySql\MySqlEmployeService.cs" />
-
-  
-    <Compile Include="Service\MySql\MySqlEmployeService.cs" />
-
     <Compile Include="Service\IApplicationService.cs" />
     <Compile Include="Service\IPaiesService.cs" />
     <Compile Include="Service\ServiceFactory.cs" />

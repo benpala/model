@@ -15,14 +15,14 @@ namespace model.Service.MySql
         private MySqlConnexion connexion;
         public IList<Employe> RetrieveAll()
         {
-            IList<Employe> result = new List<Employe>();
+            IList<Employe> lstEmploye = new List<Employe>();
             try
             {
                 connexion = new MySqlConnexion();
 
-                string requete = "SELECT e.idEmploye, d.employeur, d.titreEmploi, d.tauxHoraireNormal, d.tauxHoraireOver, e.nom, e.prenom, e.horsFonction,  p.nom FROM liaisonprojetemployes l "
-                                + " INNER JOIN Employes e ON e.idEmploye = l.idEmploye" 
-                                + " INNER JOIN Projets p ON p.idProjet = l.idProjet" 
+                string requete = "SELECT e.idEmploye, d.titreEmploi, d.tauxHoraireNormal, d.tauxHoraireOver, e.nom, e.prenom, e.horsFonction FROM Employes e "
+                            //    + " INNER JOIN Employes e ON e.idEmploye = l.idEmploye" 
+                            //    + " INNER JOIN Projets p ON p.idProjet = l.idProjet" 
                                 + " INNER JOIN detailfinancies d ON d.idEmploye = e.idEmploye ";
 
                 DataSet dataset = connexion.Query(requete);
@@ -30,7 +30,7 @@ namespace model.Service.MySql
 
                 foreach (DataRow employe in table.Rows)
                 {
-                    result.Add(ConstructEmploye(employe));
+                    lstEmploye.Add(ConstructEmploye(employe));
                 }
             }
             catch (MySqlException)
@@ -38,7 +38,7 @@ namespace model.Service.MySql
                 throw;
             }
 
-            return result;
+            return lstEmploye;
         }
 
         private Employe ConstructEmploye(DataRow row)
