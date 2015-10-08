@@ -10,6 +10,5 @@ namespace model
     public interface IProjetService
     {
         IList<Projet> retrieveAll();
-        IList<Projet> retrieveProjEmp();
     }
 }

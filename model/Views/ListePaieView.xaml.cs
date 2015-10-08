@@ -41,9 +41,9 @@ namespace model.Views
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
             Paies = new ObservableCollection<Paie>(_ServicePaie.RetrieveAll());
-           
+
         }
-        
+
         #region INotifyPropertyChanged INotifyPropertyChanging
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -106,29 +106,26 @@ namespace model.Views
             Paie obj = (Paie)((sender as Button).CommandParameter);
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
-            Dictionary<string, object> parametre = new Dictionary<string,object>(){{"paie", obj}};
+            Dictionary<string, object> parametre = new Dictionary<string, object>() { { "paie", obj } };
             applicationService.ChangeView<DetailPaieView>(new DetailPaieView(parametre));
         }
 
         private void click_genereReleve(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
             Paie paieTravail = new Paie();
             try
             {
                 paieTravail.GenererPaies();
-                
-            }catch(Exception message) {
+
+            }
+            catch (Exception message)
+            {
                 MessageBox.Show(message.Message);
                 IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
                 applicationService.ChangeView<ListePaieView>(new ListePaieView());
             }
-            
-            
-=======
-            
-             MessageBox.Show("Bouton en construction");
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
+
+
         }
     }
 }

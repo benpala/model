@@ -16,7 +16,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using model.Models;
 using model.Service;
-using model.Service.Simple;
 
 namespace model.Views
 {

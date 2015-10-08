@@ -49,7 +49,7 @@ namespace model.Service.MySql
                 prixSimulation = (float)row["PrixSimulation"],
                 abandonne = (bool)row["estAbandonne"]
             };
-        } 
+        }
     }
 
 }

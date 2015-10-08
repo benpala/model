@@ -40,7 +40,7 @@ namespace model.Views
             _ServiceProjet = ServiceFactory.Instance.GetService<IProjetService>();
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
-            ProjetEmploye = new ObservableCollection<Projet>(_ServiceProjet.retrieveAll());
+            //ProjetEmploye = new ObservableCollection<Projet>(_ServiceProjet.retrieveAll());
         }
         public ObservableCollection<Projet> ProjetEmploye
         {

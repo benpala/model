@@ -41,7 +41,33 @@ namespace model.Service.MySql
             return result;
             return lstEmploye;
         }
+        public DataTable getProjet_onEmploye(string id){
+            /*
+                SELECT liaisonprojetemployes.idEmploye, CONCAT(Employes.prenom," ",Employes.nom),  Projets.nom FROM Projets
+                LEFT JOIN liaisonprojetemployes  ON liaisonprojetemployes.idProjet = Projets.idProjet 
+                LEFT JOIN Employes ON Employes.idEmploye = liaisonprojetemployes.idEmploye WHERE Employes.idEmploye = 2
+ 
+            */
+            try
+            {
+                connexion = new MySqlConnexion();
+                StringBuilder buildReq = new StringBuilder();
+                buildReq.Append("SELECT liaisonprojetemployes.idEmploye, CONCAT(Employes.prenom,' ',Employes.nom), Projets.nom FROM Projets");
+                buildReq.Append(" LEFT JOIN liaisonprojetemployes  ON liaisonprojetemployes.idProjet = Projets.idProjet");
+                buildReq.Append(" LEFT JOIN Employes ON Employes.idEmploye = liaisonprojetemployes.idEmploye WHERE Employes.idEmploye =");
+                buildReq.Append(id);
+                DataSet dataset = connexion.Query(buildReq.ToString());
+                DataTable tableEM_on_PROJECT = dataset.Tables[0];
+                
+                return tableEM_on_PROJECT;
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
 
+            
+        } 
         private Employe ConstructEmploye(DataRow row)
         {
             return new Employe()

@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using model.Service;
 using model.Service.MySql;
-using model.Service.Simple;
 using model.Views;
 namespace model
 {
