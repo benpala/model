@@ -77,9 +77,13 @@ namespace model.Models
                 MySqlEmployeService _emService = new MySqlEmployeService();
                 IList<Employe> emp = _emService.RetrieveAll();
                 Periode = _service.PeriodeTemps();
+
+                DateTime start = (DateTime)Periode.Rows[0][0], 
+                end = (DateTime)Periode.Rows[0][1];
+
                 if(Periode.Rows[0][0] == null)
                 {
-                    throw new Exception("Toutes les périodes de paye ont déjà été générer.");
+                    throw new Exception("Toutes les périodes de paye ont déjà été générer. Allez en rentré de nouvelle pour la nouvelle année.");
                 }
                 float HeureSupp = 0;
 
@@ -87,18 +91,27 @@ namespace model.Models
                 foreach (Employe em in emp)
                 {
                     {
-                        DateTime start = (DateTime)Periode.Rows[0][0], end = (DateTime)Periode.Rows[0][1];
+                       
                         temps = _service.RetrieveCompteurs(em.ID, start, end);
+                        // Vérification dans le cas ou personne n'aurais travailler dans cette période.
+                        if(temps == 0)
+                        {
+                            StringBuilder mess = new StringBuilder();
+                            mess.Append("Aucune employé à travail durant la période. Cette période à été noté comme généré: ");
+                            mess.Append(start.ToString());
+                            mess.Append(end.ToString());
+                            if (_service.periodeGenere(start, end))
+                            {
+                                throw new Exception("Problème avec l'état des périodes de paie, vérifier que votre période courrante est cohérente.");
+                            }
+                            throw new Exception(mess.ToString());
+                        }
                         if (temps > supp)
                         {
                             HeureSupp = temps - supp;
                             temps = temps - supp;
                         }
-                        //public static float salaireUn = 41495, salaireUn = 82985, salaireUn = 100970;
-                       // public static float tauxUn = (float)0.16,
-                      /*                      tauxDeux = (float)0.20,
-                                              tauxTrois = (float)0.24,
-                                              tauxQuatre = (float)0.2575;*/
+                        
                         float Brute = ((float)em.Salaire * temps) + ((float)em.SalaireOver * HeureSupp);
                          
                         Double days = (end - start).TotalDays;
@@ -125,14 +138,20 @@ namespace model.Models
                         
 
                         Paie tmpPaie = new Paie() { MontantBrute = Brute, MontantNet = Net, NombreHeure = temps, NombreHeureSupp = HeureSupp };
+                        if (_service.periodeGenere(start, end))
+                        {
+                            throw new Exception("Problème avec l'état des périodes de paie, vérifier que votre période courrante est cohérente.");
+                        }
                         // Appel  de la fonction de génération de paie.
-                        if (!_service.insertPaie(tmpPaie, (DateTime)Periode.Rows[0][0], (DateTime)Periode.Rows[0][1], em.ID))
+                        if (!_service.insertPaie(tmpPaie, start, end, em.ID))
                         {
                             throw new Exception("Impossible de générer la paie de " + em.Prenom + " , " + em.Nom + " correctements vérifier les dates de vos périodes de paies.");
                         }
                     }
                 }
-                throw new Exception("Réussite de la génération des paies pour la période de :" + String.Format("{0:d/M/yyyy HH:mm:ss}", Periode.Rows[0][0]) + " aux " + String.Format("{0:d/M/yyyy HH:mm:ss}", Periode.Rows[0][1]));
+                // change la période paye à terminé.
+
+                throw new Exception("Réussite de la génération des paies pour la période de :" + start.ToString() + " aux " + end.ToString());
             }
             catch (Exception e)
             {

@@ -43,11 +43,25 @@ namespace model.Service.MySql
 
             return result;
         }
+        public bool periodeGenere(DateTime start, DateTime end)
+        {
+            try
+            {
+                connexion = new MySqlConnexion();
+                connexion.Query("UPDATE periodepaies SET aEteGenere=1 WHERE dateDebut='" + start + "' AND dateFin='" + end +"'");
+                return true;
+            }
+            catch (MySqlException)
+            {
+                return false;
+            }
+        }
         // Ici nous commençons la génération des différentes paie en fonction des temps.
         public float RetrieveCompteurs(String id, DateTime periodeDebut, DateTime periodeFin)
         {
             try
             {
+                float S_temps = 0;
                 connexion = new MySqlConnexion();
                 string requete = "SELECT SUM(TIMESTAMPDIFF( MINUTE, dateTimerStart, dateTimerEnd)/60) as temps FROM compteurstemps WHERE idEmploye = '" + id + "'"
                                 + " AND dateTimerStart >= '" + periodeDebut + "' AND "
@@ -56,8 +70,10 @@ namespace model.Service.MySql
                 DataSet dataset = connexion.Query(requete);
                 //dataSet.Tables[tableIndex].Rows[rowIndex][colIndex]
                 DataTable table = dataset.Tables[0];
-                float S_temps = Convert.ToSingle(table.Rows[0][0].ToString());
-
+                if((int)table.Rows[0][0] > 0)
+                {
+                    S_temps = Convert.ToSingle(table.Rows[0][0].ToString());
+                }
                 // float temps = (float)S_temps;
                 return S_temps;
             }
@@ -108,7 +124,6 @@ namespace model.Service.MySql
                 sb.Append("' AND dateFin = '");
                 sb.Append(end);
                 sb.Append("'),");
-
                 sb.Append(insertPaie.MontantBrute.ToString().Replace(",", "."));
                 sb.Append(",");
                 sb.Append(insertPaie.MontantNet.ToString().Replace(",", "."));
