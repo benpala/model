@@ -74,7 +74,7 @@
             <Label Width="200" Height="30" >Date de fin :</Label>
             <DatePicker Name="dtDateFin"  Height="30" Width="200" SelectedDate="{Binding Projet.datedeux}"></DatePicker>
             <Label Width="200" Height="30" >Abandonné :</Label>
-            <CheckBox Name="chkAbandon" Width="15" IsChecked="{Binding Projet.abandonne}" Padding="10"></CheckBox>
+            <CheckBox Name="chkAbandon" Width="15" Padding="10"></CheckBox>
 
             <Button Style="{StaticResource BaseButtonStyle}" Content="Enregistrer"  HorizontalAlignment="Center"  Width="208" Click="EnregistrerProjet" Height="50" VerticalAlignment="Bottom" />
             <Button Style="{StaticResource BaseButtonStyle}" Content="Retour"  HorizontalAlignment="Center"  Width="208" Click="retourMenu" Height="50" VerticalAlignment="Bottom"/>

@@ -30,6 +30,7 @@ namespace model.Views
 
         public RetrieveProjetArgs RetrieveArgs { get; set;}
         private ObservableCollection<Projet> _projet = new ObservableCollection<Projet>();
+        private ObservableCollection<Projet> projetCopie = new ObservableCollection<Projet>();
 
         public ProjetView()
         {
@@ -40,6 +41,34 @@ namespace model.Views
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
             Projet = new ObservableCollection<Projet>(_ServiceProjet.retrieveAll());
+            foreach(Projet p in Projet)
+            {
+                if(p.etat == "ABD")
+                { 
+                    var converter = new System.Windows.Media.BrushConverter();
+                    var brush = (Brush)converter.ConvertFromString("#FFFFFF90");
+                    mygrid.RowBackground = brush;
+                }
+                if (p.etat == "SIM")
+                {
+                    var converter = new System.Windows.Media.BrushConverter();
+                    var brush = (Brush)converter.ConvertFromString("#3406FF");
+                    mygrid.RowBackground = brush;
+                }
+                if (p.etat == "ENC")
+                {
+                    var converter = new System.Windows.Media.BrushConverter();
+                    var brush = (Brush)converter.ConvertFromString("#06FF2F");
+                    mygrid.RowBackground = brush;
+                }
+                if (p.etat == "END")
+                {
+                    var converter = new System.Windows.Media.BrushConverter();
+                    var brush = (Brush)converter.ConvertFromString("#FF060E");
+                    mygrid.RowBackground = brush;
+                }
+            }
+            projetCopie = Projet;
         }
     
 
@@ -111,18 +140,87 @@ namespace model.Views
 
             Dictionary<string,object> parametres = new Dictionary<string,object>() { { "Projet" , Projet} };
             applicationService.ChangeView<GestionProjetView>(new GestionProjetView(parametres));
+            
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void txtRechercheID_GotFocus(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(this.txtRecherche.Text);
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+            tb.Foreground = Brushes.Black;
+            tb.GotFocus -= txtRechercheID_GotFocus;
         }
 
-        private void btnRecherche_Click(object sender, RoutedEventArgs e)
+        private void txtRechercheNomProjet_GotFocus(object sender, RoutedEventArgs e)
         {
-            //Point p = this.PointToScreen((Point) sender);
-            Window Fenetre = new FenetreRecherche(((int)this.Width/2)-50,((int)this.Height/2)-100);
-            Fenetre.ShowDialog();
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+            tb.Foreground = Brushes.Black;
+            tb.GotFocus -= txtRechercheNomProjet_GotFocus;
         }
-    }
+
+        //private void txtRechercheDateDebut_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    TextBox tb = (TextBox)sender;
+        //    tb.Text = string.Empty;
+        //    tb.Foreground = Brushes.Black;
+        //    tb.GotFocus -= txtRechercheDateDebut_GotFocus;
+        //}
+
+        //private void txtRechercheDateFin_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    TextBox tb = (TextBox)sender;
+        //    tb.Text = string.Empty;
+        //    tb.Foreground = Brushes.Black;
+        //    tb.GotFocus -= txtRechercheDateFin_GotFocus;
+        //}
+
+        private void txtRechercheNbHeures_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+            tb.Foreground = Brushes.Black;
+            tb.GotFocus -= txtRechercheNbHeures_GotFocus;
+        }
+
+        private void txtRecherche_textChanged(object sender, TextChangedEventArgs e)
+        {
+            List<string> arguments = new List<string>();
+            List<string> donnees = new List<string>();
+
+            foreach (Control ctrl in ProjetGrid.Children)
+            {
+                if (ctrl.GetType() == typeof(TextBox))
+                {
+                    if (((TextBox)ctrl).Text != "ID" && ((TextBox)ctrl).Text != "Nom du projet" &&
+                     ((TextBox)ctrl).Text != "Date de début" && ((TextBox)ctrl).Text != "Date de fin" && ((TextBox)ctrl).Text != "Nb heures" && ((TextBox)ctrl).Text != "")
+                    {
+                        arguments.Add(((TextBox)ctrl).Name.Substring(13));
+                        donnees.Add(((TextBox)ctrl).Text);
+                    }
+                }
+            }
+
+            if(arguments.Count == 0 && donnees.Count == 0)
+            {
+                Projet = projetCopie;
+            }
+            else 
+            {
+                Projet = new ObservableCollection<Projet>(_ServiceProjet.retrieveAll(arguments,donnees));     
+            }
+        }
+
+        private void txtRechercheNbHeures_textChanged(object sender, TextChangedEventArgs e)
+        {
+            // cherche dans l'observable collection et affiche ceux qui sont valide
+
+        }
+
+        private void dtpDebutDate_DateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+   }
 }

@@ -27,12 +27,14 @@ namespace model.Views
         public GestionProjetView()
         {
             InitializeComponent();
-            DataContext = this;         
+            DataContext = this;
         }
 
         public GestionProjetView(IDictionary<string,object> parameters):this()
         {
             Projet = parameters["Projet"] as Projet;
+            if (Projet.etat == "ABD")
+                chkAbandon.IsChecked = true;
         }
 
         
@@ -66,7 +68,9 @@ namespace model.Views
 
         private void EnregistrerProjet(object sender, RoutedEventArgs e)
         {
+            // créer l'objet projet puis insérer en bd
             MessageBox.Show(txtNomProjet.Text + " à bien été enregistré." );
+            
             //Enregistre les données et retourne à l'écran d'avant
             retourMenu(this,null);
         }
