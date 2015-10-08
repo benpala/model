@@ -112,7 +112,18 @@ namespace model.Views
 
         private void click_genereReleve(object sender, RoutedEventArgs e)
         {
-             MessageBox.Show("Bouton en construction");
+            Paie paieTravail = new Paie();
+            try
+            {
+                paieTravail.GenererPaies();
+                
+            }catch(Exception message) {
+                MessageBox.Show(message.Message);
+                IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
+                applicationService.ChangeView<ListePaieView>(new ListePaieView());
+            }
+            
+            
         }
     }
 }

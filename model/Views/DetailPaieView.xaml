@@ -103,12 +103,16 @@
     </UserControl.Resources>
     <Grid>
         <StackPanel Margin="-500, 75,0,0">
-            <Label  Width="200" Height="25" >Numéro du relevé :</Label>
-            <TextBox IsReadOnly="false"  Name="numeroReleve"  Height="20" Width="200" Text="{Binding Paies.ID}" ></TextBox>
-            <Label  Width="200" Height="25" >Nom de l'employé :</Label>
-            <TextBox IsReadOnly="false"  Name="nomEmploye"  Height="20" Width="200" Text="{Binding Paies.Nom}" ></TextBox>
-            <Label  Width="200" Height="25" >Date du rapport :</Label>
-            <TextBox IsReadOnly="false"  Name="dateGenerationRapport"  Height="20" Width="200" Text="{Binding Paies.DateGenerationRapport}" ></TextBox>
+            <Label  Width="250" Height="25" >Numéro du relevé :</Label>
+            <TextBox IsReadOnly="false"  Name="numeroReleve"  Height="20" Width="250" Text="{Binding Paies.ID}" ></TextBox>
+            <Label  Width="250" Height="25" >Nom de l'employé :</Label>
+            <TextBox IsReadOnly="false"  Name="nomEmploye"  Height="20" Width="250" Text="{Binding Paies.Nom}" ></TextBox>
+            <Label  Width="250" Height="25" >Date de génération :</Label>
+            <TextBox Background="AliceBlue" IsReadOnly="True"  Name="dateGenerationRapport"  Height="20" Width="250" Text="{Binding Paies.DateGenerationRapport}" ></TextBox>
+
+            <Label  Width="250" Height="25" >Période de paie :</Label>
+            <TextBox Background="AliceBlue" IsReadOnly="True"  Name="periode"  Height="20" Width="250" Text="{Binding Paies.Periode}" ></TextBox>
+
             <Button Style="{StaticResource BaseButtonStyle}" Content="Retour" Margin="10"  HorizontalAlignment="Center"  Width="208" Height="50" VerticalAlignment="Bottom" Click="click_retour"/>
         </StackPanel>
         <StackPanel Margin="0, 75,0,0">
@@ -125,8 +129,8 @@
         <StackPanel Margin="500, 75,0,0">
             <Label  Width="200" Height="25" >Montant en prime :</Label>
             <TextBox IsReadOnly="false"  Name="prime"  Height="20" Width="200" Text="{Binding Paies.MontantPrime}" ></TextBox>
-            <Label  Width="200" Height="25" >Montant indémité :</Label>
-            <TextBox IsReadOnly="false"  Name="indemite"  Height="20" Width="200" Text="{Binding Paies.MontantIndemites}" ></TextBox>
+            <Label  Width="200" Height="25" >Montant Indemnite :</Label>
+            <TextBox IsReadOnly="false"  Name="indemite"  Height="20" Width="200" Text="{Binding Paies.MontantIndemnite}" ></TextBox>
 
 
             <Label  Width="200" Height="25" >Montant allocation :</Label>

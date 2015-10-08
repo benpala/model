@@ -195,23 +195,23 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn  Width="1*" Header="Prénom"  >
+                <DataGridTemplateColumn  Width="1*" Header="Nom de l'employé"  >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
-                            <TextBox Text="{Binding UnEmploye.Prenom}"></TextBox>
+                            <TextBox Text="{Binding Nom}"></TextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn  Width="1*" Header="Nom de famille">
+                </DataGridTemplateColumn> 
+                <DataGridTemplateColumn Width="1*" Header="Période de paie">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
-                            <TextBox Text="{Binding UnEmploye.Nom}"></TextBox>
+                            <TextBox Text="{Binding Periode}"></TextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="1*" Header="Date du relevé">
+                <DataGridTemplateColumn Width="1*" Header="Date de la génération">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
@@ -219,6 +219,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
                 <DataGridTemplateColumn Width="0.5*"   Header="Edit/Print">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -233,7 +234,7 @@
 
 
 
-        <Button Style="{StaticResource BouttonAdd}"  CommandParameter="{Binding Path=ID}" HorizontalAlignment="Left" Margin="50,0,0,195" Width="75" Click="click_genereReleve"  Height="75" VerticalAlignment="Bottom">
+        <Button Style="{StaticResource BouttonAdd}"  CommandParameter="{Binding Path=ID}" HorizontalAlignment="Left" Margin="50,0,0,195" Width="75" Click="click_genereReleve"  Height="75" VerticalAlignment="Bottom" >
             <Button.ToolTip>
                 <ToolTip>Générer les paies</ToolTip>
             </Button.ToolTip>
