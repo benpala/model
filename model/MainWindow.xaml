@@ -161,7 +161,6 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-
         </Style>
         <Style x:Key="BouttonDollar" TargetType="{x:Type Button}">
             <Setter Property="Background">
@@ -200,13 +199,11 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-
         </Style>
         <Style x:Key="BouttonRapport" TargetType="{x:Type Button}">
             <Setter Property="Background">
                 <Setter.Value>
                     <ImageBrush ImageSource="image/rapport.png"/>
-
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
@@ -230,7 +227,7 @@
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="Effect">
                                     <Setter.Value>
-                                        <DropShadowEffect ShadowDepth="0" Color="#FFBAA46F" Opacity="1" BlurRadius="20"/>
+                                        <DropShadowEffect ShadowDepth="0" Color="#FF37B366" Opacity="1" BlurRadius="20"/>
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -239,10 +236,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="BouttonSimlation" TargetType="{x:Type Button}">
+        <Style x:Key="BouttonSimulation" TargetType="{x:Type Button}">
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="image/simulation.png"/>
+                    <ImageBrush ImageSource="image/Simulation.png"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
@@ -266,7 +263,7 @@
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="Effect">
                                     <Setter.Value>
-                                        <DropShadowEffect ShadowDepth="0" Color="#FFBAA46F" Opacity="1" BlurRadius="20"/>
+                                        <DropShadowEffect ShadowDepth="0" Color="#FF37B366" Opacity="1" BlurRadius="20"/>
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -275,6 +272,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+
         <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Background" Value="White"/>
@@ -354,11 +353,11 @@
                 </Button.ToolTip>
 
             </Button>
-            <Button Style="{StaticResource BouttonRapport}" Grid.Row="0" Width="75" Height="70" Margin="25,10,10,0" Click="rapportView" >
+            <Button Style="{StaticResource BouttonRapport}" Grid.Row="0" Width="75" Height="70" Margin="25,10,10,0" >
                 <Button.ToolTip>
                     <TextBlock>Les rapports</TextBlock></Button.ToolTip>
             </Button>
-            <Button  Style="{StaticResource BouttonSimlation}" Grid.Row="0" Width="75" Height="70" Margin="25,10,10,0" Click="simulationView">
+            <Button Style="{StaticResource BouttonSimulation}" Grid.Row="0" Width="75" Height="70" Margin="25,10,10,0" >
                 <Button.ToolTip>
                     <TextBlock>Effectuer une simulation</TextBlock>
                 </Button.ToolTip>

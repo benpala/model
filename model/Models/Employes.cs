@@ -12,8 +12,10 @@ namespace model.Models
         public string Prenom { get; set; }
         public string Nom { get; set; }
         public string Poste { get; set; }
-        public string Salaire { get; set; }
+        public double Salaire { get; set; }
         public string Photo { get; set; }
+        public bool HorsFonction { get; set; }
+        public double SalaireOver { get; set; }
 
         public Employe()
         {
@@ -21,16 +23,11 @@ namespace model.Models
             Prenom = String.Empty;
             Nom = String.Empty;
             Poste = String.Empty;
-            Salaire = String.Empty;
+            Salaire = 0;
+            SalaireOver = 0;
             Photo = String.Empty;
+            HorsFonction = false;
         }
-        public Employe(string c_id, string c_nom, string p_prenom, string c_poste, string c_salaire):this()
-        {
-            ID = c_id;
-            Nom = c_nom;
-            Prenom = p_prenom;
-            Poste = c_poste;
-            Salaire = c_salaire;
-        }
+
     }
 }

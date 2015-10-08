@@ -34,7 +34,6 @@ namespace model.Views
         public ProjetView()
         {
             InitializeComponent();
-
             DataContext = this;
             RetrieveArgs = new RetrieveProjetArgs();
             _ServiceProjet = ServiceFactory.Instance.GetService<IProjetService>();
@@ -116,13 +115,13 @@ namespace model.Views
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //var filtre = (TextBox)(sender as Button);
-            MessageBox.Show(/*filtre.Text*/"");
+            MessageBox.Show(this.txtRecherche.Text);
         }
 
         private void btnRecherche_Click(object sender, RoutedEventArgs e)
         {
-            Window Fenetre = new FenetreRecherche();
+            //Point p = this.PointToScreen((Point) sender);
+            Window Fenetre = new FenetreRecherche(((int)this.Width/2)-50,((int)this.Height/2)-100);
             Fenetre.ShowDialog();
         }
     }

@@ -63,40 +63,53 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel Orientation="Vertical" Margin="50,0,50,00">
-        <StackPanel Orientation="Horizontal" Height="200" >
-            <Label VerticalAlignment="Top" Width="250"  Height="50" FontSize="22">Photo :</Label>
-            <Rectangle Width="200" Height="200" Margin="5,5,5,5" >
+    <StackPanel Orientation="Vertical" Margin="50,0,50,0">
+        <StackPanel Orientation="Horizontal" Height="250" >
+            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Photo :"/>
+            <Rectangle Width="200" Height="250"  >
                 <Rectangle.Fill>
                     <ImageBrush ImageSource="/image/employe.png"/>
                 </Rectangle.Fill>
-             </Rectangle>
-            <StackPanel Orientation="Vertical" Height="200" >
-                <Label VerticalAlignment="Top" Width="300"  Height="46" FontSize="22" Margin="200,0,0,0" BorderBrush="Gray" BorderThickness="2" Content="Projets"/>
-                <StackPanel Orientation="Horizontal" >
-                    <Label VerticalAlignment="Top" Width="150"  Height="149" FontSize="22" Margin="200,0,0,0" BorderBrush="Gray" BorderThickness="2" Content="Garage"/>
-                    <CheckBox Width="50" VerticalAlignment="Top" Margin="100,10,0,0" HorizontalContentAlignment="Center" Height="30"  />
-                </StackPanel>
+            </Rectangle>
+            <StackPanel Height="200" Width="400" Margin="150,0,0,0">
+                <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="gridProjet"  ItemsSource="{Binding ProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom">
+                    <DataGrid.Columns >
+                        <DataGridTemplateColumn  Width="300" Header="Projet" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="Projet"></TextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="100" Header="Occupé">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="True"  VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label VerticalAlignment="Top" Width="250"  Height="50" FontSize="22">Nom de famille :</Label>
-            <TextBox Name="txtAjoutNom" Width="250"  Height="50" FontSize="22" Text="Laverdure (exemple)"></TextBox>
+            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Nom de famille :"/>
+            <TextBox Name="txtAjoutNom" Width="200"  Height="25" FontSize="12"  MaxLength="50" KeyDown="textSeulement"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label VerticalAlignment="Top" Width="250"  Height="50" FontSize="22">Prenom  :</Label>
-            <TextBox Name="txtAjoutPrenom" Width="250"  Height="50" FontSize="22" Text="Benjamin (exemple)"></TextBox>
+            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prenom :"/>
+            <TextBox Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12"  MaxLength="50" KeyDown="textSeulement"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="250" Height="50" FontSize="22">Poste :</Label>
-            <TextBox Name="txtAjoutPoste" Width="250"  Height="50" FontSize="22" Text="Contrôleur (exemple)"></TextBox>
+            <Label Width="200" Height="25" FontSize="12" Content="Poste :"/>
+            <TextBox Name="txtAjoutPoste" Width="200"  Height="25" FontSize="12"  MaxLength="50" KeyDown="textSeulement"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="250"  Height="50" FontSize="22">Salaire :</Label>
-            <TextBox Name="txtAjoutSalaire" Width="250"  Height="50" FontSize="22" Text="50/Heures (exemple)"></TextBox>
+            <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure:"/>
+            <TextBox Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" KeyDown="numSeulement"/>
         </StackPanel>
 
-        <Button Style="{StaticResource BaseButtonStyle}" Content="Ajouter"  Click="AjouterEmploye" Width="200" Height="50" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-        <Button Style="{StaticResource BaseButtonStyle}" Content="Retour"  Width="200" Click="retourMenu" Height="50" HorizontalAlignment="left" VerticalAlignment="Bottom"/>
+        <Button Style="{StaticResource BaseButtonStyle}" Content="Ajouter"  Click="AjouterEmploye"  Width="200" Height="50"/>
+        <Button Style="{StaticResource BaseButtonStyle}" Content="Retour"  Width="200" Click="retourMenu" Height="50" VerticalAlignment="Bottom"/>
     </StackPanel>
 </UserControl>

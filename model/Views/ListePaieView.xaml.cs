@@ -112,6 +112,7 @@ namespace model.Views
 
         private void click_genereReleve(object sender, RoutedEventArgs e)
         {
+<<<<<<< HEAD
             Paie paieTravail = new Paie();
             try
             {
@@ -124,6 +125,10 @@ namespace model.Views
             }
             
             
+=======
+            
+             MessageBox.Show("Bouton en construction");
+>>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
         }
     }
 }

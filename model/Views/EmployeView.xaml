@@ -105,7 +105,7 @@
     <Grid>
 
 
-        <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="mygrid"  Margin="50,0,50,300" ItemsSource="{Binding Employes}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="370" VerticalAlignment="Bottom">
+        <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="mygrid"  Margin="50,0,50,300" ItemsSource="{Binding Employe}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="370" VerticalAlignment="Bottom">
 
             <DataGrid.Columns >
                 <DataGridTemplateColumn  Width="0.3*" Header="ID" >
@@ -143,7 +143,7 @@
                 <DataGridTemplateColumn Width="1*" Header="Modifier">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource BaseButtonStyle}" Padding="5px" Height="30" Width="280" Content="Modifier" Click="click_Modifier"></Button>
+                            <Button Style="{StaticResource BaseButtonStyle}" Padding="5px" Height="30" Width="280" Content="Modifier" Click="click_Modifier" CommandParameter="{Binding}"></Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

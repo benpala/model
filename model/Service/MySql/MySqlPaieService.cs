@@ -44,7 +44,11 @@ namespace model.Service.MySql
             return result;
         }
         // Ici nous commençons la génération des différentes paie en fonction des temps.
+<<<<<<< HEAD
         public float RetrieveCompteurs(String id, DateTime periodeDebut, DateTime periodeFin)
+=======
+        public float RetrieveCompteurs(String id, String periodeDebut, String periodeFin)
+>>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
         {
             try
             {
@@ -55,11 +59,16 @@ namespace model.Service.MySql
 
                 DataSet dataset = connexion.Query(requete);
                 //dataSet.Tables[tableIndex].Rows[rowIndex][colIndex]
+<<<<<<< HEAD
                 DataTable table = dataset.Tables[0];
                 float S_temps = Convert.ToSingle(table.Rows[0][0].ToString());
    
                // float temps = (float)S_temps;
                 return S_temps;
+=======
+                float table = (float)dataset.Tables[0].Rows[0][0];
+                return table;
+>>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
             }
             catch (MySqlException)
             {
@@ -83,6 +92,7 @@ namespace model.Service.MySql
                 throw;
             }
         }
+<<<<<<< HEAD
         public bool insertPaie(Paie insertPaie, DateTime start, DateTime end, string idEmploye)
         {
             try
@@ -131,6 +141,8 @@ namespace model.Service.MySql
                 return false;
             }
         }
+=======
+>>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
         // fin de la génération.
         private Paie ConstructPaie(DataRow row)
         {
@@ -146,7 +158,11 @@ namespace model.Service.MySql
                 NombreHeure = (float)row["nombreHeure"],
                 NombreHeureSupp = (float)row["nombreHeureSupp"],
                 MontantPrime = (float)row["montantPrime"],
+<<<<<<< HEAD
                 MontantIndemnite = (float)row["montantIndemnites"],
+=======
+                MontantRetenue = (float)row["montantIndemnites"],
+>>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
                 MontantAllocations = (float)row["montantAllocations"],
                 MontantCommission = (float)row["montantCommissions"],
                 MontantPourboire = (float)row["montantPourboire"]

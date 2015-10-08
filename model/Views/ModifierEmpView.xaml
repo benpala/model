@@ -63,46 +63,65 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel Orientation="Vertical"   Margin="50,0,50,150">
-        <StackPanel Orientation="Horizontal" Height="200" >
-            <Label VerticalAlignment="Top" Width="250"  Height="50" FontSize="22">Photo :</Label>
-            <Rectangle Width="200" Height="200" Margin="5,5,5,5" >
+    <StackPanel Orientation="Vertical"  Margin="50,0,50,0">
+        <StackPanel Orientation="Horizontal" Height="250" >
+            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Photo :"/>
+            <Rectangle Width="200" Height="250"  >
                 <Rectangle.Fill>
                     <ImageBrush ImageSource="/image/employe.png"/>
                 </Rectangle.Fill>
-             </Rectangle>
-            <StackPanel Orientation="Vertical" Height="200" >
-                <Label VerticalAlignment="Top" Width="300"  Height="46" FontSize="22" Margin="200,0,0,0" BorderBrush="Gray" BorderThickness="2" Content="Projets"/>
-                <StackPanel Orientation="Horizontal" >
-                    <Label VerticalAlignment="Top" Width="150"  Height="149" FontSize="22" Margin="200,0,0,0" BorderBrush="Gray" BorderThickness="2" Content="Garage"/>
-                    <CheckBox IsChecked="True" Width="50" VerticalAlignment="Top" Margin="100,10,0,0" HorizontalContentAlignment="Center" Height="30"  />
-                </StackPanel>
+            </Rectangle>
+
+            <StackPanel Height="200" Width="400" Margin="150,0,0,0">
+                <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="gridProjet"  ItemsSource="{Binding ProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <DataGrid.Columns >
+                        <DataGridTemplateColumn  Width="300" Header="Projet" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox TextAlignment="Center" Text="{Binding nom}"></TextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="100" Header="Occupé" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox Margin="35,0,0,0" VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0" >
-            <Label Width="250"  Height="50" FontSize="22" >Numéro de l'employé :</Label>
-            <TextBox Name="txtNum" IsReadOnly="True" Width="330"  Height="50" FontSize="22" Background="DarkGray" >125086</TextBox>
+            <Label Width="200"  Height="25" FontSize="12" >Numéro de l'employé :</Label>
+            <TextBox Name="txtNum" IsReadOnly="True" Width="200"  Height="25" FontSize="12" Background="DarkGray" Text="{Binding Employe.ID}" ></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label VerticalAlignment="Top" Width="250"  Height="50" FontSize="22">Nom de l'employé :</Label>
-            <TextBox Name="txtNom" Width="330"  Height="50" FontSize="22">Théophile Sepho</TextBox>
+            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Nom de famille :</Label>
+            <TextBox Name="txtNom" Width="200"  Height="25" FontSize="12" Text="{Binding Path=Employe.Nom}" MaxLength="50" KeyDown="textSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label Width="250" Height="50" FontSize="22">Poste :</Label>
-            <TextBox Name="txtPoste" Width="330"  Height="50" FontSize="22">Chef Programmeur</TextBox>
+            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Prénom :</Label>
+            <TextBox Name="txtPrenom" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Prenom}" MaxLength="50" KeyDown="textSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label Width="250"  Height="50" FontSize="22">Salaire :</Label>
-            <TextBox Name="txtSalaire" Width="330"  Height="50" FontSize="22">32,00$ / heure</TextBox>
+            <Label Width="200" Height="25" FontSize="12">Poste :</Label>
+            <TextBox Name="txtPoste" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Poste}" KeyDown="textSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label Width="250"  Height="50" FontSize="22" Content="Hors service :"/>
-            <CheckBox  Margin="150,0,0,0" VerticalAlignment="Center" />
+            <Label Width="200"  Height="25" FontSize="12">Salaire par heure:</Label>
+            <TextBox Name="txtSalaire" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Salaire}" KeyDown="numSeulement"></TextBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
+            <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
+            <CheckBox Name="cbxFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.horsFonction}"/>
         </StackPanel>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="Enregistrer" Click="EnregistrerEmp"  Width="200" Height="50"/>
