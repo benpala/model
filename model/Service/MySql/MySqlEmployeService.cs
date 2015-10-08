@@ -20,12 +20,12 @@ namespace model.Service.MySql
             try
             {
                 connexion = new MySqlConnexion();
-                string requete = "SELECT e.idEmploye, d.titreEmploi, d.tauxHoraireNormal, d.tauxHoraireOver, e.nom, e.prenom, e.horsFonction FROM Employes e "
-                            //    + " INNER JOIN Employes e ON e.idEmploye = l.idEmploye" 
-                            //    + " INNER JOIN Projets p ON p.idProjet = l.idProjet" 
-                                + " INNER JOIN detailfinancies d ON d.idEmploye = e.idEmploye ";
+                StringBuilder buildReq = new StringBuilder();
+                buildReq.Append("SELECT e.idEmploye, d.titreEmploi, d.tauxHoraireNormal, d.tauxHoraireOver, e.nom, e.prenom, e.horsFonction FROM Employes e ");
+                buildReq.Append(" INNER JOIN detailfinancies d ON d.idEmploye = e.idEmploye ");
 
-                DataSet dataset = connexion.Query(requete);
+
+                DataSet dataset = connexion.Query(buildReq.ToString());
                 DataTable table = dataset.Tables[0];
 
                 foreach (DataRow employe in table.Rows)
@@ -39,7 +39,6 @@ namespace model.Service.MySql
                 throw;
             }
             return result;
-            return lstEmploye;
         }
         public DataTable getProjet_onEmploye(string id){
             /*
@@ -64,10 +63,56 @@ namespace model.Service.MySql
             catch (MySqlException)
             {
                 throw;
-            }
-
-            
+            }           
         } 
+        //Modifier horsFonction
+        public void UpdateHorsFonction(bool hF,int id)
+        { 
+            try
+            {
+                connexion = new MySqlConnexion();
+                StringBuilder buildReq = new StringBuilder();
+                buildReq.Append("SELECT horsFonction FROM Employes WHERE idEmploye = ");
+                buildReq.Append(id);
+
+                DataSet result = connexion.Query(buildReq.ToString());
+                DataTable table = result.Tables[0];
+                bool check = (bool)table.Rows[0][0] ;
+                if (hF != check)
+                {
+                    requete = "UPDATE Employes SET horsFonction = "+ hF +" WHERE idEmploye ='" + id + "'";
+                    connexion.Query(requete);
+                }
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }     
+            
+        }
+        //Modifier horsFonction
+         public void UpdateInfoEmploye(Employe emp)
+         {
+             try
+             {
+                 connexion = new MySqlConnexion();
+                 string requete = "SELECT * FROM Employes WHERE idEmploye  ='" + emp.ID + "'";
+                 DataSet result = connexion.Query(buildReq.ToString());
+                 DataTable table = result.Tables[0];
+
+                 if(emp.Nom != table.Rows[0]["nom"] || emp.Prenom != table.Rows[0]["prenom"])
+                 {
+                     requete = "UPDATE Employes SET nom = " + emp.Nom + ", prenom = " + emp.Prenom + " WHERE idEmploye ='" + emp.ID + "'";
+                     connexion.Query(requete);
+                 }
+             }
+             catch (MySqlException)
+             {
+                 throw;
+             }
+            
+         }
+
         private Employe ConstructEmploye(DataRow row)
         {
             return new Employe()

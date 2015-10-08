@@ -18,6 +18,8 @@ using System.Windows.Shapes;
 using model.Models;
 using model.Models.Args;
 using model.Service;
+using model.Service.Helpers;
+using model.Service.MySql;
 
 namespace model.Views
 {
@@ -26,11 +28,11 @@ namespace model.Views
     /// </summary>
     public partial class ModifierEmpView : UserControl, INotifyPropertyChanged, INotifyPropertyChanging
     {
+        MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
         private IProjetService _ServiceProjet;
         private IApplicationService _applicationService;
         public RetrieveProjetArgs RetrieveArgs { get; set; }
         private ObservableCollection<Projet> _projet = new ObservableCollection<Projet>();
-
         private Employe _Employe;
         public ModifierEmpView()
         {
@@ -91,7 +93,11 @@ namespace model.Views
 
         private void EnregistrerEmp(object sender, RoutedEventArgs e)
         {
+            bool cbx = this.cbxHorsFonction.IsChecked.Value; // get value de check box horsFonction
+            int id = Int32.Parse(_Employe.ID);               // get ID d'employe et convertir en INT
             
+            _ServiceMysql.UpdateHorsFonction(cbx, id);               // Update BD horsFonction
+
             MessageBox.Show("Les informations sont modifiées");
 
             retourMenu(this, null);

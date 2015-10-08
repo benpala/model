@@ -121,7 +121,7 @@
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
-            <CheckBox Name="cbxFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.horsFonction}"/>
+            <CheckBox Name="cbxHorsFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.HorsFonction}"/>
         </StackPanel>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="Enregistrer" Click="EnregistrerEmp"  Width="200" Height="50"/>
