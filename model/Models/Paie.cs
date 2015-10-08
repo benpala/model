@@ -13,7 +13,18 @@ namespace model.Models
     {
 
         // ceci est une simple classe de test pour les vues. Elle sera détruitre lors de la programmation.
-        public static float taux = (float)0.20;
+        /*
+         41 495 $ ou moins	16 %
+         Supérieur à 41 495 $, ne dépassant pas 82 985 $	20 %
+         Supérieur à 82 985 $, ne dépassant pas 100 970 $	24 %
+         Supérieur à 100 970 $	25,75 %
+        */
+        public static float salaireUn = 41495, salaireDeux = 82985, salaireTrois = 100970;
+        public static float tauxUn = (float)0.16,
+                            tauxDeux = (float)0.20,
+                            tauxTrois = (float)0.24,
+                            tauxQuatre = (float)0.2575;
+
         public static float supp = 50;
 
         public virtual string ID { get; set; }
@@ -66,6 +77,10 @@ namespace model.Models
                 MySqlEmployeService _emService = new MySqlEmployeService();
                 IList<Employe> emp = _emService.RetrieveAll();
                 Periode = _service.PeriodeTemps();
+                if(Periode.Rows[0][0] == null)
+                {
+                    throw new Exception("Toutes les périodes de paye ont déjà été générer.");
+                }
                 float HeureSupp = 0;
 
                 // Pour chaque employé aller chercher leur temps.
@@ -79,13 +94,35 @@ namespace model.Models
                             HeureSupp = temps - supp;
                             temps = temps - supp;
                         }
-                        //MyNumber = float.Parse("123.5", CultureInfo.InvariantCulture);
+                        //public static float salaireUn = 41495, salaireUn = 82985, salaireUn = 100970;
+                       // public static float tauxUn = (float)0.16,
+                      /*                      tauxDeux = (float)0.20,
+                                              tauxTrois = (float)0.24,
+                                              tauxQuatre = (float)0.2575;*/
                         float Brute = ((float)em.Salaire * temps) + ((float)em.SalaireOver * HeureSupp);
-                        float Net = Brute * (1 - taux);
+                         
+                        Double days = (end - start).TotalDays;
+                        days = days/365;
+                        double EstimatedAnnualSalary = days * Brute;
+                        float Net = 0;
 
-                        //Block de conversion ou on enleve les , pour des .
-
-
+                        if (EstimatedAnnualSalary <= salaireUn)
+                        {
+                            Net = Brute * (1 - tauxUn);
+                        }
+                        else if (EstimatedAnnualSalary > salaireUn && EstimatedAnnualSalary<=salaireDeux)
+                        {
+                            Net = Brute * (1 - tauxDeux);
+                        }
+                        else if(EstimatedAnnualSalary > salaireDeux && EstimatedAnnualSalary <= salaireTrois)
+                        {
+                            Net = Brute * (1 - tauxTrois);
+                        }
+                        else if (EstimatedAnnualSalary > salaireTrois)
+                        {
+                            Net = Brute * (1 - tauxQuatre);
+                        }
+                        
 
                         Paie tmpPaie = new Paie() { MontantBrute = Brute, MontantNet = Net, NombreHeure = temps, NombreHeureSupp = HeureSupp };
                         // Appel  de la fonction de génération de paie.
