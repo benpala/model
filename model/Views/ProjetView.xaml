@@ -182,7 +182,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid Name="ProjetGrid">
 
 
         <DataGrid IsReadOnly="True" CanUserAddRows="False" Name="mygrid" Padding="10"  Margin="50,0,50,300" ItemsSource="{Binding Projet}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="370" VerticalAlignment="Bottom">
@@ -204,7 +204,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn  Width="0.5*" Header="Date de début">
+                <DataGridTemplateColumn  Width="0.4*" Header="Début">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
@@ -212,7 +212,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="0.5*" Header="Date de fin">
+                <DataGridTemplateColumn Width="0.4*" Header="Fin">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
@@ -221,15 +221,39 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="0.5*" Header="Nb heures">
+                <DataGridTemplateColumn Width="0.5*" Header="Temps Estimé">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding nbHeures}"></TextBox>
+                            <TextBox Text="{Binding nbHeuresSimule}"></TextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="0.5*" Header="Gestion">
+                <DataGridTemplateColumn Width="0.5*" Header="Temps réelles">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding nbHeuresReel}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="0.5*" Header="Prix estimé">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding prixSimulation}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="0.5*" Header="Prix réelle">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding prixReel}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="0.35*" Header="Gestion">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Style="{StaticResource BouttonPrint}" Width="35" Height="35" Click="click_modifierProject" CommandParameter="{Binding}"></Button>
@@ -246,8 +270,13 @@
                 <TextBlock>Ajouté un projet</TextBlock>
             </Button.ToolTip>
         </Button>
-        <Label Margin="-50,0,0,210" VerticalAlignment="Bottom" Width="75">Recherche</Label>
-        <TextBox  Name="txtRecherche" Width="500" Height="25" Margin="525,0,0,210" VerticalAlignment="Bottom" TextChanged="TextBox_TextChanged" ></TextBox>
-        <Button Name="btnRecherche" Style="{StaticResource BouttonRecherche}" HorizontalAlignment="Right" Margin="0,0,75,208" Width="30" Height="30" VerticalAlignment="Bottom" Click="btnRecherche_Click"></Button>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Projets</Label>
+        <TextBox  Name="txtRecherche_idProjet" Width="50" Height="25" Margin="-800,0,0,210" VerticalAlignment="Bottom" Text="ID" Foreground="Gray" GotFocus="txtRechercheID_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
+        <TextBox  Name="txtRecherche_nom" Width="200" Height="25" Margin="-500,0,0,210" VerticalAlignment="Bottom" Text="Nom du projet" Foreground="Gray" GotFocus="txtRechercheNomProjet_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
+        <DatePicker Name="dtpdateDebut" Width="100" Height="25" Margin="-75,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="dtpDebutDate_DateChanged"></DatePicker>
+        <DatePicker Name="dtpdateFin" Width="100" Height="25" Margin="275,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="dtpDebutDate_DateChanged"></DatePicker>
+        <!--<TextBox  Name="txtRecherche_dateDebut" Width="100" Height="25" Margin="-75,0,0,210" VerticalAlignment="Bottom" Text="Date de début" Foreground="Gray" GotFocus="txtRechercheDateDebut_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>-->
+        <!--<TextBox  Name="txtRecherche_dateFin" Width="100" Height="25" Margin="275,0,0,210" VerticalAlignment="Bottom" Text="Date de fin" Foreground="Gray" GotFocus="txtRechercheDateFin_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>-->
+        <TextBox  Name="txtRecherche_nbHeures" Width="75" Height="25" Margin="625,0,0,210" VerticalAlignment="Bottom" Text="Nb heures" Foreground="Gray" GotFocus="txtRechercheNbHeures_GotFocus" TextChanged="txtRechercheNbHeures_textChanged"></TextBox>
     </Grid>
 </UserControl>

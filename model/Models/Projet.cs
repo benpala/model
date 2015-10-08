@@ -12,11 +12,18 @@ namespace model.Models
         public string nom { get; set; }
         public string dateun { get; set; }
         public string datedeux { get; set; }
-        public int nbHeures { get; set; }
-        public bool abandonne { get; set;}
+        public int nbHeuresSimule { get; set; }
+        public int nbHeuresReel { get; set;}
         public float prixSimulation { get; set;}
+        public float prixReel { get; set;}
+        public string etat { get; set;}
 
         public Projet()
+        {
+
+        }
+
+        public void CalculerNbHeureSimule()
         {
 
         }
