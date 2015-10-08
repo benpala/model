@@ -121,7 +121,7 @@
             <Label  Width="200" Height="25" >Montant net :</Label>
             <TextBox IsReadOnly="false"  Name="montantNet"  Height="20" Width="200" Text="{Binding Paies.MontantNet}" ></TextBox>
             <Label  Width="200" Height="25" >Nombre d'heure travaillé :</Label>
-            <TextBox IsReadOnly="false"  Name="heure"  Height="20" Width="200" Text="{Binding Paies.NombreHeure}" ></TextBox>        
+            <TextBox IsReadOnly="false"  Name="heure"  Height="20" Width="200" Text="{Binding Paies.NombreHeure}" ></TextBox>
             <Label  Width="200" Height="25" >Nombre d'heure suplémentaire :</Label>
             <TextBox IsReadOnly="false"  Name="heureSupp"  Height="20" Width="200" Text="{Binding Paies.NombreHeureSupp}" ></TextBox>
             <Button Style="{StaticResource BaseButtonStyle}" Content="Enregistrer" Margin="10"  HorizontalAlignment="Center"  Width="208"  Height="50" VerticalAlignment="Bottom"/>
@@ -129,13 +129,8 @@
         <StackPanel Margin="500, 75,0,0">
             <Label  Width="200" Height="25" >Montant en prime :</Label>
             <TextBox IsReadOnly="false"  Name="prime"  Height="20" Width="200" Text="{Binding Paies.MontantPrime}" ></TextBox>
-<<<<<<< HEAD
             <Label  Width="200" Height="25" >Montant Indemnite :</Label>
             <TextBox IsReadOnly="false"  Name="indemite"  Height="20" Width="200" Text="{Binding Paies.MontantIndemnite}" ></TextBox>
-=======
-            <Label  Width="200" Height="25" >Montant Retenue :</Label>
-            <TextBox IsReadOnly="false"  Name="indemite"  Height="20" Width="200" Text="{Binding Paies.MontantRetenue}" ></TextBox>
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
 
 
             <Label  Width="200" Height="25" >Montant allocation :</Label>
@@ -143,12 +138,12 @@
             <Label  Width="200" Height="25" >Pourboire accumulé :</Label>
             <TextBox IsReadOnly="false"  Name="pourboire"  Height="20" Width="200" Text="{Binding Paies.MontantPourboire}" ></TextBox>
 
-          
+
             <Button Style="{StaticResource printButton}"  Margin="10"  HorizontalAlignment="Center"  Width="50"  Height="50" VerticalAlignment="Bottom">
-               
+
             </Button>
         </StackPanel>
-        
-       
+
+
     </Grid>
 </UserControl>

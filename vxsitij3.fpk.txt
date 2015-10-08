@@ -1,0 +1,16 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   model.v12.suo
+#	modified:   model/Models/Paie.cs
+#	modified:   model/Service/MySql/MySqlEmployeService.cs
+#	modified:   model/Service/MySql/MySqlPaieService.cs
+#	modified:   model/Service/MySql/MysqlProjetEmployeService.cs
+#	modified:   model/Views/DetailPaieView.xaml
+#	modified:   model/model.csproj
+#
+

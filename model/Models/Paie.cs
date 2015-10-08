@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-<<<<<<< HEAD
 using System.Globalization;
-=======
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,13 +11,10 @@ namespace model.Models
 {
     public class Paie
     {
-    
+
         // ceci est une simple classe de test pour les vues. Elle sera détruitre lors de la programmation.
         public static float taux = (float)0.20;
-<<<<<<< HEAD
         public static float supp = 50;
-=======
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
 
         public virtual string ID { get; set; }
         public virtual string Periode { get; set; }
@@ -33,15 +27,11 @@ namespace model.Models
         public virtual float NombreHeure { get; set; }
         public virtual float NombreHeureSupp { get; set; }
         public virtual float MontantPrime { get; set; }
-<<<<<<< HEAD
         public virtual float MontantIndemnite { get; set; }
-=======
-        public virtual float MontantRetenue { get; set; }
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
         public virtual float MontantAllocations { get; set; }
         public virtual float MontantCommission { get; set; }
         public virtual float MontantPourboire { get; set; }
-        
+
         public Paie()
         {
             ID = String.Empty;
@@ -57,68 +47,47 @@ namespace model.Models
             NombreHeureSupp = 0;
             MontantPrime = 0;
 
-<<<<<<< HEAD
             MontantIndemnite = 0;
-=======
-            MontantRetenue = 0;
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
             MontantAllocations = 0;
             MontantCommission = 0;
             MontantPourboire = 0;
-            
+
         }
         // Fin de la classe de test.
         public void GenererPaies()
         {
             MySqlPaieService _service = new MySqlPaieService();
-<<<<<<< HEAD
             DataTable Periode;
-            
+
             float temps;
             try
             {
                 // Aller chercher tous les employés 
-                MySqlEmployeService _emService =  new MySqlEmployeService();
+                MySqlEmployeService _emService = new MySqlEmployeService();
                 IList<Employe> emp = _emService.RetrieveAll();
                 Periode = _service.PeriodeTemps();
-                float HeureSupp = 0; 
-                
-=======
-            DataTable idEm, Periode;
-            
-            float temps;
-            /*foreach (DataRow paie in table.Rows)
-               {
-                   result.Add(ConstructPaie(paie));
-               }*/
-            try
-            {
-                // Aller chercher tous les employés
-                MySqlEmployeService _emService =  new MySqlEmployeService();
-                IList<Employe> emp = _emService.RetrieveAll();
-                Periode = _service.PeriodeTemps();
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
+                float HeureSupp = 0;
+
                 // Pour chaque employé aller chercher leur temps.
                 foreach (Employe em in emp)
                 {
                     {
-<<<<<<< HEAD
-                        DateTime start = (DateTime)Periode.Rows[0][0], end =(DateTime)Periode.Rows[0][1];
+                        DateTime start = (DateTime)Periode.Rows[0][0], end = (DateTime)Periode.Rows[0][1];
                         temps = _service.RetrieveCompteurs(em.ID, start, end);
                         if (temps > supp)
                         {
                             HeureSupp = temps - supp;
-                            temps = temps -supp;
+                            temps = temps - supp;
                         }
                         //MyNumber = float.Parse("123.5", CultureInfo.InvariantCulture);
-                        float Brute = ((float)em.Salaire*temps)+((float)em.SalaireOver*HeureSupp);
+                        float Brute = ((float)em.Salaire * temps) + ((float)em.SalaireOver * HeureSupp);
                         float Net = Brute * (1 - taux);
 
                         //Block de conversion ou on enleve les , pour des .
-                      
-                       
-                        
-                        Paie tmpPaie = new Paie(){MontantBrute = Brute, MontantNet=Net, NombreHeure=temps, NombreHeureSupp=HeureSupp};
+
+
+
+                        Paie tmpPaie = new Paie() { MontantBrute = Brute, MontantNet = Net, NombreHeure = temps, NombreHeureSupp = HeureSupp };
                         // Appel  de la fonction de génération de paie.
                         if (!_service.insertPaie(tmpPaie, (DateTime)Periode.Rows[0][0], (DateTime)Periode.Rows[0][1], em.ID))
                         {
@@ -126,18 +95,9 @@ namespace model.Models
                         }
                     }
                 }
-                throw new Exception("Réussite de la génération des paies pour la période de :" + String.Format("{0:d/M/yyyy HH:mm:ss}",Periode.Rows[0][0]) + " aux " + String.Format("{0:d/M/yyyy HH:mm:ss}",Periode.Rows[0][1])); 
-=======
-                        temps = _service.RetrieveCompteurs(em.ID, (string)Periode.Rows[0][0], (string)Periode.Rows[0][1]);
-                        float salaire = (float)em.Salaire;
-                        MontantBrute = (salaire*temps);
-                        MontantNet = MontantBrute*(1-taux);
-                        // Todo: suite.
-                    }
-                   
-                } 
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
-            }catch(Exception e)
+                throw new Exception("Réussite de la génération des paies pour la période de :" + String.Format("{0:d/M/yyyy HH:mm:ss}", Periode.Rows[0][0]) + " aux " + String.Format("{0:d/M/yyyy HH:mm:ss}", Periode.Rows[0][1]));
+            }
+            catch (Exception e)
             {
                 throw e;
             }

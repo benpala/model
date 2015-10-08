@@ -13,9 +13,9 @@ namespace model.Service.MySql
     public class MysqlProjetEmploye : IProjetService
     {
         private MySqlConnexion connexion;
-        public IList<Projet> retrieveProjEmp();
+        public IList<Projet> retrieveProjEmp()
         {
-            IList<Projet> result = new List<Projet>();
+            IList<Projet> result = new List<Projet>()
             try
             {
                 connexion = new MySqlConnexion();

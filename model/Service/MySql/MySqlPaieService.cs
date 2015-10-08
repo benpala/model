@@ -21,7 +21,7 @@ namespace model.Service.MySql
                 connexion = new MySqlConnexion();
 
                 string requete = "SELECT paies.idPaies, CONCAT(Employes.prenom,' ',Employes.nom) AS name,"
-                + "CONCAT(periodepaies.dateDebut,' aux ', periodepaies.dateFin) AS periodeP, dateGenerationRapport, montantDueBrute," 
+                + "CONCAT(periodepaies.dateDebut,' aux ', periodepaies.dateFin) AS periodeP, dateGenerationRapport, montantDueBrute,"
                 + "montantDueNet, nombreHeure, nombreHeureSupp, montantPrime, montantIndemnites,montantAllocations,"
                 + "montantCommissions,montantPourboire  "
                 + "FROM Paies "
@@ -44,31 +44,22 @@ namespace model.Service.MySql
             return result;
         }
         // Ici nous commençons la génération des différentes paie en fonction des temps.
-<<<<<<< HEAD
         public float RetrieveCompteurs(String id, DateTime periodeDebut, DateTime periodeFin)
-=======
-        public float RetrieveCompteurs(String id, String periodeDebut, String periodeFin)
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
         {
             try
             {
                 connexion = new MySqlConnexion();
-                string requete = "SELECT SUM(TIMESTAMPDIFF( MINUTE, dateTimerStart, dateTimerEnd)/60) as temps FROM compteurstemps WHERE idEmploye = '" + id + "'" 
-                                +" AND dateTimerStart >= '"+periodeDebut+"' AND "
+                string requete = "SELECT SUM(TIMESTAMPDIFF( MINUTE, dateTimerStart, dateTimerEnd)/60) as temps FROM compteurstemps WHERE idEmploye = '" + id + "'"
+                                + " AND dateTimerStart >= '" + periodeDebut + "' AND "
                                 + " dateTimerEnd <= '" + periodeFin + "'";
 
                 DataSet dataset = connexion.Query(requete);
                 //dataSet.Tables[tableIndex].Rows[rowIndex][colIndex]
-<<<<<<< HEAD
                 DataTable table = dataset.Tables[0];
                 float S_temps = Convert.ToSingle(table.Rows[0][0].ToString());
-   
-               // float temps = (float)S_temps;
+
+                // float temps = (float)S_temps;
                 return S_temps;
-=======
-                float table = (float)dataset.Tables[0].Rows[0][0];
-                return table;
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
             }
             catch (MySqlException)
             {
@@ -92,7 +83,6 @@ namespace model.Service.MySql
                 throw;
             }
         }
-<<<<<<< HEAD
         public bool insertPaie(Paie insertPaie, DateTime start, DateTime end, string idEmploye)
         {
             try
@@ -109,7 +99,7 @@ namespace model.Service.MySql
                           temps = float.Parse(temps.ToString(), nf);
                  }*/
                 StringBuilder sb = new StringBuilder();
-                
+
                 sb.Append("INSERT INTO Paies (idEmploye, idPeriode, montantDueBrute, montantDueNet, nombreHeure,nombreHeureSupp) VALUES(");
                 sb.Append("(SELECT idEmploye FROM Employes WHERE idEmploye ='");
                 sb.Append(idEmploye);
@@ -127,12 +117,12 @@ namespace model.Service.MySql
                 sb.Append(",");
                 sb.Append(insertPaie.NombreHeureSupp.ToString().Replace(",", "."));
                 sb.Append(")");
-               /* string requete = "INSERT INTO Paies (idEmploye, idPeriode, montantDueBrute, montantDueNet, nombreHeure,nombreHeureSupp) VALUES("
-                                 +"(SELECT idEmploye FROM Employes WHERE idEmploye ='" + idEmploye + "'),"
-                                 +"(SELECT idPeriode FROM periodepaies WHERE dateDebut = '"+start+"' AND dateFin = '"+end+"'),"
+                /* string requete = "INSERT INTO Paies (idEmploye, idPeriode, montantDueBrute, montantDueNet, nombreHeure,nombreHeureSupp) VALUES("
+                                  +"(SELECT idEmploye FROM Employes WHERE idEmploye ='" + idEmploye + "'),"
+                                  +"(SELECT idPeriode FROM periodepaies WHERE dateDebut = '"+start+"' AND dateFin = '"+end+"'),"
 
-                                 +""+insertPaie.MontantBrute+","+insertPaie.MontantNet+","+insertPaie.NombreHeure+","+insertPaie.NombreHeureSupp+""
-                                 +")";*/
+                                  +""+insertPaie.MontantBrute+","+insertPaie.MontantNet+","+insertPaie.NombreHeure+","+insertPaie.NombreHeureSupp+""
+                                  +")";*/
                 connexion.Query(sb.ToString());
                 return true;
             }
@@ -141,8 +131,6 @@ namespace model.Service.MySql
                 return false;
             }
         }
-=======
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
         // fin de la génération.
         private Paie ConstructPaie(DataRow row)
         {
@@ -150,7 +138,7 @@ namespace model.Service.MySql
             {
                 //ID = (string)row["idProjet"],
                 ID = row["idPaies"].ToString(),
-                Periode = row["periodeP"].ToString(), 
+                Periode = row["periodeP"].ToString(),
                 DateGenerationRapport = row["DateGenerationRapport"].ToString(),
                 Nom = row["name"].ToString(),
                 MontantBrute = (float)row["montantDueBrute"],
@@ -158,15 +146,11 @@ namespace model.Service.MySql
                 NombreHeure = (float)row["nombreHeure"],
                 NombreHeureSupp = (float)row["nombreHeureSupp"],
                 MontantPrime = (float)row["montantPrime"],
-<<<<<<< HEAD
                 MontantIndemnite = (float)row["montantIndemnites"],
-=======
-                MontantRetenue = (float)row["montantIndemnites"],
->>>>>>> 50d8ed7ad07c7fb2cb06651ea58aca19448f1d63
                 MontantAllocations = (float)row["montantAllocations"],
                 MontantCommission = (float)row["montantCommissions"],
                 MontantPourboire = (float)row["montantPourboire"]
             };
-        } 
+        }
     }
 }
