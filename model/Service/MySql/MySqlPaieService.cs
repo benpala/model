@@ -70,7 +70,9 @@ namespace model.Service.MySql
                 DataSet dataset = connexion.Query(requete);
                 //dataSet.Tables[tableIndex].Rows[rowIndex][colIndex]
                 DataTable table = dataset.Tables[0];
-                if((int)table.Rows[0][0] > 0)
+             
+                string y = table.Rows[0][0].ToString();
+                if(y != "")
                 {
                     S_temps = Convert.ToSingle(table.Rows[0][0].ToString());
                 }

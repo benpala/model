@@ -78,11 +78,10 @@ namespace model.Service.MySql
                 DataSet result = connexion.Query(buildReq.ToString());
                 DataTable table = result.Tables[0];
                 bool check = (bool)table.Rows[0][0] ;
-                if (hF != check)
-                {
-                    requete = "UPDATE Employes SET horsFonction = "+ hF +" WHERE idEmploye ='" + id + "'";
+                
+                    string requete = "UPDATE Employes SET horsFonction = "+ hF +" WHERE idEmploye ='" + id + "'";
                     connexion.Query(requete);
-                }
+                
             }
             catch (MySqlException)
             {
@@ -97,7 +96,7 @@ namespace model.Service.MySql
              {
                  connexion = new MySqlConnexion();
                  string requete = "SELECT * FROM Employes WHERE idEmploye  ='" + emp.ID + "'";
-                 DataSet result = connexion.Query(buildReq.ToString());
+                 DataSet result = connexion.Query(requete);
                  DataTable table = result.Tables[0];
 
                  if(emp.Nom != table.Rows[0]["nom"] || emp.Prenom != table.Rows[0]["prenom"])

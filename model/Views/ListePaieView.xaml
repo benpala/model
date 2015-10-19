@@ -177,7 +177,7 @@
     </UserControl.Resources>
     <Grid>
 
-
+        <Label Grid.Row="0" Margin="50,0,0,0">Liste des paies</Label>
         <DataGrid IsReadOnly="True" Padding="10"  CanUserAddRows="False" Name="mygrid" Grid.Row="0" Margin="50,0,50,300" ItemsSource="{Binding Paies}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Height="370" VerticalAlignment="Bottom">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
