@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using model.Models;
 using model.Service;
+using model.Service.MySql;
+using System;
 
 namespace model.Views
 {
@@ -24,6 +14,7 @@ namespace model.Views
     /// </summary>
     public partial class AjoutEmployeView : UserControl, INotifyPropertyChanged, INotifyPropertyChanging
     {
+        MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
         public AjoutEmployeView()
         {
             InitializeComponent();
@@ -37,13 +28,15 @@ namespace model.Views
         }
 
         private void AjouterEmploye(object sender, RoutedEventArgs e)
-        {/*
-            //{ID = "00",Prenom = "Pei", Nom = "Li", Photo = "01", Poste = "Chef", Salaire = "40$"}
-            Employe employe = new Employe("5002", txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text); 
-            //Enregistre les données et retourne à l'écran d'avant
-            EmployeService _serviceEmploye = new EmployeService();
-            _serviceEmploye.addOneEmploye(employe);
-            retourMenu(this,null);*/
+        {
+            //Vérification si le même nom et prénom de l'employé existe ou non
+            if(!_ServiceMysql.ExisteEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text))
+            {
+                _ServiceMysql.AjoutUnEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text);
+                retourMenu(this,null);
+            }
+            else
+                MessageBox.Show("Erreur : Il y existe déjà un employé avec le même nom et même prénom!!!");
         }
 
         #region INotifyPropertyChanged INotifyPropertyChanging
@@ -81,6 +74,7 @@ namespace model.Views
         }
         #endregion
 
+        #region validation textbox
         private void textSeulement(object sender, KeyEventArgs e)
         {
             if (e.Key >= Key.A && e.Key <= Key.Z)
@@ -99,7 +93,6 @@ namespace model.Views
                 e.Handled = false;
             }
         }
-
         private void numSeulement(object sender, KeyEventArgs e)
         {
             if (e.Key >= Key.D0 && e.Key <= Key.D9 ||
@@ -118,9 +111,11 @@ namespace model.Views
             {
                 e.Handled = false;
             }
+            if (e.Key == Key.OemComma)
+            {
+                e.Handled = false;
+            }
         }
-
-
-
+        #endregion
     }
 }

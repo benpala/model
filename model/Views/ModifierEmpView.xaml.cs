@@ -2,24 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using model.Models;
 using model.Models.Args;
 using model.Service;
-using model.Service.Helpers;
 using model.Service.MySql;
+using System.Windows.Data;
 
 namespace model.Views
 {
@@ -29,43 +20,20 @@ namespace model.Views
     public partial class ModifierEmpView : UserControl, INotifyPropertyChanged, INotifyPropertyChanging
     {
         MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
-        private IProjetService _ServiceProjet;
-        private IApplicationService _applicationService;
-        public RetrieveProjetArgs RetrieveArgs { get; set; }
-        private ObservableCollection<Projet> _projet = new ObservableCollection<Projet>();
+        private ObservableCollection<LiaisonProjetEmploye> _LiaisonProjetEmploye;
         private Employe _Employe;
+
         public ModifierEmpView()
         {
             InitializeComponent();
             DataContext = this;
-            RetrieveArgs = new RetrieveProjetArgs();
-            _ServiceProjet = ServiceFactory.Instance.GetService<IProjetService>();
-            _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
-            //ProjetEmploye = new ObservableCollection<Projet>(_ServiceProjet.retrieveAll());
-        }
-        public ObservableCollection<Projet> ProjetEmploye
-        {
-            get
-            {
-                return _projet;
-            }
-            set
-            {
-                if (_projet == value)
-                {
-                    return;
-                }
-
-                RaisePropertyChanging();
-                _projet = value;
-                RaisePropertyChanged();
-            }
         }
 
-        public ModifierEmpView(IDictionary<string, object> parametre): this()
+        public ModifierEmpView(IDictionary<string, object> parametre) : this()
         {
             _Employe = parametre["Employe"] as Employe;
+            LiaisonProjetEmploye = new ObservableCollection<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(_Employe.ID.ToString()));
         }
 
         public Employe Employe
@@ -84,6 +52,21 @@ namespace model.Views
                 _Employe = value;
             }
         }
+        public ObservableCollection<LiaisonProjetEmploye> LiaisonProjetEmploye
+        {
+            get
+            {
+                return _LiaisonProjetEmploye;
+            }
+            set
+            {
+                if (_LiaisonProjetEmploye == value)
+                {
+                    return;
+                }
+                _LiaisonProjetEmploye = value;
+            }
+        }
 
         private void retourMenu(object sender, RoutedEventArgs e)
         {
@@ -95,9 +78,9 @@ namespace model.Views
         {
             bool cbx = this.cbxHorsFonction.IsChecked.Value; // get value de check box horsFonction
             int id = Int32.Parse(_Employe.ID);               // get ID d'employe et convertir en INT
-            
-            _ServiceMysql.UpdateHorsFonction(cbx, id);               // Update BD horsFonction
 
+            // Update BD :information de l'employé (nom,prénom,poste,salaire)
+            _ServiceMysql.UpdateInfoEmploye(_Employe,cbx);
             MessageBox.Show("Les informations sont modifiées");
 
             retourMenu(this, null);
@@ -138,9 +121,7 @@ namespace model.Views
         }
         #endregion
 
-        //Accepter seulement text sans chiffre
-        //Accepter seulement chiffre + point décimal
-        #region
+        #region validation textbox
         public void textSeulement(object sender, KeyEventArgs e)
         {
             if ((e.Key >= Key.A && e.Key <= Key.Z ) || e.Key == Key.Tab)
@@ -153,7 +134,6 @@ namespace model.Views
             }
 
         }
-        
         public void numSeulement(object sender, KeyEventArgs e)
         {
             if (e.Key >= Key.D0 && e.Key <= Key.D9 ||
@@ -173,6 +153,22 @@ namespace model.Views
                 e.Handled = false;
             }
         }
+        public bool ValidMinLenght(string txt)
+        {
+            if (txt != null && txt.Length > 2 && txt.Length < 20)
+                return false;
+            else 
+                return true;
+        }
+        public bool ValidSalaire(string salaire)
+        {
+            if (salaire != null && Convert.ToSingle(salaire) > 0 && Convert.ToSingle(salaire) < 500)
+                return false;
+            else 
+                return true;
+        }
+
+
         #endregion
     }
 }

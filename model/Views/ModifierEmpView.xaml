@@ -63,7 +63,7 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel Orientation="Vertical"  Margin="50,0,50,0">
+    <StackPanel Orientation="Vertical" Margin="50,0,50,0" >
         <StackPanel Orientation="Horizontal" Height="250" >
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Photo :"/>
             <Rectangle Width="200" Height="250"  >
@@ -73,22 +73,25 @@
             </Rectangle>
 
             <StackPanel Height="200" Width="400" Margin="150,0,0,0">
-                <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="gridProjet"  ItemsSource="{Binding ProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <DataGrid IsReadOnly="True"  CanUserAddRows="False" x:Name="gridProjet"  ItemsSource="{Binding LiaisonProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                     <DataGrid.Columns >
+                        
                         <DataGridTemplateColumn  Width="300" Header="Projet" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox TextAlignment="Center" Text="{Binding nom}"></TextBox>
+                                    <TextBox TextAlignment="Center" Name="NomProjetEmploye" Text="{Binding ProjNom}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+
                         <DataGridTemplateColumn Width="100" Header="Occupé" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox Margin="35,0,0,0" VerticalAlignment="Center" />
+                                    <CheckBox Margin="35,0,0,0" VerticalAlignment="Center" Name="cbxProjetEmploye"  IsChecked="{Binding Occupe}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+                        
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
@@ -101,22 +104,22 @@
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Nom de famille :</Label>
-            <TextBox Name="txtNom" Width="200"  Height="25" FontSize="12" Text="{Binding Path=Employe.Nom}" MaxLength="50" KeyDown="textSeulement"></TextBox>
+            <TextBox Name="txtNom" Width="200"  Height="25" FontSize="12" Text="{Binding Path=Employe.Nom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Prénom :</Label>
-            <TextBox Name="txtPrenom" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Prenom}" MaxLength="50" KeyDown="textSeulement"></TextBox>
+            <TextBox Name="txtPrenom" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Prenom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label Width="200" Height="25" FontSize="12">Poste :</Label>
-            <TextBox Name="txtPoste" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Poste}" KeyDown="textSeulement"></TextBox>
+            <TextBox Name="txtPoste" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Poste}" MaxLength="20" ></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label Width="200"  Height="25" FontSize="12">Salaire par heure:</Label>
-            <TextBox Name="txtSalaire" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Salaire}" KeyDown="numSeulement"></TextBox>
+            <TextBox Name="txtSalaire" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Salaire , StringFormat=N2}" MaxLength="6" KeyDown="numSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">

@@ -94,19 +94,19 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Nom de famille :"/>
-            <TextBox Name="txtAjoutNom" Width="200"  Height="25" FontSize="12"  MaxLength="50" KeyDown="textSeulement"/>
+            <TextBox Name="txtAjoutNom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prenom :"/>
-            <TextBox Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12"  MaxLength="50" KeyDown="textSeulement"/>
+            <TextBox Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Width="200" Height="25" FontSize="12" Content="Poste :"/>
-            <TextBox Name="txtAjoutPoste" Width="200"  Height="25" FontSize="12"  MaxLength="50" KeyDown="textSeulement"/>
+            <TextBox Name="txtAjoutPoste" Width="200"  Height="25" FontSize="12"  MaxLength="20" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure:"/>
-            <TextBox Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" KeyDown="numSeulement"/>
+            <TextBox Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" MaxLength="6" KeyDown="numSeulement" />
         </StackPanel>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="Ajouter"  Click="AjouterEmploye"  Width="200" Height="50"/>
