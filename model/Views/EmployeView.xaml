@@ -104,9 +104,9 @@
     </UserControl.Resources>
     <Grid>
 
+        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Employés</Label>
 
         <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="mygrid"  Margin="50,0,50,300" ItemsSource="{Binding Employe}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="370" VerticalAlignment="Bottom">
-
             <DataGrid.Columns >
                 <DataGridTemplateColumn  Width="0.3*" Header="ID" >
                     <DataGridTemplateColumn.CellTemplate>

@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using model.Models;
 using model.Models.Args;
 using model.Service;
@@ -30,7 +31,6 @@ namespace model.Views
 
         public RetrieveEmployeArgs RetrieveArgs { get; set; }
         private ObservableCollection<Employe> _employe = new ObservableCollection<Employe>();
-
         public EmployeView()
         {
             InitializeComponent();
@@ -41,6 +41,30 @@ namespace model.Views
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
             Employe = new ObservableCollection<Employe>(_ServiceEmploye.RetrieveAll());
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                int compteur = 0;
+                foreach (Employe emp in Employe)
+                {
+                    DataGridRow row = (DataGridRow)mygrid.ItemContainerGenerator.ContainerFromIndex(compteur);
+                    if (emp.HorsFonction == true)
+                    {
+                        var converter = new System.Windows.Media.BrushConverter();
+                        var brush = (Brush)converter.ConvertFromString("#DC143C");
+                        row.Background = brush;
+                        compteur++;
+                    }
+                    else
+                    {
+                        var converter = new System.Windows.Media.BrushConverter();
+                        var brush = (Brush)converter.ConvertFromString("#00FF00");
+                        row.Background = brush;
+                        compteur++;
+                    }
+                }
+                compteur = 0;
+            }));
+
             
         }
 
