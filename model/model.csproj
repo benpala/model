@@ -61,12 +61,14 @@
     <Compile Include="Models\Args\RetrieveEmployeArgs.cs" />
     <Compile Include="Models\Args\RetrieveProjetArgs.cs" />
     <Compile Include="Models\Employes.cs" />
+    <Compile Include="Models\LiaisonProjetEmploye.cs" />
     <Compile Include="Models\Paie.cs" />
     <Compile Include="Models\Projet.cs" />
     <Compile Include="Models\Args\RetrievePaieArgs.cs" />
     <Compile Include="Service\BaseViewModel.cs" />
     <Compile Include="Service\Helpers\MySqlConnexion.cs" />
     <Compile Include="Service\IEmployeService.cs" />
+    <Compile Include="Service\ILiaisonProjetService.cs" />
     <Compile Include="Service\IProjetService.cs" />
     <Compile Include="Service\MySql\MySqlPaieService.cs" />
     <Compile Include="Service\MySql\MySqlProjetService.cs" />
