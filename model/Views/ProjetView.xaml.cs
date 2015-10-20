@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using model.Models;
 using model.Models.Args;
 using model.Service;
@@ -41,33 +42,44 @@ namespace model.Views
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
             Projet = new ObservableCollection<Projet>(_ServiceProjet.retrieveAll());
-            foreach(Projet p in Projet)
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => 
             {
-                if(p.etat == "ABD")
-                { 
-                    var converter = new System.Windows.Media.BrushConverter();
-                    var brush = (Brush)converter.ConvertFromString("#FFFFFF90");
-                    mygrid.RowBackground = brush;
-                }
-                if (p.etat == "SIM")
+                int compteur = 0;
+                foreach (Projet p in Projet)
                 {
-                    var converter = new System.Windows.Media.BrushConverter();
-                    var brush = (Brush)converter.ConvertFromString("#3406FF");
-                    mygrid.RowBackground = brush;
+                    DataGridRow row = (DataGridRow)mygrid.ItemContainerGenerator.ContainerFromIndex(compteur);
+                    if (p.etat == "ABD")
+                    {
+                        var converter = new System.Windows.Media.BrushConverter();
+                        var brush = (Brush)converter.ConvertFromString("#DC143C");
+                        row.Background = brush;
+                        compteur++;
+                    }
+                    if (p.etat == "SIM")
+                    {
+                        var converter = new System.Windows.Media.BrushConverter();
+                        var brush = (Brush)converter.ConvertFromString("#3406FF");
+                        row.Background = brush;
+                        compteur++;
+                    }
+                    if (p.etat == "ECS")
+                    {
+                        var converter = new System.Windows.Media.BrushConverter();
+                        var brush = (Brush)converter.ConvertFromString("#00FF00");
+                        row.Background = brush;
+                        compteur++;
+                    }
+                    if (p.etat == "END")
+                    {
+                        var converter = new System.Windows.Media.BrushConverter();
+                        var brush = (Brush)converter.ConvertFromString("#B0C4DE");
+                        row.Background = brush;
+                        compteur++;
+                    }
                 }
-                if (p.etat == "ENC")
-                {
-                    var converter = new System.Windows.Media.BrushConverter();
-                    var brush = (Brush)converter.ConvertFromString("#06FF2F");
-                    mygrid.RowBackground = brush;
-                }
-                if (p.etat == "END")
-                {
-                    var converter = new System.Windows.Media.BrushConverter();
-                    var brush = (Brush)converter.ConvertFromString("#FF060E");
-                    mygrid.RowBackground = brush;
-                }
-            }
+                compteur = 0; 
+            }));
+
             projetCopie = Projet;
         }
     
@@ -129,7 +141,7 @@ namespace model.Views
         private void click_newProject(object sender, RoutedEventArgs e)
         {
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
-            applicationService.ChangeView<GestionProjetView>(new GestionProjetView());
+            applicationService.ChangeView<GestionProjetView>(new GestionProjetView(true));
         }
 
         private void click_modifierProject(object sender, RoutedEventArgs e)

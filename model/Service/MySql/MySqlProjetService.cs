@@ -139,6 +139,37 @@ namespace model.Service.MySql
                 etat = (string)row["etat"]
             };
         }
+
+        public string dernierId()
+        {
+            string dernier = "";
+            int id;
+
+            try
+            {
+                connexion = new MySqlConnexion();
+
+                string requete = "SELECT MAX(idProjet) FROM Projets";
+
+                DataSet dataset = connexion.Query(requete);
+                DataTable table = dataset.Tables[0];
+                if (table.Rows.Count != 0)
+                {
+                    foreach (DataRow rowId in table.Rows)
+                    {
+                        id = (Int32)rowId.ItemArray[0]+1;
+                        dernier = id.ToString();
+                    }
+                }
+
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+
+            return dernier;
+        } 
         
         public void create(Projet pNouveau)
         {
@@ -146,15 +177,41 @@ namespace model.Service.MySql
             {
                 connexion = new MySqlConnexion();
 
-                string requete = "INSERT INTO Projets VALUES(" + pNouveau.nom + "," + pNouveau.dateun + "," + pNouveau.datedeux  + "," + pNouveau.prixSimulation  + "," + pNouveau.etat + ")";
+                string requete = "INSERT INTO Projets (nom,dateDebut,dateFin,PrixSimulation,etat,nbHeuresSimule) VALUES('" + pNouveau.nom + "'," + pNouveau.dateun + "," + pNouveau.datedeux  + "," + pNouveau.prixSimulation  + ",'" + pNouveau.etat + "'," + pNouveau.nbHeuresSimule + " )";
 
                 connexion.Query(requete);
+
             }
             catch (MySqlException)
             {
                 throw;
             }
         } 
+
+        public bool Existe(string nomProjet)
+        {
+            try
+            {
+                connexion = new MySqlConnexion();
+
+                string requete = "SELECT * FROM Projets WHERE nom = '" + nomProjet + "'";
+
+                DataSet dataset = connexion.Query(requete);
+                DataTable table = dataset.Tables[0];
+                if (table.Rows.Count != 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+        }
     }
 
 }

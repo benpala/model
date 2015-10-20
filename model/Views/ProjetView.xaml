@@ -253,6 +253,14 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
+                <DataGridTemplateColumn Width="0.5*" Header="État">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding etat}"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTemplateColumn Width="0.35*" Header="Gestion">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -263,8 +271,6 @@
             </DataGrid.Columns>
         </DataGrid>
 
-
-
         <Button Style="{StaticResource BouttonAdd}"  HorizontalAlignment="Left" Margin="50,0,0,195" Width="75" Height="75" Click="click_newProject" VerticalAlignment="Bottom">
             <Button.ToolTip>
                 <TextBlock>Ajouté un projet</TextBlock>
@@ -273,10 +279,18 @@
         <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Projets</Label>
         <TextBox  Name="txtRecherche_idProjet" Width="50" Height="25" Margin="-800,0,0,210" VerticalAlignment="Bottom" Text="ID" Foreground="Gray" GotFocus="txtRechercheID_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
         <TextBox  Name="txtRecherche_nom" Width="200" Height="25" Margin="-500,0,0,210" VerticalAlignment="Bottom" Text="Nom du projet" Foreground="Gray" GotFocus="txtRechercheNomProjet_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
-        <DatePicker Name="dtpdateDebut" Width="100" Height="25" Margin="-75,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="dtpDebutDate_DateChanged"></DatePicker>
-        <DatePicker Name="dtpdateFin" Width="100" Height="25" Margin="275,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="dtpDebutDate_DateChanged"></DatePicker>
+        <DatePicker Name="dtpdateDebut" Width="100" Height="25" Margin="-125,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="dtpDebutDate_DateChanged"></DatePicker>
+        <DatePicker Name="dtpdateFin" Width="100" Height="25" Margin="200,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="dtpDebutDate_DateChanged"></DatePicker>
         <!--<TextBox  Name="txtRecherche_dateDebut" Width="100" Height="25" Margin="-75,0,0,210" VerticalAlignment="Bottom" Text="Date de début" Foreground="Gray" GotFocus="txtRechercheDateDebut_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>-->
         <!--<TextBox  Name="txtRecherche_dateFin" Width="100" Height="25" Margin="275,0,0,210" VerticalAlignment="Bottom" Text="Date de fin" Foreground="Gray" GotFocus="txtRechercheDateFin_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>-->
-        <TextBox  Name="txtRecherche_nbHeures" Width="75" Height="25" Margin="625,0,0,210" VerticalAlignment="Bottom" Text="Nb heures" Foreground="Gray" GotFocus="txtRechercheNbHeures_GotFocus" TextChanged="txtRechercheNbHeures_textChanged"></TextBox>
+        <TextBox  Name="txtRecherche_nbHeures" Width="75" Height="25" Margin="500,0,0,210" VerticalAlignment="Bottom" Text="Nb heures" Foreground="Gray" GotFocus="txtRechercheNbHeures_GotFocus" TextChanged="txtRechercheNbHeures_textChanged"></TextBox>
+        <Label VerticalAlignment="Bottom" Margin="950,0,0,210">Simulé</Label>
+        <RadioButton Name="rboSIM" Width="15" VerticalAlignment="Bottom" Margin="750,0,0,215" ></RadioButton>
+        <Label VerticalAlignment="Bottom" Margin="1025,0,0,210">En cours</Label>
+        <RadioButton Name="rboECS" Width="15" VerticalAlignment="Bottom" Margin="900,0,0,215"></RadioButton>
+        <Label VerticalAlignment="Bottom" Margin="1100,0,0,210">Terminé</Label>
+        <RadioButton Name="rboEND" Width="15" VerticalAlignment="Bottom" Margin="1050,0,0,215"></RadioButton>
+        <Label VerticalAlignment="Bottom" Margin="1175,0,0,210">Abandonné</Label>
+        <RadioButton Name="rboABD" Width="15" VerticalAlignment="Bottom" Margin="1225,0,0,215"></RadioButton>
     </Grid>
 </UserControl>
