@@ -117,26 +117,26 @@
         </StackPanel>
         <StackPanel Margin="0, 75,0,0">
             <Label  Width="200" Height="25" >Montant brute :</Label>
-            <TextBox IsReadOnly="false"  Name="Montant"  Height="20" Width="200" Text="{Binding Paies.MontantBrute}" ></TextBox>
+            <TextBox IsReadOnly="false"  Name="Montant"  Height="20" Width="200" Text="{Binding Paies.MontantBrute, StringFormat=N2}" ></TextBox>
             <Label  Width="200" Height="25" >Montant net :</Label>
-            <TextBox IsReadOnly="false"  Name="montantNet"  Height="20" Width="200" Text="{Binding Paies.MontantNet}" ></TextBox>
+            <TextBox IsReadOnly="false"  Name="montantNet"  Height="20" Width="200" Text="{Binding Paies.MontantNet, StringFormat=N2}" ></TextBox>
             <Label  Width="200" Height="25" >Nombre d'heure travaillé :</Label>
-            <TextBox IsReadOnly="false"  Name="heure"  Height="20" Width="200" Text="{Binding Paies.NombreHeure}" ></TextBox>
+            <TextBox IsReadOnly="false"  Name="heure"  Height="20" Width="200" Text="{Binding Paies.NombreHeure, StringFormat=N2}" ></TextBox>
             <Label  Width="200" Height="25" >Nombre d'heure suplémentaire :</Label>
-            <TextBox IsReadOnly="false"  Name="heureSupp"  Height="20" Width="200" Text="{Binding Paies.NombreHeureSupp}" ></TextBox>
+            <TextBox IsReadOnly="false"  Name="heureSupp"  Height="20" Width="200" Text="{Binding Paies.NombreHeureSupp, StringFormat=N2}" ></TextBox>
             <Button Style="{StaticResource BaseButtonStyle}" Content="Enregistrer" Margin="10"  HorizontalAlignment="Center"  Width="208"  Height="50" VerticalAlignment="Bottom"/>
         </StackPanel>
         <StackPanel Margin="500, 75,0,0">
             <Label  Width="200" Height="25" >Montant en prime :</Label>
-            <TextBox IsReadOnly="false"  Name="prime"  Height="20" Width="200" Text="{Binding Paies.MontantPrime}" ></TextBox>
+            <TextBox IsReadOnly="false"  Name="prime"  Height="20" Width="200" Text="{Binding Paies.MontantPrime, StringFormat=N2}" ></TextBox>
             <Label  Width="200" Height="25" >Montant Indemnite :</Label>
-            <TextBox IsReadOnly="false"  Name="indemite"  Height="20" Width="200" Text="{Binding Paies.MontantIndemnite}" ></TextBox>
+            <TextBox IsReadOnly="false"  Name="indemite"  Height="20" Width="200" Text="{Binding Paies.MontantIndemnite, StringFormat=N2}" ></TextBox>
 
 
             <Label  Width="200" Height="25" >Montant allocation :</Label>
-            <TextBox IsReadOnly="false"  Name="allocation"  Height="20" Width="200" Text="{Binding Paies.MontantAllocations}" ></TextBox>
+            <TextBox IsReadOnly="false"  Name="allocation"  Height="20" Width="200" Text="{Binding Paies.MontantAllocations, StringFormat=N2}" ></TextBox>
             <Label  Width="200" Height="25" >Pourboire accumulé :</Label>
-            <TextBox IsReadOnly="false"  Name="pourboire"  Height="20" Width="200" Text="{Binding Paies.MontantPourboire}" ></TextBox>
+            <TextBox IsReadOnly="false"  Name="pourboire"  Height="20" Width="200" Text="{Binding Paies.MontantPourboire, StringFormat=N2}" ></TextBox>
 
 
             <Button Style="{StaticResource printButton}"  Margin="10"  HorizontalAlignment="Center"  Width="50"  Height="50" VerticalAlignment="Bottom">

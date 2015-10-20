@@ -120,7 +120,7 @@ namespace model.Service.MySql
                 Nom = row["nom"].ToString(),
                 Prenom = row["prenom"].ToString(),
                 Poste = row["titreEmploi"].ToString(),
-                Salaire = (double)row["tauxHoraireNormal"],
+                Salaire = (float)row["tauxHoraireNormal"],
                 SalaireOver = (double)row["tauxHoraireOver"],
                 HorsFonction = (bool)row["horsFonction"]
             };

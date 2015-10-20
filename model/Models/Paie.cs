@@ -121,9 +121,9 @@ namespace model.Models
                                 }
                         
                                 float Brute = ((float)em.Salaire * temps) + ((float)em.SalaireOver * HeureSupp);
-                         
-                                Double days = (end - start).TotalDays;
-                                days = days/365;
+                                TimeSpan t = end - start;
+                                Double days = t.TotalDays;
+                                days = 365/(days+1);
                                 double EstimatedAnnualSalary = days * Brute;
                                 float Net = 0;
 

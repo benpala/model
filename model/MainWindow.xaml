@@ -357,11 +357,7 @@
                 <Button.ToolTip>
                     <TextBlock>Les rapports</TextBlock></Button.ToolTip>
             </Button>
-            <Button Style="{StaticResource BouttonSimulation}" Grid.Row="0" Width="75" Height="70" Margin="25,10,10,0" >
-                <Button.ToolTip>
-                    <TextBlock>Effectuer une simulation</TextBlock>
-                </Button.ToolTip>
-            </Button>
+           
         </StackPanel>
        
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Width="400">
