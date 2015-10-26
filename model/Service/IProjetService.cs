@@ -10,7 +10,6 @@ namespace model
     public interface IProjetService
     {
         IList<Projet> retrieveAll();
-        IList<Projet> retrieveAll(List<string> args,List<string> donnees);
         void create(Projet p);
     }
 }

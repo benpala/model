@@ -182,12 +182,12 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+    
     <Grid Name="ProjetGrid">
-
 
         <DataGrid IsReadOnly="True" CanUserAddRows="False" Name="mygrid" Padding="10"  Margin="50,0,50,300" ItemsSource="{Binding Projet}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="370" VerticalAlignment="Bottom">
 
-            <DataGrid.Columns >
+            <DataGrid.Columns>
                 <DataGridTemplateColumn  Width="0.3*" Header="ID" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -204,7 +204,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn  Width="0.4*" Header="Début">
+                <DataGridTemplateColumn  Width="0.3*" Header="Début">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
@@ -212,7 +212,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="0.4*" Header="Fin">
+                <DataGridTemplateColumn Width="0.3*" Header="Fin">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
@@ -253,7 +253,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="0.5*" Header="État">
+                <DataGridTemplateColumn Width="0.2*" Header="État">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBox Text="{Binding etat}"></TextBox>
@@ -277,20 +277,25 @@
             </Button.ToolTip>
         </Button>
         <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Projets</Label>
-        <TextBox  Name="txtRecherche_idProjet" Width="50" Height="25" Margin="-800,0,0,210" VerticalAlignment="Bottom" Text="ID" Foreground="Gray" GotFocus="txtRechercheID_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
-        <TextBox  Name="txtRecherche_nom" Width="200" Height="25" Margin="-500,0,0,210" VerticalAlignment="Bottom" Text="Nom du projet" Foreground="Gray" GotFocus="txtRechercheNomProjet_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
-        <DatePicker Name="dtpdateDebut" Width="100" Height="25" Margin="-125,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="dtpDebutDate_DateChanged"></DatePicker>
-        <DatePicker Name="dtpdateFin" Width="100" Height="25" Margin="200,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="dtpDebutDate_DateChanged"></DatePicker>
-        <!--<TextBox  Name="txtRecherche_dateDebut" Width="100" Height="25" Margin="-75,0,0,210" VerticalAlignment="Bottom" Text="Date de début" Foreground="Gray" GotFocus="txtRechercheDateDebut_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>-->
-        <!--<TextBox  Name="txtRecherche_dateFin" Width="100" Height="25" Margin="275,0,0,210" VerticalAlignment="Bottom" Text="Date de fin" Foreground="Gray" GotFocus="txtRechercheDateFin_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>-->
-        <TextBox  Name="txtRecherche_nbHeures" Width="75" Height="25" Margin="500,0,0,210" VerticalAlignment="Bottom" Text="Nb heures" Foreground="Gray" GotFocus="txtRechercheNbHeures_GotFocus" TextChanged="txtRechercheNbHeures_textChanged"></TextBox>
-        <Label VerticalAlignment="Bottom" Margin="950,0,0,210">Simulé</Label>
-        <RadioButton Name="rboSIM" Width="15" VerticalAlignment="Bottom" Margin="750,0,0,215" ></RadioButton>
-        <Label VerticalAlignment="Bottom" Margin="1025,0,0,210">En cours</Label>
-        <RadioButton Name="rboECS" Width="15" VerticalAlignment="Bottom" Margin="900,0,0,215"></RadioButton>
-        <Label VerticalAlignment="Bottom" Margin="1100,0,0,210">Terminé</Label>
-        <RadioButton Name="rboEND" Width="15" VerticalAlignment="Bottom" Margin="1050,0,0,215"></RadioButton>
-        <Label VerticalAlignment="Bottom" Margin="1175,0,0,210">Abandonné</Label>
-        <RadioButton Name="rboABD" Width="15" VerticalAlignment="Bottom" Margin="1225,0,0,215"></RadioButton>
+        <Label VerticalAlignment="Bottom" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,255" FontSize="30">Filtre</Label>
+        <Label VerticalAlignment="Bottom" Margin="-800,0,0,235" Width="50">ID</Label>
+        <Label VerticalAlignment="Bottom" Margin="-600,0,0,235" Width="100">Nom du projet</Label>
+        <Label VerticalAlignment="Bottom" Margin="-122,0,0,235" Width="100">Date de début</Label>
+        <Label VerticalAlignment="Bottom" Margin="200,0,0,235" Width="100">Date de fin</Label>
+        <Label VerticalAlignment="Bottom" Margin="530,0,0,235" Width="105">Nombre d'heures</Label>
+        <Label VerticalAlignment="Bottom" Margin="950,0,0,235" Width="85">État du projet</Label>
+        <TextBox  Name="txtRecherche_idProjet" Width="50" Height="25" VerticalAlignment="Bottom" Margin="-800,0,0,210" Text="ID" Foreground="Gray" GotFocus="txtRechercheID_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
+        <TextBox  Name="txtRecherche_nom" Width="200" Height="25" VerticalAlignment="Bottom" Margin="-500,0,0,210" Text="Nom du projet" Foreground="Gray" GotFocus="txtRechercheNomProjet_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
+        <DatePicker Name="dtpRecherche_dateDebut" Width="100" Height="25" Margin="-125,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="changeDate" KeyUp="EffaceDate"></DatePicker>
+        <DatePicker Name="dtpRecherche_dateFin" Width="100" Height="25" Margin="200,0,0,210" VerticalAlignment="Bottom" SelectedDateChanged="changeDate" KeyUp="EffaceDate"></DatePicker>
+        <TextBox  Name="txtRecherche_nbHeures" Width="75" Height="25" Margin="500,0,0,210" VerticalAlignment="Bottom" Text="Nb heures" Foreground="Gray" GotFocus="txtRechercheNbHeures_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
+        <Label VerticalAlignment="Bottom" Margin="680,0,0,210" Width="50">Simulé</Label>
+        <CheckBox Name="chkSIM" Width="15" VerticalAlignment="Bottom" Margin="750,0,0,215" Checked="filtreEtat" Unchecked="filtreEtat"></CheckBox>
+        <Label VerticalAlignment="Bottom" Margin="825,0,0,210" Width="60">En cours</Label>
+        <CheckBox Name="chkECS" Width="15" VerticalAlignment="Bottom" Margin="900,0,0,215" Checked="filtreEtat" Unchecked="filtreEtat"></CheckBox>
+        <Label VerticalAlignment="Bottom" Margin="975,0,0,210" Width="72">Abandonné</Label>
+        <CheckBox Name="chkABD" Width="15" VerticalAlignment="Bottom" Margin="1060,0,0,215" Checked="filtreEtat" Unchecked="filtreEtat"></CheckBox>
+        <Label VerticalAlignment="Bottom" Margin="1150,0,0,210" Width="60">Terminé</Label>
+        <CheckBox Name="chkEND" Width="15" VerticalAlignment="Bottom" Margin="1215,0,0,215" Checked="filtreEtat" Unchecked="filtreEtat"></CheckBox>
     </Grid>
 </UserControl>

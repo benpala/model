@@ -31,7 +31,6 @@ namespace model.Views
 
         public RetrieveProjetArgs RetrieveArgs { get; set;}
         private ObservableCollection<Projet> _projet = new ObservableCollection<Projet>();
-        private ObservableCollection<Projet> projetCopie = new ObservableCollection<Projet>();
 
         public ProjetView()
         {
@@ -47,40 +46,28 @@ namespace model.Views
                 int compteur = 0;
                 foreach (Projet p in Projet)
                 {
+                    
                     DataGridRow row = (DataGridRow)mygrid.ItemContainerGenerator.ContainerFromIndex(compteur);
                     if (p.etat == "ABD")
                     {
-                        var converter = new System.Windows.Media.BrushConverter();
-                        var brush = (Brush)converter.ConvertFromString("#DC143C");
-                        row.Background = brush;
-                        compteur++;
+                        row.Background = Brushes.Red;
                     }
                     if (p.etat == "SIM")
                     {
-                        var converter = new System.Windows.Media.BrushConverter();
-                        var brush = (Brush)converter.ConvertFromString("#3406FF");
-                        row.Background = brush;
-                        compteur++;
+                        row.Background = Brushes.Blue;
                     }
                     if (p.etat == "ECS")
                     {
-                        var converter = new System.Windows.Media.BrushConverter();
-                        var brush = (Brush)converter.ConvertFromString("#00FF00");
-                        row.Background = brush;
-                        compteur++;
+                        row.Background = Brushes.Green;
                     }
                     if (p.etat == "END")
                     {
-                        var converter = new System.Windows.Media.BrushConverter();
-                        var brush = (Brush)converter.ConvertFromString("#B0C4DE");
-                        row.Background = brush;
-                        compteur++;
+                        row.Background = Brushes.Gray;
                     }
+                    compteur++;
                 }
                 compteur = 0; 
             }));
-
-            projetCopie = Projet;
         }
     
 
@@ -171,22 +158,6 @@ namespace model.Views
             tb.GotFocus -= txtRechercheNomProjet_GotFocus;
         }
 
-        //private void txtRechercheDateDebut_GotFocus(object sender, RoutedEventArgs e)
-        //{
-        //    TextBox tb = (TextBox)sender;
-        //    tb.Text = string.Empty;
-        //    tb.Foreground = Brushes.Black;
-        //    tb.GotFocus -= txtRechercheDateDebut_GotFocus;
-        //}
-
-        //private void txtRechercheDateFin_GotFocus(object sender, RoutedEventArgs e)
-        //{
-        //    TextBox tb = (TextBox)sender;
-        //    tb.Text = string.Empty;
-        //    tb.Foreground = Brushes.Black;
-        //    tb.GotFocus -= txtRechercheDateFin_GotFocus;
-        //}
-
         private void txtRechercheNbHeures_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
@@ -199,6 +170,7 @@ namespace model.Views
         {
             List<string> arguments = new List<string>();
             List<string> donnees = new List<string>();
+            int compteur = 0;
 
             foreach (Control ctrl in ProjetGrid.Children)
             {
@@ -211,27 +183,135 @@ namespace model.Views
                         donnees.Add(((TextBox)ctrl).Text);
                     }
                 }
+                if (ctrl.GetType() == typeof(CheckBox))
+                {
+                    if (((CheckBox)ctrl).IsChecked == true)
+                    {
+                        arguments.Add("etat");
+                        donnees.Add(((CheckBox)ctrl).Name.Substring(3));
+                    }
+                }
+                if(ctrl.GetType() == typeof(DatePicker))
+                {
+                    if(((DatePicker)ctrl).SelectedDate != null)
+                    {
+                        arguments.Add(ctrl.Name.Substring(13));
+                        donnees.Add(((DatePicker)ctrl).SelectedDate.ToString());
+                    }
+                }
             }
 
-            if(arguments.Count == 0 && donnees.Count == 0)
+            if (arguments.Count == 0 && donnees.Count == 0)
             {
-                Projet = projetCopie;
+                foreach(Projet p in Projet)
+                {
+                    DataGridRow row = (DataGridRow)mygrid.ItemContainerGenerator.ContainerFromIndex(compteur);
+                    row.Visibility = Visibility.Visible;
+                    compteur++;
+                }
             }
-            else 
+            else
             {
-                Projet = new ObservableCollection<Projet>(_ServiceProjet.retrieveAll(arguments,donnees));     
+                foreach (Projet p in Projet)
+                {
+                    DataGridRow row = (DataGridRow)mygrid.ItemContainerGenerator.ContainerFromIndex(compteur);
+                    int compteur2 = 0;
+                    bool valide = true;
+                    bool EtatConcorde = false;
+                    foreach (string args in arguments)
+                    {
+                        switch (args)
+                        {
+                            case "idProjet":
+                                {
+                                    if (p.ID.IndexOf(donnees[compteur2]) == -1)
+                                        valide = false;
+                                    break;
+                                }
+                            case "nom":
+                                {
+                                    if (p.nom.IndexOf(donnees[compteur2], StringComparison.CurrentCultureIgnoreCase) == -1)
+                                        valide = false;
+                                    break;
+                                }
+                            case "nbHeures":
+                                {
+                                    if (p.nbHeuresSimule.ToString().IndexOf(donnees[compteur2]) == -1 &&
+                                            p.nbHeuresReel.ToString().IndexOf(donnees[compteur2]) == -1)
+                                        valide = false;
+                                    break;
+                                }
+                            case "etat":
+                                {
+                                    if (!donnees.Contains(p.etat))
+                                        valide = false;
+                                    break;
+                                }
+
+                            default:
+                                {
+                                    if(dtpRecherche_dateDebut.SelectedDate != null && dtpRecherche_dateFin.SelectedDate != null)
+                                    {
+                                        if(compteur2+1 < donnees.Count && arguments[compteur2+1] != "etat" && arguments[compteur2+1] != "nbHeures")
+                                        {
+                                            DateTime d1 = Convert.ToDateTime(donnees[compteur2]);
+                                            DateTime d2 = Convert.ToDateTime(donnees[compteur2 + 1]);
+                                            DateTime targetDtDebut = Convert.ToDateTime(p.dateun);
+                                            DateTime targetDtFin = Convert.ToDateTime(p.datedeux);
+
+                                            if (targetDtDebut.Ticks < d1.Ticks || targetDtDebut.Ticks > d2.Ticks && targetDtFin.Ticks < d1.Ticks || targetDtFin.Ticks > d2.Ticks)
+                                            {
+                                                valide = false;
+                                            }  
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(dtpRecherche_dateDebut.SelectedDate != null)
+                                        {
+                                            if (p.dateun.IndexOf(donnees[compteur2]) == -1)
+                                                valide = false;
+                                        }
+                                        if(dtpRecherche_dateFin.SelectedDate != null)
+                                        {
+                                            if (p.datedeux.IndexOf(donnees[compteur2]) == -1)
+                                                valide = false;
+                                        }
+                                    }
+
+                                    break;
+                                }
+                        }
+                        if (!valide)
+                            row.Visibility = Visibility.Collapsed;
+                        else
+                            row.Visibility = Visibility.Visible;
+                        compteur2++;
+                    }
+                    compteur++;
+                }
             }
+          
         }
 
-        private void txtRechercheNbHeures_textChanged(object sender, TextChangedEventArgs e)
+        private void changeDate(object sender, SelectionChangedEventArgs e)
         {
-            // cherche dans l'observable collection et affiche ceux qui sont valide
-
+            txtRecherche_textChanged(null, null);
         }
 
-        private void dtpDebutDate_DateChanged(object sender, SelectionChangedEventArgs e)
+        private void filtreEtat(object sender, RoutedEventArgs e)
         {
+            txtRecherche_textChanged(null,null);
+        }
 
+        private void EffaceDate(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Back && ((DatePicker)sender).Text == "")
+            {
+                ((DatePicker)sender).SelectedDate = null;
+                txtRecherche_textChanged(null, null);
+            }
+                
         }
 
    }

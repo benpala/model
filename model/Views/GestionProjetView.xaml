@@ -63,27 +63,27 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+    <StackPanel Name="stackPanel" HorizontalAlignment="Left" Orientation="Horizontal">
         <StackPanel Width="500" VerticalAlignment="Top"> 
             <Label  Width="200" Height="25" Content="ID du projet :" />
             <TextBox IsReadOnly="True"  Name="txtID"  Height="25" Width="200" Text="{Binding Projet.ID}" Background="AliceBlue" ></TextBox>
             <Label Name="lblNomProj" Width="200" Height="26" >Nom du projet :</Label>
-            <TextBox Name="txtNomProjet"  Height="25" Width="200" Text="{Binding Projet.nom}" LostFocus="ValiderNomProjet"></TextBox>
-            <Label Width="200" Height="30" >Date de début :</Label>
-            <DatePicker Name="dtDateDebut" SelectedDate="{Binding Projet.dateun}"  Height="30" Width="200" ></DatePicker>
-            <Label Width="200" Height="30" >Date de fin :</Label>
-            <DatePicker Name="dtDateFin" Height="30" Width="200" SelectedDate="{Binding Projet.datedeux}" SelectedDateChanged="CalculerTempsEstime"></DatePicker>
+            <TextBox Name="txtNomProjet"  Height="25" Width="200" Text="{Binding Projet.nom}" PreviewTextInput="PreviewTextInput" TextChanged="ValidationNomProjet"></TextBox>
+            <Label Name="lblDateDebut" Width="200" Height="30" >Date de début :</Label>
+            <DatePicker Name="dtDateDebut" SelectedDate="{Binding Projet.dateun}"  Height="30" Width="200" SelectedDateChanged="CalculerTempsEstime" KeyUp="EffaceDate"></DatePicker>
+            <Label Name="lblDateFin" Width="200" Height="30" >Date de fin :</Label>
+            <DatePicker Name="dtDateFin" Height="30" Width="200" SelectedDate="{Binding Projet.datedeux}" SelectedDateChanged="CalculerTempsEstime" KeyUp="EffaceDate"></DatePicker>
             <Label Width="200" Height="30">État du projet :</Label>
 
             <DockPanel HorizontalAlignment="Center">
                 <Label>Simulé</Label>            
-                <RadioButton Name="rboSIM" Width="15" VerticalAlignment="Center"></RadioButton>
+                <RadioButton Name="rboSIM" Width="15" VerticalAlignment="Center" IsChecked="True" Checked="AutoriserChampDroit" Unchecked="AutoriserChampDroit"></RadioButton>
                 <Label>En cours</Label>
                 <RadioButton Name="rboECS" Width="15" VerticalAlignment="Center"></RadioButton>
-                <Label>Terminé</Label>
-                <RadioButton Name="rboEND" Width="15" VerticalAlignment="Center"></RadioButton>
                 <Label>Abandonné</Label>
                 <RadioButton Name="rboABD" Width="15" VerticalAlignment="Center"></RadioButton>
+                <Label>Terminé</Label>
+                <RadioButton Name="rboEND" Width="15" VerticalAlignment="Center"></RadioButton>
             </DockPanel>
 
 
@@ -107,8 +107,6 @@
                     <DataGridTemplateColumn Header="Nom employé" Width="1*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-
-                                <TextBox Text="Théophile Sepho"></TextBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -127,16 +125,24 @@
             </DataGrid>
         </Canvas>
         <StackPanel VerticalAlignment="Top">
-            <Label x:Name="lblRessourcesAdmin" Content="Nombre de ressources admin" HorizontalAlignment="Center"/>
-            <TextBox x:Name="txtRessourcesAdmin" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix"/>
-            <Label x:Name="lblRessourcesSenior" Content="Nombre de ressources senior" HorizontalAlignment="Center"/>
-            <TextBox x:Name="txtRessourcesSenior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix"/>
-            <Label  x:Name="lblRessourcesJunior" Content="Nombre de ressources junior" HorizontalAlignment="Center"/>
-            <TextBox x:Name="txtRessourcesJunior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix"/>
-            <Label x:Name="lblNbrHeuresEstime" Content="Temps Estimé" HorizontalAlignment="Center"/>
-            <TextBox x:Name="txtNbrHeuresEstime" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix"/>
-            <Label x:Name="lblPrixEstimation" Content="Prix estimé" HorizontalAlignment="Center"/>
-            <TextBox x:Name="txtPrixEstimation" Width="100" IsReadOnly="True"/>
+            <Label x:Name="lblRessourcesAdmin" Content="Nombre de ressources admin" HorizontalAlignment="Center" Foreground="Gray"/>
+            <TextBox x:Name="txtRessourcesAdmin" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"/>
+            <Label x:Name="lblRessourcesSenior" Content="Nombre de ressources senior" HorizontalAlignment="Center" Foreground="Gray"/>
+            <TextBox x:Name="txtRessourcesSenior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"/>
+            <Label  x:Name="lblRessourcesJunior" Content="Nombre de ressources junior" HorizontalAlignment="Center" Foreground="Gray"/>
+            <TextBox x:Name="txtRessourcesJunior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"/>
+            <Label x:Name="lblNbrHeuresEstime" Content="Temps Estimé" HorizontalAlignment="Center" Foreground="Gray"/>
+            <TextBox x:Name="txtNbrHeuresEstime" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" TextChanged="CalculerPrix"/>
+            <Label x:Name="lblPrixEstimation" Content="Prix estimé" HorizontalAlignment="Center" Foreground="Gray"/>
+            <TextBox x:Name="txtPrixEstimation" Width="100" IsReadOnly="True" IsEnabled="False"/>
+        </StackPanel>
+        <StackPanel >
+            <Label Name="lblNbHeureAdmin" Foreground="Gray">Nombre d'heures de travail des admins</Label>
+            <TextBox Name="txtNbHeureAdmin" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"></TextBox>
+            <Label Name="lblNbHeureSenior" Foreground="Gray">Nombre d'heures de travail des seniors</Label>
+            <TextBox Name="txtNbHeureSenior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"></TextBox>
+            <Label Name="lblNbHeureJunior" Foreground="Gray">Nombre d'heures de travail des juniors</Label>
+            <TextBox Name="txtNbHeureJunior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"></TextBox>
         </StackPanel>
     </StackPanel>
 

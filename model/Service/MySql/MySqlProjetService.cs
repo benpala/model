@@ -20,7 +20,7 @@ namespace model.Service.MySql
             {
                 connexion = new MySqlConnexion();
 
-                string requete = "SELECT * FROM Projets";
+                string requete = "SELECT * FROM Projets ORDER BY Etat";
 
                 DataSet dataset = connexion.Query(requete);
                 DataTable table = dataset.Tables[0];
@@ -34,46 +34,6 @@ namespace model.Service.MySql
                 }
             }
             catch(MySqlException)
-            {
-                throw;
-            }
-
-            return result;
-        }
-
-        public IList<Projet> retrieveAll(List<string> args,List<string> donnees)
-        {
-            IList<Projet> result = new List<Projet>();
-            try
-            {
-                connexion = new MySqlConnexion();
-
-                string requete = "SELECT * FROM Projets WHERE ";
-                
-                for(int i = 0; i < args.Count; i++)
-                {
-                    if(args[i] != "nbHeures")
-                    { 
-                        requete += args[i];
-                        requete += " LIKE '%";
-                        requete += donnees[i];
-                        requete += "%' AND ";
-                    }
-                }
-                    requete = requete.Substring(0,requete.Count()-5);
-
-                DataSet dataset = connexion.Query(requete);
-                DataTable table = dataset.Tables[0];
-
-                if (table.Rows.Count != 0)
-                {
-                    foreach (DataRow projet in table.Rows)
-                    {
-                        result.Add(ConstructProjet(projet));
-                    }
-                }
-            }
-            catch (MySqlException)
             {
                 throw;
             }
@@ -98,13 +58,18 @@ namespace model.Service.MySql
                 {
                     foreach (DataRow projet in table.Rows)
                     {
-                        string requeteNbHeure = "SELECT TIMESTAMPDIFF(HOUR,dateDebut,dateFin) FROM projets WHERE idProjet = " + projet.ItemArray[0];
+                        string requeteNbHeure = "SELECT TIMESTAMPDIFF(DAY,dateDebut,dateFin) FROM projets WHERE idProjet = " + projet.ItemArray[0];
                         DataSet result = connexion.Query(requeteNbHeure);
                         DataTable tableHeure = result.Tables[0];
 
                         foreach (DataRow Heures in tableHeure.Rows)
                         {
                             NbHeures = int.Parse(Heures.ItemArray[0].ToString());
+                            NbHeures = NbHeures * 7;
+                            if(NbHeures < 0)
+                            {
+                                NbHeures = 0;
+                            }
                         }
                     }
                 }
@@ -131,11 +96,11 @@ namespace model.Service.MySql
                 ID = row["idProjet"].ToString(),
                 nom = (string)row["nom"],
                 dateun = row["dateDebut"].ToString(),
-                datedeux = row["dateFin"].ToString(),
+                datedeux = (row["dateFin"].ToString() == "0001-01-01 00:00:00"?"Indéfini":row["dateFin"].ToString()),
                 prixSimulation = prixSimule,
                 prixReel = 0,
                 nbHeuresSimule = CalculerNbHeuresSimule((Int32)row["idProjet"]),
-                nbHeuresReel = /*CalculerNbHeuresSimule((Int32)row["idProjet"])*/ 0,
+                nbHeuresReel = /*CalculerNbHeuresReel((Int32)row["idProjet"])*/ 0,
                 etat = (string)row["etat"]
             };
         }
@@ -143,13 +108,16 @@ namespace model.Service.MySql
         public string dernierId()
         {
             string dernier = "";
-            int id;
+
 
             try
             {
                 connexion = new MySqlConnexion();
 
-                string requete = "SELECT MAX(idProjet) FROM Projets";
+                string requete = "SELECT `AUTO_INCREMENT`" +
+                                    "FROM  INFORMATION_SCHEMA.TABLES " +
+                                    "WHERE TABLE_SCHEMA = '420-5a5-a15_gemc' " + 
+                                    "AND   TABLE_NAME   = 'Projets';";
 
                 DataSet dataset = connexion.Query(requete);
                 DataTable table = dataset.Tables[0];
@@ -157,8 +125,7 @@ namespace model.Service.MySql
                 {
                     foreach (DataRow rowId in table.Rows)
                     {
-                        id = (Int32)rowId.ItemArray[0]+1;
-                        dernier = id.ToString();
+                        dernier = rowId.ItemArray[0].ToString();
                     }
                 }
 
@@ -206,6 +173,23 @@ namespace model.Service.MySql
                 {
                     return false;
                 }
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+        }
+
+        internal void modifier(Projet pNouveau)
+        {
+            try
+            {
+                connexion = new MySqlConnexion();
+
+                string requete = "UPDATE Projets SET nom='" + pNouveau.nom + "',dateDebut=" + pNouveau.dateun + ",dateFin=" + pNouveau.datedeux + ",PrixSimulation=" + pNouveau.prixSimulation + ",etat='" + pNouveau.etat +"',nbHeuresSimule=" + pNouveau.nbHeuresSimule + " WHERE idProjet=" + pNouveau.ID;
+
+                connexion.Query(requete);
+
             }
             catch (MySqlException)
             {
