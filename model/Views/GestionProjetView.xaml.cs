@@ -314,7 +314,7 @@ namespace model.Views
         {
             if (txtNbrHeuresEstime.IsEnabled != false)
             {
-                if (dtDateFin.Tag != "Prog")
+                if (dtDateFin.Tag != "Prog" || dtDateFin.Tag == null)
                 {
 
                     if (dtDateFin.SelectedDate < dtDateDebut.SelectedDate && siCreation)
