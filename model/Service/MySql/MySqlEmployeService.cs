@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Text;
 using model.Models;
@@ -21,6 +22,7 @@ namespace model.Service.MySql
                 StringBuilder buildReq = new StringBuilder();
                 buildReq.Append("SELECT Employes.idEmploye,detailfinancies.titreEmploi, detailfinancies.tauxHoraireNormal , detailfinancies.tauxHoraireOver, Employes.nom, Employes.prenom, Employes.horsFonction FROM Employes ");
                 buildReq.Append(" INNER JOIN detailfinancies ON detailfinancies.idEmploye = Employes.idEmploye ");
+                buildReq.Append(" ORDER BY horsFonction ASC");
                 DataSet dataset = connexion.Query(buildReq.ToString());
                 DataTable table = dataset.Tables[0];
 
@@ -56,18 +58,34 @@ namespace model.Service.MySql
             {
                 connexion = new MySqlConnexion();
                 StringBuilder buildReq = new StringBuilder();
-                buildReq.Append("SELECT liaisonprojetemployes.idEmploye, Projets.nom FROM Projets ");
-                buildReq.Append(" LEFT JOIN liaisonprojetemployes  ON liaisonprojetemployes.idProjet = Projets.idProjet ");
-                buildReq.Append(" LEFT JOIN Employes ON Employes.idEmploye = liaisonprojetemployes.idEmploye ");
-                
-                DataSet dataset = connexion.Query(buildReq.ToString());
-                DataTable table = dataset.Tables[0];
+                if(EmpID != null)
+                { 
+                    buildReq.Append("SELECT liaisonprojetemployes.idEmploye, Projets.nom ,liaisonprojetemployes.idProjet FROM Projets ");
+                    buildReq.Append(" LEFT JOIN liaisonprojetemployes  ON liaisonprojetemployes.idProjet = Projets.idProjet ");
+                    buildReq.Append(" LEFT JOIN Employes ON Employes.idEmploye = liaisonprojetemployes.idEmploye ");
+                    buildReq.Append(" WHERE liaisonprojetemployes.idEmploye = '");
+                    buildReq.Append(EmpID);
+                    buildReq.Append("'");
+                    DataSet dataset = connexion.Query(buildReq.ToString());
+                    DataTable table = dataset.Tables[0];
 
-                if (table.Rows.Count != 0)
-                    foreach (DataRow liaison in table.Rows)
-                    {
-                        result.Add(ConstructLiaison(liaison, EmpID));
-                    }
+                    if (table.Rows.Count != 0)
+                        foreach (DataRow liaison in table.Rows)
+                        {
+                            result.Add(ConstructLiaison(liaison, EmpID));
+                        }
+                }
+                else
+                {
+                    buildReq.Append("SELECT nom FROM Projets");
+                    DataSet dataset = connexion.Query(buildReq.ToString());
+                    DataTable table = dataset.Tables[0];
+                    if (table.Rows.Count != 0)
+                        foreach (DataRow liaison in table.Rows)
+                        {
+                            result.Add(ConstructLiaison(liaison, EmpID));
+                        }
+                }
             }
             catch (MySqlException)
             {
@@ -90,8 +108,8 @@ namespace model.Service.MySql
             else
                 return new LiaisonProjetEmploye()
                 {
-                    LiaisonID = (string)row[0].ToString(),
-                    ProjNom = (string)row[1].ToString(),
+                    LiaisonID = null,
+                    ProjNom = (string)row[0].ToString(),
                     Occupe = false
                 };
         }
@@ -109,7 +127,7 @@ namespace model.Service.MySql
         }*/
 
         //Ajouter un employé
-        public void AjoutUnEmploye(string Nom, string Prenom, string Poste, string Salaire)
+        public void AjoutUnEmploye(string Nom, string Prenom, string Poste, string Salaire, ObservableCollection<LiaisonProjetEmploye> Liaison)
         {
             try
             {
@@ -135,11 +153,14 @@ namespace model.Service.MySql
                 buildReq.Append("INSERT INTO detailfinancies (titreEmploi,tauxHoraireNormal,idEmploye) VALUES ('");
                 buildReq.Append(Poste);
                 buildReq.Append("' , '");
+                Salaire = Salaire.Replace(',', '.');
                 buildReq.Append(Salaire);
                 buildReq.Append("' , ");
                 buildReq.Append(ID);
                 buildReq.Append(")");
                 connexion.Query(buildReq.ToString());
+
+                UpdateProjetEmploye(Liaison, ID);
             }
             catch (MySqlException)
             {
@@ -147,7 +168,7 @@ namespace model.Service.MySql
             }
         }
         //Verification d'ajout
-        public bool ExisteEmploye(string Nom, string Prenom)
+        public bool ExisteEmploye(string Nom, string Prenom, string ID)
         {
             try
             {
@@ -160,12 +181,18 @@ namespace model.Service.MySql
                 buildReq.Append("'");
                 DataSet dataset = connexion.Query(buildReq.ToString());
                 DataTable table = dataset.Tables[0];
+
                 if (table.Rows.Count == 0)
                 {
                     return false;
                 }
                 else
-                    return true;
+                {
+                    if (ID == dataset.Tables[0].Rows[0][0].ToString())
+                        return false;
+                    else
+                        return true;
+                }
             }
             catch (MySqlException)
             {
@@ -211,7 +238,8 @@ namespace model.Service.MySql
                     buildReq.Append("UPDATE detailfinancies SET titreEmploi = '");
                     buildReq.Append(emp.Poste);
                     buildReq.Append("', tauxHoraireNormal = '");
-                    buildReq.Append(emp.Salaire);
+                    string salaire = emp.Salaire.ToString().Replace(',','.');
+                    buildReq.Append(salaire);
                     buildReq.Append("' WHERE idEmploye = '");
                     buildReq.Append(emp.ID);
                     buildReq.Append("'");
@@ -223,28 +251,57 @@ namespace model.Service.MySql
                  throw;
              }            
          }
-        //Les projets associés à un employé
-        public DataTable getProjetsEmploye(Employe emp)
+         public void UpdateProjetEmploye(ObservableCollection<LiaisonProjetEmploye> liaisonPE,string ID)
         {
-            try
-            {
+        try
+             {
                 connexion = new MySqlConnexion();
-                StringBuilder buildReq = new StringBuilder();
-                buildReq.Append("SELECT liaisonprojetemployes.idEmploye, Employes.prenom,Employes.nom, Projets.nom FROM Projets ");
-                buildReq.Append(" LEFT JOIN liaisonprojetemployes  ON liaisonprojetemployes.idProjet = Projets.idProjet ");
-                buildReq.Append(" LEFT JOIN Employes ON Employes.idEmploye = liaisonprojetemployes.idEmploye ");
-              //  buildReq.Append(" WHERE Employes.idEmploye =");
-             //   buildReq.Append(emp.ID);
-                DataSet dataset = connexion.Query(buildReq.ToString());
-                DataTable tableEM_on_PROJECT = dataset.Tables[0];
+                StringBuilder buildReq;
+                //supprimer tout concerné à cet employé
+                buildReq = new StringBuilder();
+                buildReq.Append("DELETE FROM liaisonprojetemployes WHERE idEmploye = '");
+                buildReq.Append(ID);
+                buildReq.Append("'");
+                connexion.Query(buildReq.ToString());
+                foreach (LiaisonProjetEmploye l in liaisonPE)
+                {
+                    //Trouve ID de projet
+                    buildReq = new StringBuilder();
+                    buildReq.Append("SELECT idProjet FROM Projets WHERE nom = '");
+                    buildReq.Append(l.ProjNom);
+                    buildReq.Append("'");
+                    DataSet dataset = connexion.Query(buildReq.ToString());
+                    string idProjet = dataset.Tables[0].Rows[0][0].ToString();
 
-                return tableEM_on_PROJECT;
-            }
+                    //Insérer dans le BD si un projet est occupé
+                    if (l.Occupe == true)
+                    {
+                        //Insérer de nouveau
+                        buildReq = new StringBuilder();
+                        buildReq.Append("INSERT INTO liaisonprojetemployes (idEmploye, idProjet) VALUES ('");
+                        buildReq.Append(ID);
+                        buildReq.Append("' , '");
+                        buildReq.Append(idProjet);
+                        buildReq.Append("') ");
+                        connexion.Query(buildReq.ToString());
+                    }
+                    //supprimer si un projet n'est pas occupé
+                    else
+                    {
+                        buildReq = new StringBuilder();
+                        buildReq.Append("DELETE FROM liaisonprojetemployes WHERE idEmploye = '");
+                        buildReq.Append(ID);
+                        buildReq.Append("' AND idProjet = '");
+                        buildReq.Append(idProjet);
+                        buildReq.Append("' ");
+                        connexion.Query(buildReq.ToString());
+                    }
+                }
+             }
             catch (MySqlException)
             {
                 throw;
-            }
+            } 
         }
-
     }
 }

@@ -6,6 +6,13 @@ using System.Windows.Input;
 using model.Service;
 using model.Service.MySql;
 using System;
+using System.Collections.ObjectModel;
+using model.Models;
+using System.Linq;
+using Microsoft.Win32;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Diagnostics;
 
 namespace model.Views
 {
@@ -15,12 +22,29 @@ namespace model.Views
     public partial class AjoutEmployeView : UserControl, INotifyPropertyChanged, INotifyPropertyChanging
     {
         MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
+        private ObservableCollection<LiaisonProjetEmploye> _LiaisonProjetEmploye;
         public AjoutEmployeView()
         {
             InitializeComponent();
-           
+            DataContext = this;
+            LiaisonProjetEmploye = new ObservableCollection<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(null));
+            
         }
-       
+        public ObservableCollection<LiaisonProjetEmploye> LiaisonProjetEmploye
+        {
+            get
+            {
+                return _LiaisonProjetEmploye;
+            }
+            set
+            {
+                if (_LiaisonProjetEmploye == value)
+                {
+                    return;
+                }
+                _LiaisonProjetEmploye = value;
+            }
+        }
         private void retourMenu(object sender, RoutedEventArgs e)
         {
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
@@ -29,14 +53,25 @@ namespace model.Views
 
         private void AjouterEmploye(object sender, RoutedEventArgs e)
         {
-            //Vérification si le même nom et prénom de l'employé existe ou non
-            if(!_ServiceMysql.ExisteEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text))
-            {
-                _ServiceMysql.AjoutUnEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text);
-                retourMenu(this,null);
-            }
+            //Validation nom,prénom
+            if (txtAjoutNom.Text.Length < 2 || txtAjoutPrenom.Text.Length < 2 || txtAjoutPoste.Text.Length < 3)
+                MessageBox.Show("Le minimum de 2 caractères est requis pour le nom et le prénom et 3 caractères pour la poste !!");
+             //Vérification si le même nom et prénom de l'employé existe ou non
+            else if(_ServiceMysql.ExisteEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text,null))
+                MessageBox.Show("Erreur : Il y existe déjà un employé avec le même nom et le même prénom!!!");
+            //validation salaire
+            else if (!ValidSalaire(txtAjoutSalaire.Text))
+                MessageBox.Show("Le salaire ne peut pas laisser vide et il doit être entre 0 et 500 !!");
             else
-                MessageBox.Show("Erreur : Il y existe déjà un employé avec le même nom et même prénom!!!");
+            {   //Insérer dans la BD
+                _ServiceMysql.AjoutUnEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text, LiaisonProjetEmploye);
+               /* string filepath = "EmployePhoto.jpg";
+                string name = System.IO.Path.GetFileName(filepath);
+                string destinationPath = GetDestinationPath(name, "image");
+
+                File.Copy(filepath, destinationPath, true);*/
+                retourMenu(this, null);
+            }
         }
 
         #region INotifyPropertyChanged INotifyPropertyChanging
@@ -116,6 +151,44 @@ namespace model.Views
                 e.Handled = false;
             }
         }
+        public bool ValidSalaire(string salaire)
+        {
+            int nbPoint = salaire.Count(x => x == '.');
+            salaire = salaire.Replace('.', ',');
+            if (nbPoint == 0 || nbPoint == 1)
+            {
+                float sal = Convert.ToSingle(salaire);
+                if (sal >= 0 && sal <= 500)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+
+        #endregion
+
+        #region Photo
+        private void btnUplaod(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "Tous les formats |*.jpg;*.png|" +
+              "JPG (*.jpg;)|*.jpg;|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                imgPhoto.Source = new BitmapImage(new Uri(op.FileName));
+            }
+        }
+      /*   private static String GetDestinationPath(string filename, string foldername)
+       {
+           String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+
+           appStartPath = String.Format(appStartPath + "\\{0}\\" + filename, foldername);
+           return appStartPath;
+       }*/
         #endregion
     }
 }

@@ -28,6 +28,17 @@ namespace model.Models
             Photo = String.Empty;
             HorsFonction = false;
         }
+        public Employe(string nom)
+        {
+            ID = String.Empty;
+            Prenom = String.Empty;
+            Nom = nom;
+            Poste = String.Empty;
+            Salaire = 0;
+            SalaireOver = 0;
+            Photo = String.Empty;
+            HorsFonction = false;
+        }
 
     }
 }

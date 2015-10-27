@@ -353,7 +353,7 @@
                 </Button.ToolTip>
 
             </Button>
-            <Button Style="{StaticResource BouttonRapport}" Grid.Row="0" Width="75" Height="70" Margin="25,10,10,0" >
+            <Button Style="{StaticResource BouttonRapport}" Grid.Row="0" Width="75" Height="70" Margin="25,10,10,0" Click="EcranRapport">
                 <Button.ToolTip>
                     <TextBlock>Les rapports</TextBlock></Button.ToolTip>
             </Button>

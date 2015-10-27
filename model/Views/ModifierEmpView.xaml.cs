@@ -11,6 +11,11 @@ using model.Models.Args;
 using model.Service;
 using model.Service.MySql;
 using System.Windows.Data;
+using System.Linq;
+using Microsoft.Win32;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Diagnostics;
 
 namespace model.Views
 {
@@ -21,6 +26,7 @@ namespace model.Views
     {
         MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
         private ObservableCollection<LiaisonProjetEmploye> _LiaisonProjetEmploye;
+
         private Employe _Employe;
 
         public ModifierEmpView()
@@ -34,8 +40,11 @@ namespace model.Views
         {
             _Employe = parametre["Employe"] as Employe;
             LiaisonProjetEmploye = new ObservableCollection<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(_Employe.ID.ToString()));
-        }
+            List<LiaisonProjetEmploye> ToutProjet = new List<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(null));
+            LiaisonProjetEmploye = new ObservableCollection<LiaisonProjetEmploye>(ComparerListe(ToutProjet, _ServiceMysql.GetLiaison(_Employe.ID.ToString())));
 
+        }
+        #region GET SET
         public Employe Employe
         {
             get
@@ -67,7 +76,7 @@ namespace model.Views
                 _LiaisonProjetEmploye = value;
             }
         }
-
+        #endregion
         private void retourMenu(object sender, RoutedEventArgs e)
         {
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
@@ -76,16 +85,38 @@ namespace model.Views
 
         private void EnregistrerEmp(object sender, RoutedEventArgs e)
         {
-            bool cbx = this.cbxHorsFonction.IsChecked.Value; // get value de check box horsFonction
+            bool cbx = this.chxHorsFonction.IsChecked.Value; // get value de check box horsFonction
             int id = Int32.Parse(_Employe.ID);               // get ID d'employe et convertir en INT
 
-            // Update BD :information de l'employé (nom,prénom,poste,salaire)
-            _ServiceMysql.UpdateInfoEmploye(_Employe,cbx);
-            MessageBox.Show("Les informations sont modifiées");
-
-            retourMenu(this, null);
+            //Validation nom,prénom
+            if (txtNom.Text.Length < 2 || txtPrenom.Text.Length < 2 || txtPoste.Text.Length < 3)
+                MessageBox.Show("Le minimum de 2 caractères est requis pour nom, prénom et 3 caractères pour la poste !!");
+            //Vérification si le même nom et prénom de l'employé existe ou non
+            else if (_ServiceMysql.ExisteEmploye(txtNom.Text,txtPrenom.Text,txtNum.Text))
+                MessageBox.Show("Erreur : Il y existe déjà un employé avec le même nom et le même prénom!!!");
+            //validation salaire
+            else if (!ValidSalaire(txtSalaire.Text))
+                MessageBox.Show("Le salaire ne peut pas laisser vide et il doit être entre 0 et 500 !!");
+            else
+            { //Update la BD
+                _ServiceMysql.UpdateInfoEmploye(_Employe,cbx);
+                _ServiceMysql.UpdateProjetEmploye(LiaisonProjetEmploye, _Employe.ID);
+                MessageBox.Show("Les informations sont modifiées");
+                retourMenu(this, null);
+            }
         }
-
+        public IList<LiaisonProjetEmploye> ComparerListe(IList<LiaisonProjetEmploye> l1, IList<LiaisonProjetEmploye> l2)
+        {
+            foreach(LiaisonProjetEmploye l in l1)
+            {
+                foreach(LiaisonProjetEmploye ll in l2)
+                {
+                    if (l.ProjNom == ll.ProjNom)
+                        l.Occupe = ll.Occupe;
+                }
+            }
+            return l1;
+        }
         #region INotifyPropertyChanged INotifyPropertyChanging
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -162,13 +193,47 @@ namespace model.Views
         }
         public bool ValidSalaire(string salaire)
         {
-            if (salaire != null && Convert.ToSingle(salaire) > 0 && Convert.ToSingle(salaire) < 500)
+            salaire = salaire.Replace('.', ',');
+            int nbPoint = salaire.Count(x => x == '.');
+            if (nbPoint == 0 || nbPoint == 1)
+            {
+                float sal = Convert.ToSingle(salaire);
+                if (sal >= 0 && sal <= 500)
+                    return true;
+                else
+                    return false;
+            }
+            else
                 return false;
-            else 
-                return true;
         }
 
+        #endregion
 
+        #region Photo
+        private void btnUplaod(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "Tous les formats |*.jpg;*.png|" +
+              "JPG (*.jpg;)|*.jpg;|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                imgPhoto.Source = new BitmapImage(new Uri(op.FileName));
+               
+               /* string name = System.IO.Path.GetFileName(op.FileName);
+                string destinationPath = GetDestinationPath(name, "/image");
+                File.Copy(op.FileName, destinationPath, true);*/
+
+            }
+        }
+        /* private static String GetDestinationPath(string filename, string foldername)
+         {
+             String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+
+             appStartPath = String.Format(appStartPath + "\\{0}\\" + filename, foldername);
+             return appStartPath;
+         }*/
         #endregion
     }
 }

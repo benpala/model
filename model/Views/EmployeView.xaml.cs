@@ -64,8 +64,6 @@ namespace model.Views
                 }
                 compteur = 0;
             }));
-
-            
         }
 
         #region INotifyPropertyChanged INotifyPropertyChanging
@@ -102,7 +100,6 @@ namespace model.Views
             }
         }
         #endregion
-
         public ObservableCollection<Employe> Employe
         {
             get

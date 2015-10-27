@@ -69,6 +69,12 @@ namespace model
             applicationService.ChangeView<ListePaieView>(new ListePaieView());
         }
 
+        private void EcranRapport(object sender, RoutedEventArgs e)
+        {
+            IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
+            applicationService.ChangeView<RapportView>(new RapportView());
+        }
+
         private void click_config(object sender, RoutedEventArgs e)
         {
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();

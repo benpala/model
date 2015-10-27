@@ -1,5 +1,10 @@
-﻿using System;
+﻿using model.Models;
+using model.Models.Args;
+using model.Service;
+using model.Service.MySql;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -22,11 +27,42 @@ namespace model.Views
     /// </summary>
     public partial class RapportView : UserControl, INotifyPropertyChanged, INotifyPropertyChanging
     {
+        private ObservableCollection<Employe> _employe = new ObservableCollection<Employe>();
+        private IEmployeService _ServiceEmploye;
+        private IApplicationService _applicationService;
+
+        public RetrieveEmployeArgs RetrieveArgs { get; set; }
+
         public RapportView()
         {
             InitializeComponent();
-        }
+            RetrieveArgs = new RetrieveEmployeArgs();
+            _ServiceEmploye = ServiceFactory.Instance.GetService<IEmployeService>();
+            _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
+            Employe = new ObservableCollection<Employe>(_ServiceEmploye.RetrieveAll());
+            Employe.Insert(0,new Employe("Tous"));
+            DataContext = this;
+
+        }
+        public ObservableCollection<Employe> Employe
+        {
+            get
+            {
+                return _employe;
+            }
+            set
+            {
+                if (_employe == value)
+                {
+                    return;
+                }
+
+                RaisePropertyChanging();
+                _employe = value;
+                RaisePropertyChanged();
+            }
+        }
         #region INotifyPropertyChanged INotifyPropertyChanging
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -61,6 +97,5 @@ namespace model.Views
             }
         }
         #endregion
-
     }
 }
