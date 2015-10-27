@@ -90,7 +90,7 @@ namespace model.Views
 
             //Validation nom,prénom
             if (txtNom.Text.Length < 2 || txtPrenom.Text.Length < 2 || txtPoste.Text.Length < 3)
-                MessageBox.Show("Le minimum de 2 caractères est requis pour nom, prénom et 3 caractères pour la poste !!");
+                MessageBox.Show("Le minimum de 2 caractères est requis pour nom, prénom et 3 caractères pour le poste !!");
             //Vérification si le même nom et prénom de l'employé existe ou non
             else if (_ServiceMysql.ExisteEmploye(txtNom.Text,txtPrenom.Text,txtNum.Text))
                 MessageBox.Show("Erreur : Il y existe déjà un employé avec le même nom et le même prénom!!!");
@@ -193,13 +193,18 @@ namespace model.Views
         }
         public bool ValidSalaire(string salaire)
         {
-            salaire = salaire.Replace('.', ',');
-            int nbPoint = salaire.Count(x => x == '.');
-            if (nbPoint == 0 || nbPoint == 1)
+            if (salaire.Length > 0)
             {
-                float sal = Convert.ToSingle(salaire);
-                if (sal >= 0 && sal <= 500)
-                    return true;
+                int nbPoint = salaire.Count(x => x == '.');
+                salaire = salaire.Replace('.', ',');
+                if (nbPoint == 0 || nbPoint == 1)
+                {
+                    float sal = Convert.ToSingle(salaire);
+                    if (sal >= 0 && sal <= 500)
+                        return true;
+                    else
+                        return false;
+                }
                 else
                     return false;
             }
