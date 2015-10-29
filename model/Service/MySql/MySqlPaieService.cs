@@ -23,7 +23,7 @@ namespace model.Service.MySql
                 string requete = "SELECT paies.idPaies, CONCAT(Employes.prenom,' ',Employes.nom) AS name,"
                 + "CONCAT(periodepaies.dateDebut,' aux ', periodepaies.dateFin) AS periodeP, dateGenerationRapport, montantDueBrute,"
                 + "montantDueNet, nombreHeure, nombreHeureSupp, montantPrime, montantIndemnites,montantAllocations,"
-                + "montantCommissions,montantPourboire,paies.idPeriode  "
+                + "montantCommissions,montantPourboire,paies.idPeriode, paies.idEmploye "
                 + "FROM Paies "
                 + "INNER JOIN Employes ON Employes.idEmploye=Paies.idEmploye "
                 + "INNER JOIN periodepaies ON periodepaies.idPeriode=paies.idPeriode";
@@ -118,6 +118,23 @@ namespace model.Service.MySql
                 throw;
             }
         }
+        public string tauxHorraire(string id)
+        {
+            try
+            {
+                connexion = new MySqlConnexion();
+
+                string requete = "SELECT tauxHoraireNormal FROM detailfinancies WHERE idEmploye=" + id;
+
+                DataSet dataset = connexion.Query(requete);
+                DataTable table = dataset.Tables[0];
+                return table.Rows[0][0].ToString();
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+        }
         public bool insertPaie(Paie insertPaie, DateTime start, DateTime end, string idEmploye)
         {
             try
@@ -184,7 +201,8 @@ namespace model.Service.MySql
                 MontantAllocations = (float)row["montantAllocations"],
                 MontantCommission = (float)row["montantCommissions"],
                 MontantPourboire = (float)row["montantPourboire"],
-                idPeriode = row["idPeriode"].ToString()
+                idPeriode = row["idPeriode"].ToString(),
+                idEmploye = row["idEmploye"].ToString()
             };
         }
     }

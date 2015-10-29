@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using model.Models;
 using model.Service;
+using model.Service.MySql;
 
 namespace model.Views
 {
@@ -103,10 +104,98 @@ namespace model.Views
 
         private void calculePrime(object sender, RoutedEventArgs e)
         {
-            _Paie.MontantBrute += _Paie.MontantPrime;
-            float taux = _Paie.getTauxFederal(_Paie.MontantBrute, _Paie.NombreHeure, _Paie.NombreHeureSupp, _Paie.idPeriode);
-            _Paie.MontantNet = (_Paie.MontantBrute * (1 - taux));
+            try
+            {
+                string p = prime.Text.Replace(".", ","); p.Trim();
+                Paies.MontantBrute += (_Paie.MontantPrime = float.Parse(p));
+                float taux = Paies.getTauxFederal(Paies.MontantBrute, Paies.NombreHeure, Paies.NombreHeureSupp, Paies.idPeriode);
+                Paies.MontantNet = (Paies.MontantBrute * (1 - taux));
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Le montant entré est invalide! format accepté : 00.00");
+            }
+            
            
+        }
+
+        private void calculeIndemite(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Paies.MontantBrute += (_Paie.MontantIndemnite = float.Parse(indemite.Text.Replace(".", ",")));
+                float taux = Paies.getTauxFederal(Paies.MontantBrute, Paies.NombreHeure, Paies.NombreHeureSupp, Paies.idPeriode);
+                Paies.MontantNet = (Paies.MontantBrute * (1 - taux));
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Le montant entré est invalide! format accepté : 00.00");
+            }
+        }
+
+        private void calculeAllocation(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Paies.MontantBrute += (_Paie.MontantAllocations = float.Parse(allocation.Text.Replace(".", ",")));
+                float taux = Paies.getTauxFederal(Paies.MontantBrute, Paies.NombreHeure, Paies.NombreHeureSupp, Paies.idPeriode);
+                Paies.MontantNet = (Paies.MontantBrute * (1 - taux));
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Le montant entré est invalide! format accepté : 00.00");
+            }
+        }
+
+        private void calculePourboire(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Paies.MontantBrute += (_Paie.MontantPourboire = float.Parse(pourboire.Text.Replace(".", ",")));
+                float taux = Paies.getTauxFederal(Paies.MontantBrute, Paies.NombreHeure, Paies.NombreHeureSupp, Paies.idPeriode);
+                Paies.MontantNet = (Paies.MontantBrute * (1 - taux));
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Le montant entré est invalide! format accepté : 00.00");
+            }
+        }
+
+        private void calculeHeure(object sender, RoutedEventArgs e)
+        {
+        
+            try
+            {
+                MySqlPaieService _service = new MySqlPaieService();
+
+                float tauxHoraire = float.Parse(_service.tauxHorraire(Paies.idEmploye));
+                float heureNormal = float.Parse(heure.Text.Replace(".", ","));
+                Paies.MontantBrute += ((_Paie.NombreHeure = heureNormal)*tauxHoraire);
+                float taux = Paies.getTauxFederal(Paies.MontantBrute, Paies.NombreHeure, Paies.NombreHeureSupp, Paies.idPeriode);
+                Paies.MontantNet = (Paies.MontantBrute * (1 - taux));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Le montant entré est invalide! format accepté : 00.00");
+            }
+        }
+
+        private void calculeHeureSupp(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MySqlPaieService _service = new MySqlPaieService();
+
+                float tauxHoraire = float.Parse(_service.tauxHorraire(Paies.idEmploye));
+                float heureNormal = float.Parse(heureSupp.Text.Replace(".", ","));
+                Paies.MontantBrute += (float)((_Paie.NombreHeureSupp = heureNormal) * (tauxHoraire * 1.5));
+                float taux = Paies.getTauxFederal(Paies.MontantBrute, Paies.NombreHeure, Paies.NombreHeureSupp, Paies.idPeriode);
+                Paies.MontantNet = (Paies.MontantBrute * (1 - taux));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Le montant entré est invalide! format accepté : 00.00");
+            }
         }
 
     }

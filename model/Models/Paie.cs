@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using model.Service.MySql;
 using model.Service.Helpers;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 namespace model.Models
 {
-    public class Paie
+    public class Paie : INotifyPropertyChanged, INotifyPropertyChanging
     {
 
         // ceci est une simple classe de test pour les vues. Elle sera détruitre lors de la programmation.
@@ -19,6 +21,40 @@ namespace model.Models
          Supérieur à 82 985 $, ne dépassant pas 100 970 $	24 %
          Supérieur à 100 970 $	25,75 %
         */
+        #region INotifyPropertyChanged INotifyPropertyChanging
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected PropertyChangedEventHandler PropertyChangedHandler
+        {
+            get { return PropertyChanged; }
+        }
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        protected PropertyChangingEventHandler PropertyChangingHandler
+        {
+            get { return PropertyChanging; }
+        }
+
+
+        protected virtual void RaisePropertyChanging([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanging;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
         public static float salaireUn = 41495, salaireDeux = 82985, salaireTrois = 100970;
         public static float tauxUn = (float)0.16,
                             tauxDeux = (float)0.20,
@@ -28,14 +64,44 @@ namespace model.Models
         public static float supp = 50;
 
         public virtual string ID { get; set; }
+        public virtual string idEmploye { get; set; }
         public virtual string idPeriode {get; set;}
         public virtual string Periode { get; set; }
         public virtual string DateGenerationRapport { get; set; }
         // Comme l'employé à une liste d'heure nous savons ici c'est quoi les heures pour l'employé.
         public virtual string Nom { get; set; }
-
-        public virtual float MontantBrute { get; set; }
-        public virtual float MontantNet { get; set; }
+        private float montantbrute;
+        public virtual float MontantBrute {
+            get
+            {
+                return this.montantbrute;
+            }
+            set
+            {
+                if (this.montantbrute == value)
+                {
+                    return;
+                }
+                this.montantbrute = value;
+                RaisePropertyChanged("MontantBrute");
+            }
+        }
+        private float montantnet;
+        public virtual float MontantNet {
+            get 
+            { 
+                return this.montantnet;
+            }
+            set
+            {
+                if (this.montantnet == value)
+                {
+                    return;
+                }
+                this.montantnet = value;
+                RaisePropertyChanged("MontantNet");
+            }
+        }
         public virtual float NombreHeure { get; set; }
         public virtual float NombreHeureSupp { get; set; }
         public virtual float MontantPrime { get; set; }
@@ -205,5 +271,5 @@ namespace model.Models
             }
         }
     }
-      
+
 }

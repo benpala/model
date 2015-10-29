@@ -143,13 +143,13 @@
         <StackPanel Margin="0, 75,0,0">
             <Label FontSize="16" FontWeight="Bold" Width="200" Height="40">Salaire à donner</Label>
             <Label  Width="200" Height="25" >Montant brute :</Label>
-            <TextBlock FontWeight="Bold" Name="Montant"  Height="20" Width="190" Text="{Binding Paies.MontantBrute, StringFormat=N2}" ></TextBlock>
+            <TextBlock FontWeight="Bold" Name="Montant"  Height="20" Width="190" Text="{Binding Paies.MontantBrute, StringFormat=N2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBlock>
             <Label  Width="200" Height="25" >Montant net :</Label>
             <TextBlock FontWeight="Bold" Name="montantNet"  Height="20" Width="190" Text="{Binding Paies.MontantNet, StringFormat=N2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBlock>
             <Label  Width="200" Height="25" >Nombre d'heure travaillé :</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" IsReadOnly="false"  Name="heure"  Height="20" Width="200" Text="{Binding Paies.NombreHeure, StringFormat=N2}" ></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeHeure" IsReadOnly="false"  Name="heure"  Height="20" Width="200" Text="{Binding Paies.NombreHeure, StringFormat=N2}" ></TextBox>
             <Label  Width="200" Height="25" >Nombre d'heure suplémentaire :</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" IsReadOnly="false"  Name="heureSupp"  Height="20" Width="200" Text="{Binding Paies.NombreHeureSupp, StringFormat=N2}" ></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeHeureSupp" IsReadOnly="false"  Name="heureSupp"  Height="20" Width="200" Text="{Binding Paies.NombreHeureSupp, StringFormat=N2}" ></TextBox>
 
         </StackPanel>
 
@@ -159,13 +159,13 @@
             <Label  Width="200" Height="25" >Montant en prime :</Label>
             <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculePrime"  IsReadOnly="false"  Name="prime"  Height="20" Width="200" Text="{Binding Paies.MontantPrime, StringFormat=N2}" ></TextBox>
             <Label  Width="200" Height="25" >Montant Indemnite :</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" IsReadOnly="false"  Name="indemite"  Height="20" Width="200" Text="{Binding Paies.MontantIndemnite, StringFormat=N2}" ></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeIndemite" IsReadOnly="false"  Name="indemite"  Height="20" Width="200" Text="{Binding Paies.MontantIndemnite, StringFormat=N2}" ></TextBox>
 
 
             <Label  Width="200" Height="25" >Montant allocation :</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" IsReadOnly="false"  Name="allocation"  Height="20" Width="200" Text="{Binding Paies.MontantAllocations, StringFormat=N2}" ></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeAllocation"  IsReadOnly="false"  Name="allocation"  Height="20" Width="200" Text="{Binding Paies.MontantAllocations, StringFormat=N2}" ></TextBox>
             <Label  Width="200" Height="25" >Pourboire accumulé :</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" IsReadOnly="false"  Name="pourboire"  Height="20" Width="200" Text="{Binding Paies.MontantPourboire, StringFormat=N2}" ></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculePourboire" IsReadOnly="false"  Name="pourboire"  Height="20" Width="200" Text="{Binding Paies.MontantPourboire, StringFormat=N2}" ></TextBox>
 
 
 
