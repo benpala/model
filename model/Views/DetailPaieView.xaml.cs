@@ -48,7 +48,9 @@ namespace model.Views
                 {
                     return;
                 }
+                RaisePropertyChanging();
                 _Paie = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -91,6 +93,20 @@ namespace model.Views
         {
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
             applicationService.ChangeView<ListePaieView>(new ListePaieView());
+        }
+
+        private void click_enregistre(object sender, RoutedEventArgs e)
+        {
+            // Envoie des champs en base de données afin de modifier les champs.
+
+        }
+
+        private void calculePrime(object sender, RoutedEventArgs e)
+        {
+            _Paie.MontantBrute += _Paie.MontantPrime;
+            float taux = _Paie.getTauxFederal(_Paie.MontantBrute, _Paie.NombreHeure, _Paie.NombreHeureSupp, _Paie.idPeriode);
+            _Paie.MontantNet = (_Paie.MontantBrute * (1 - taux));
+           
         }
 
     }

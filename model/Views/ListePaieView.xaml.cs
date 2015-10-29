@@ -39,9 +39,12 @@ namespace model.Views
             RetrieveArgs = new RetrievePaieArgs();
             _ServicePaie = ServiceFactory.Instance.GetService<IPaiesService>();
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
-
-            Paies = new ObservableCollection<Paie>(_ServicePaie.RetrieveAll());
-
+            try
+            {
+                Paies = new ObservableCollection<Paie>(_ServicePaie.RetrieveAll());
+            }catch(Exception){
+                MessageBox.Show("Votre base de données n'est pas accessible. Veuillez vous référer au document de configuration");
+            }
         }
 
         #region INotifyPropertyChanged INotifyPropertyChanging
@@ -99,7 +102,6 @@ namespace model.Views
             }
 
         }
-
         // Boutton de modification et imprésion des relevés.
         private void click_modifierImprimer(object sender, RoutedEventArgs e)
         {

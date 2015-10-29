@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using model.Service.MySql;
-
+using model.Service.Helpers;
 namespace model.Models
 {
     public class Paie
@@ -28,6 +28,7 @@ namespace model.Models
         public static float supp = 50;
 
         public virtual string ID { get; set; }
+        public virtual string idPeriode {get; set;}
         public virtual string Periode { get; set; }
         public virtual string DateGenerationRapport { get; set; }
         // Comme l'employé à une liste d'heure nous savons ici c'est quoi les heures pour l'employé.
@@ -43,10 +44,46 @@ namespace model.Models
         public virtual float MontantCommission { get; set; }
         public virtual float MontantPourboire { get; set; }
 
+        public float getTauxFederal(float montantBrute, float heure, float heureSupp, String idPeriode) 
+        {
+            MySqlPaieService _service = new MySqlPaieService();
+            DataTable Periode;
+            Periode = _service.anciennePeriode(idPeriode);
+            DateTime start = (DateTime)Periode.Rows[0][0],
+                    end = (DateTime)Periode.Rows[0][1];
+
+            TimeSpan t = end - start;
+            Double days = t.TotalDays;
+            days = 365 / (days + 1);
+            double EstimatedAnnualSalary = days * montantBrute;
+          
+            if (EstimatedAnnualSalary <= salaireUn)
+            {
+                return tauxUn;
+            }
+            else if (EstimatedAnnualSalary > salaireUn && EstimatedAnnualSalary <= salaireDeux)
+            {
+               return tauxDeux;
+            }
+            else if (EstimatedAnnualSalary > salaireDeux && EstimatedAnnualSalary <= salaireTrois)
+            {
+               return tauxTrois;
+            }
+            else if (EstimatedAnnualSalary > salaireTrois)
+            {
+                return tauxQuatre;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public Paie()
         {
             ID = String.Empty;
             Periode = String.Empty;
+            idPeriode = String.Empty;
             DateGenerationRapport = String.Empty;
 
             Nom = String.Empty;
@@ -168,4 +205,5 @@ namespace model.Models
             }
         }
     }
+      
 }

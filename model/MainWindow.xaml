@@ -2,6 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="GEM-C" Height="720" Width="1280" MaxHeight="720" MinHeight="720" MaxWidth="1280" MinWidth="1280">
+    <Window.Background>
+        <ImageBrush ImageSource="image/menu.jpg"></ImageBrush>
+    </Window.Background>
     <Window.Resources>
         <Style x:Key="BouttonConfig" TargetType="{x:Type Button}">
             <Setter Property="Background">
