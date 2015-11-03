@@ -84,6 +84,39 @@ namespace model.Service.MySql
                 throw;
             }
         }
+        public bool updatePay(Paie updatePaie)
+        {
+            try
+            {
+                connexion = new MySqlConnexion();
+                /*
+                 *  montantDueBrute, montantDueNet, nombreHeure, 
+                 *  nombreHeureSupp, montantPrime, montantIndemnites,
+                 *  montantAllocations, montantCommissions, montantPourboire
+                 */
+                StringBuilder req = new StringBuilder();
+                req.Append("UPDATE Paies SET ");
+                req.Append(" montantDueBrute='"); req.Append(updatePaie.MontantBrute.ToString().Replace(",","."));
+                req.Append("', montantDueNet='"); req.Append(updatePaie.MontantNet.ToString().Replace(",", "."));
+                req.Append("', nombreHeure='"); req.Append(updatePaie.NombreHeure.ToString().Replace(",", "."));
+                req.Append("', nombreHeureSupp='"); req.Append(updatePaie.NombreHeureSupp.ToString().Replace(",", "."));
+                req.Append("', montantPrime='"); req.Append(updatePaie.MontantPrime.ToString().Replace(",", "."));
+                req.Append("', montantIndemnites='"); req.Append(updatePaie.MontantIndemnite.ToString().Replace(",", "."));
+                req.Append("', montantAllocations='"); req.Append(updatePaie.MontantAllocations.ToString().Replace(",", "."));
+                req.Append("', montantCommissions='"); req.Append(updatePaie.MontantCommission.ToString().Replace(",", "."));
+                req.Append("', montantPourboire='"); req.Append(updatePaie.MontantPourboire.ToString().Replace(",", "."));
+                req.Append("' WHERE idPaies='");
+                req.Append(updatePaie.ID.ToString());
+                req.Append("' ");
+
+                connexion.Query(req.ToString());
+                return true;
+            }
+            catch (MySqlException)
+            {
+                return false;
+            }
+        }
         public DataTable PeriodeTemps()
         {
             try

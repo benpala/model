@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="model.Views.ajoutPeriode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             Height="720" Width="1280">
+    <UserControl.Resources>
+        <Style x:Key="BouttonAdd" TargetType="{x:Type Button}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="../image/add.png"/>
+
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Chrome"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter Name="Presenter" Margin="{TemplateBinding Padding}"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" Color="#FF3212FF" Opacity="1" BlurRadius="20"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Margin="0, 75,0,0">
+            <Label FontSize="18" FontWeight="Bold" Width="250" Height="40">Ajouter une période de paie</Label>
+            <Rectangle Margin="30,0,0,0" Fill="Black" Height="2"/>
+            <Label Margin="300, 50,0,0">Date de début :</Label>
+            <DatePicker Name="datedebut" Margin="0,0,480,0" Width="200"></DatePicker>
+            <Label FontWeight="Bold" Margin="300, 10,0,0" Width="980">l'heure de début est : 00:00:00</Label>
+
+            <Label Margin="300, 50,0,0">Date de fin :</Label>
+            <DatePicker Name="datefin" Margin="0,0,480,0" Width="200"></DatePicker>
+            <Label FontWeight="Bold" Margin="300, 10,0,0" Width="980">l'heure de fin est : 23:59:59</Label>
+        </StackPanel>
+        <Label Margin="50,167,0,0" FontWeight="Bold">Fin des périodes déjà enregistrés</Label>
+        <ListView Background="LightGray" Width="200" Height="300" ItemsSource="{Binding Periodes}" HorizontalAlignment="Left" Margin="50,200,0,0" VerticalAlignment="Top">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Fin}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListView>
+        
+        <Button Style="{StaticResource BouttonAdd}" Click="click_periodeList" HorizontalAlignment="Left" Margin="540,0,0,420" Width="75"  Height="75" VerticalAlignment="Bottom" >
+            <Button.ToolTip>
+                <ToolTip>Ajouter à la liste</ToolTip>
+            </Button.ToolTip>
+        </Button>
+        <Label Margin="630,167,0,0" FontWeight="Bold">Nouvelles périodes</Label>
+        <ListView Width="200" Height="300" ItemsSource="{Binding nouvPeriodes}" HorizontalAlignment="Left" Margin="630,200,0,0" VerticalAlignment="Top">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Fin}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListView>
+        <StackPanel Margin="850,165,0,0">
+            <Label FontSize="14" Margin="0,0,0,0" FontWeight="Bold" Width="250" Height="40" RenderTransformOrigin="-0.152,0.775" HorizontalAlignment="Left">Enregistrer vos modification ici</Label>
+            <Button Margin="0,0,0,0" Width="220" Height="50" HorizontalAlignment="Left">Enregistrer la liste</Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

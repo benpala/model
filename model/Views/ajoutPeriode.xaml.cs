@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using model.Models;
 using model.Service;
@@ -21,32 +21,33 @@ using model.Service;
 namespace model.Views
 {
     /// <summary>
-    /// Logique d'interaction pour listePaie.xaml
+    /// Logique d'interaction pour ajoutPeriode.xaml
     /// </summary>
-    public partial class ListePaieView : UserControl, INotifyPropertyChanging, INotifyPropertyChanged
+    public partial class ajoutPeriode : UserControl, INotifyPropertyChanged, INotifyPropertyChanging
     {
-        private IPaiesService _ServicePaie;
+        private IPeriodeService _periodeService;
         private IApplicationService _applicationService;
-
+        List<PeriodePaie> nouvPeriodes = new List<PeriodePaie>();
         public RetrievePaieArgs RetrieveArgs { get; set; }
-        private ObservableCollection<Paie> _paie = new ObservableCollection<Paie>();
-
-        public ListePaieView()
+        private ObservableCollection<PeriodePaie> _periode = new ObservableCollection<PeriodePaie>();
+        public ajoutPeriode()
         {
             InitializeComponent();
 
             DataContext = this;
             RetrieveArgs = new RetrievePaieArgs();
-            _ServicePaie = ServiceFactory.Instance.GetService<IPaiesService>();
+            _periodeService = ServiceFactory.Instance.GetService<IPeriodeService>();
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
             try
             {
-                Paies = new ObservableCollection<Paie>(_ServicePaie.RetrieveAll());
-            }catch(Exception){
+                Periodes = new ObservableCollection<PeriodePaie>(_periodeService.RetrieveAll());
+                
+            }
+            catch (Exception)
+            {
                 MessageBox.Show("Votre base de données n'est pas accessible. Veuillez vous référer au document de configuration");
             }
         }
-
         #region INotifyPropertyChanged INotifyPropertyChanging
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -81,59 +82,36 @@ namespace model.Views
             }
         }
         #endregion
-
-        public ObservableCollection<Paie> Paies
+        public ObservableCollection<PeriodePaie> Periodes
         {
             get
             {
-                return _paie;
+                return _periode;
             }
             set
             {
 
-                if (_paie == value)
+                if (_periode == value)
                 {
                     return;
                 }
 
                 RaisePropertyChanging();
-                _paie = value;
+                _periode = value;
                 RaisePropertyChanged();
             }
 
         }
-        // Boutton de modification et imprésion des relevés.
-        private void click_modifierImprimer(object sender, RoutedEventArgs e)
-        {
-            Paie obj = (Paie)((sender as Button).CommandParameter);
-            IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
-            Dictionary<string, object> parametre = new Dictionary<string, object>() { { "paie", obj } };
-            applicationService.ChangeView<DetailPaieView>(new DetailPaieView(parametre));
-        }
-
-        private void click_genereReleve(object sender, RoutedEventArgs e)
+        private void click_periodeList(object sender, RoutedEventArgs e)
         {
-            Paie paieTravail = new Paie();
             try
             {
-                paieTravail.GenererPaies();
-
+                nouvPeriodes.Add(new PeriodePaie(Convert.ToDateTime(datedebut.Text), Convert.ToDateTime(datefin.Text)));
+            }catch(Exception message){
+                MessageBox.Show(message.ToString());
             }
-            catch (Exception message)
-            {
-                MessageBox.Show(message.Message);
-                IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
-                applicationService.ChangeView<ListePaieView>(new ListePaieView());
-            }
-
-
-        }
-
-        private void click_addPeriode(object sender, RoutedEventArgs e)
-        {
-            IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
-            applicationService.ChangeView<ajoutPeriode>(new ajoutPeriode());
+           
         }
     }
 }

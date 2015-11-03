@@ -164,7 +164,7 @@
 
             <Label  Width="200" Height="25" >Montant allocation :</Label>
             <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeAllocation"  IsReadOnly="false"  Name="allocation"  Height="20" Width="200" Text="{Binding Paies.MontantAllocations, StringFormat=N2}" ></TextBox>
-            <Label  Width="200" Height="25" >Pourboire accumulé :</Label>
+            <Label  Width="200" Height="25" >Pourboire ou commission :</Label>
             <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculePourboire" IsReadOnly="false"  Name="pourboire"  Height="20" Width="200" Text="{Binding Paies.MontantPourboire, StringFormat=N2}" ></TextBox>
 
 

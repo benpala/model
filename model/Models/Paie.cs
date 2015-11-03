@@ -13,14 +13,6 @@ namespace model.Models
 {
     public class Paie : INotifyPropertyChanged, INotifyPropertyChanging
     {
-
-        // ceci est une simple classe de test pour les vues. Elle sera détruitre lors de la programmation.
-        /*
-         41 495 $ ou moins	16 %
-         Supérieur à 41 495 $, ne dépassant pas 82 985 $	20 %
-         Supérieur à 82 985 $, ne dépassant pas 100 970 $	24 %
-         Supérieur à 100 970 $	25,75 %
-        */
         #region INotifyPropertyChanged INotifyPropertyChanging
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -55,14 +47,23 @@ namespace model.Models
             }
         }
         #endregion
-        public static float salaireUn = 41495, salaireDeux = 82985, salaireTrois = 100970;
-        public static float tauxUn = (float)0.16,
-                            tauxDeux = (float)0.20,
-                            tauxTrois = (float)0.24,
-                            tauxQuatre = (float)0.2575;
+        public static float salaireUn = 40000, 
+                            salaireDeux = 44701, 
+                            salaireTrois = 89401, 
+                            salaireQuatre = 138585,
+                            salaireParticulierUn = 41935,
+                            salaireParticulierDeux =83865,
+                            salaireParticulierTrois = 102040 ;
+        public static float tauxUn = (float)0.2853,
+                            tauxDeux = (float)0.3837,
+                            tauxTrois = (float)0.4571,
+                            tauxQuatre = (float)0.4997,
+                            
+                            tauxParticulierUn = (float)0.3253,
+                            tauxParticulierDeux = (float)0.4237,
+                            tauxParticulierTrois = (float)0.4746;
 
         public static float supp = 50;
-
         public virtual string ID { get; set; }
         public virtual string idEmploye { get; set; }
         public virtual string idPeriode {get; set;}
@@ -121,21 +122,36 @@ namespace model.Models
             TimeSpan t = end - start;
             Double days = t.TotalDays;
             days = 365 / (days + 1);
-            double EstimatedAnnualSalary = days * montantBrute;
-          
+
+            return (tauxCombineQC_CA((days * montantBrute)));
+        }
+        public float tauxCombineQC_CA(double EstimatedAnnualSalary)
+        {
             if (EstimatedAnnualSalary <= salaireUn)
             {
                 return tauxUn;
             }
-            else if (EstimatedAnnualSalary > salaireUn && EstimatedAnnualSalary <= salaireDeux)
+            else if (EstimatedAnnualSalary > salaireUn && EstimatedAnnualSalary < salaireDeux)
             {
-               return tauxDeux;
+                return tauxParticulierUn;
             }
-            else if (EstimatedAnnualSalary > salaireDeux && EstimatedAnnualSalary <= salaireTrois)
+            else if (EstimatedAnnualSalary >= salaireDeux && EstimatedAnnualSalary < salaireParticulierDeux)
             {
-               return tauxTrois;
+                return tauxDeux;
             }
-            else if (EstimatedAnnualSalary > salaireTrois)
+            else if (EstimatedAnnualSalary >= salaireParticulierDeux && EstimatedAnnualSalary < salaireTrois)
+            {
+                return tauxParticulierDeux;
+            }
+            else if (EstimatedAnnualSalary >= salaireTrois && EstimatedAnnualSalary < salaireParticulierTrois)
+            {
+                return tauxTrois;
+            }
+            else if (EstimatedAnnualSalary >= salaireParticulierTrois && EstimatedAnnualSalary < salaireQuatre)
+            {
+                return tauxParticulierTrois;
+            }
+            else if (EstimatedAnnualSalary >= salaireQuatre)
             {
                 return tauxQuatre;
             }
@@ -144,7 +160,6 @@ namespace model.Models
                 return 0;
             }
         }
-
         public Paie()
         {
             ID = String.Empty;
@@ -229,24 +244,7 @@ namespace model.Models
                                 days = 365/(days+1);
                                 double EstimatedAnnualSalary = days * Brute;
                                 float Net = 0;
-
-                                if (EstimatedAnnualSalary <= salaireUn)
-                                {
-                                    Net = Brute * (1 - tauxUn);
-                                }
-                                else if (EstimatedAnnualSalary > salaireUn && EstimatedAnnualSalary<=salaireDeux)
-                                {
-                                    Net = Brute * (1 - tauxDeux);
-                                }
-                                else if(EstimatedAnnualSalary > salaireDeux && EstimatedAnnualSalary <= salaireTrois)
-                                {
-                                    Net = Brute * (1 - tauxTrois);
-                                }
-                                else if (EstimatedAnnualSalary > salaireTrois)
-                                {
-                                    Net = Brute * (1 - tauxQuatre);
-                                }
-                        
+                                Net = Brute * (1 - tauxCombineQC_CA((double)(days * Brute)));
 
                                 Paie tmpPaie = new Paie() { MontantBrute = Brute, MontantNet = Net, NombreHeure = temps, NombreHeureSupp = HeureSupp };
                                 if (!(_service.periodeGenere(start, end)))

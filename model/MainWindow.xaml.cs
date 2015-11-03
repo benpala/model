@@ -38,6 +38,7 @@ namespace model
             ServiceFactory.Instance.Register<IPaiesService, MySqlPaieService>(new MySqlPaieService());
             ServiceFactory.Instance.Register<IProjetService, MySqlProjetService>(new MySqlProjetService());
             ServiceFactory.Instance.Register<IEmployeService, MySqlEmployeService>(new MySqlEmployeService());
+            ServiceFactory.Instance.Register<IPeriodeService, MySqlPeriodeService>(new MySqlPeriodeService());
         }
 
 

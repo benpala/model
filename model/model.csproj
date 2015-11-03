@@ -62,14 +62,17 @@
     <Compile Include="Models\Employes.cs" />
     <Compile Include="Models\LiaisonProjetEmploye.cs" />
     <Compile Include="Models\Paie.cs" />
+    <Compile Include="Models\PeriodePaie.cs" />
     <Compile Include="Models\Projet.cs" />
     <Compile Include="Models\Args\RetrievePaieArgs.cs" />
     <Compile Include="Service\BaseViewModel.cs" />
     <Compile Include="Service\Helpers\MySqlConnexion.cs" />
     <Compile Include="Service\IEmployeService.cs" />
     <Compile Include="Service\ILiaisonProjetService.cs" />
+    <Compile Include="Service\IPeriodeService.cs" />
     <Compile Include="Service\IProjetService.cs" />
     <Compile Include="Service\MySql\MySqlPaieService.cs" />
+    <Compile Include="Service\MySql\MySqlPeriodeService.cs" />
     <Compile Include="Service\MySql\MySqlProjetService.cs" />
     <Compile Include="Service\MySql\MySqlEmployeService.cs" />
     <Compile Include="Service\IApplicationService.cs" />
@@ -77,6 +80,9 @@
     <Compile Include="Service\ServiceFactory.cs" />
     <Compile Include="Views\AjoutEmployeView.xaml.cs">
       <DependentUpon>AjoutEmployeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ajoutPeriode.xaml.cs">
+      <DependentUpon>ajoutPeriode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigurationView.xaml.cs">
       <DependentUpon>ConfigurationView.xaml</DependentUpon>
@@ -123,6 +129,10 @@
     <Page Include="Views\AjoutEmployeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ajoutPeriode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigurationView.xaml">
       <SubType>Designer</SubType>
