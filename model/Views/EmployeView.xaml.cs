@@ -51,14 +51,14 @@ namespace model.Views
                     {
                         var converter = new System.Windows.Media.BrushConverter();
                         var brush = (Brush)converter.ConvertFromString("#DC143C");
-                        row.Background = brush;
+                        //row.Background = brush;
                         compteur++;
                     }
                     else
                     {
                         var converter = new System.Windows.Media.BrushConverter();
                         var brush = (Brush)converter.ConvertFromString("#00FF00");
-                        row.Background = brush;
+                        //row.Background = brush;
                         compteur++;
                     }
                 }

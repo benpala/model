@@ -43,5 +43,9 @@ namespace model.Service.MySql
         {
             return new PeriodePaie(Convert.ToDateTime(row["dateDebut"]), Convert.ToDateTime(row["dateFin"])){};
         }
+        public void registerPeriode()
+        {
+            // ne fait rien pour le momment.
+        }
     }
 }

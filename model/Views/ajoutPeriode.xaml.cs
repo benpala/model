@@ -27,7 +27,7 @@ namespace model.Views
     {
         private IPeriodeService _periodeService;
         private IApplicationService _applicationService;
-        List<PeriodePaie> nouvPeriodes = new List<PeriodePaie>();
+        ObservableCollection<PeriodePaie> _nouvPeriodes = new ObservableCollection<PeriodePaie>();
         public RetrievePaieArgs RetrieveArgs { get; set; }
         private ObservableCollection<PeriodePaie> _periode = new ObservableCollection<PeriodePaie>();
         public ajoutPeriode()
@@ -84,34 +84,41 @@ namespace model.Views
         #endregion
         public ObservableCollection<PeriodePaie> Periodes
         {
-            get
-            {
-                return _periode;
-            }
+            get{ return _periode; }
             set
-            {
-
-                if (_periode == value)
-                {
-                    return;
-                }
-
+            { 
+                if (_periode == value) {  return; }
                 RaisePropertyChanging();
                 _periode = value;
                 RaisePropertyChanged();
             }
+        }
+        public ObservableCollection<PeriodePaie> nouvPeriodes
+        {
+            get{  return _nouvPeriodes; }
+            set
+            {
+                if (_nouvPeriodes == value){ return; }
+                RaisePropertyChanging();
+                _nouvPeriodes = value;
+                RaisePropertyChanged();
+            }
 
         }
-
         private void click_periodeList(object sender, RoutedEventArgs e)
         {
             try
             {
-                nouvPeriodes.Add(new PeriodePaie(Convert.ToDateTime(datedebut.Text), Convert.ToDateTime(datefin.Text)));
-            }catch(Exception message){
-                MessageBox.Show(message.ToString());
+                PeriodePaie Periode = new PeriodePaie(Convert.ToDateTime(datedebut.Text), Convert.ToDateTime(datefin.Text));
+                nouvPeriodes.Add(Periode);
+            }catch(Exception){
+                MessageBox.Show("Les champs que vous avez entrez ne correspondes pas à des dates.");
             }
-           
+        }
+
+        private void deletelast_click_list(object sender, RoutedEventArgs e)
+        {
+            try{  nouvPeriodes.Remove(nouvPeriodes.Max()); } catch (Exception ){ MessageBox.Show("Action non permise."); }
         }
     }
 }

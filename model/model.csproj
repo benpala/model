@@ -204,36 +204,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="image\imageModel-1280x720.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="image\wpfFond.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Service\BD\" />
     <Folder Include="Service\Simple\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="image\closeTransparent.png" />
-    <Resource Include="image\closeWhite.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="image\Project.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="image\dollar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="image\icon-gadget-transparent.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="image\employe.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="image\logout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="image\font.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="image\print.ico" />
@@ -242,30 +217,16 @@
     <Resource Include="image\Edit.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="image\add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="image\documentAdd.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="image\calendar.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="image\addEmp.png" />
-    <Resource Include="image\Back-icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="image\apple-xcode-icon.png" />
+    <Resource Include="image\deleteArrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="image\filter.ico" />
-    <Resource Include="image\simulation.png" />
+    <Resource Include="image\addArrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="image\rapport.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="image\menu.jpg" />
+    <Resource Include="image\saveFile.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
