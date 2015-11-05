@@ -1,7 +1,7 @@
 ﻿<Window x:Class="model.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="GEM-C" Height="720" Width="1280"  MinHeight="720" MaxWidth="1280">
+        Title="GEM-C" Height="720" Width="1280"  MinHeight="720" MinWidth="1280">
     <Window.Background>
         <SolidColorBrush Color="#f5e3cb"></SolidColorBrush>
     </Window.Background>
@@ -36,14 +36,11 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal"  Background="#5f5f5f" >
-            <Button  Content="Quitter"  Width="100" Height="90"  Margin="48,0,0,0" Click="closeApp_Click"/>
-
-            
-            <Button Content="Employés" Width="100" Height="90" Margin="100,0,0,0" Click="employeLst" />
-
-            <Button  Content="Projets"  Width="100" Height="90" Margin="25,0,0,0"  Click="projetLst"/>
-            <Button Content="Paies"  Width="100" Height="90" Margin="25,0,0,0" Click="paieLst" />
-            
+            <Button Content="Quitter"   Width="100" Height="Auto" Margin="50,0,0,0"  Click="closeApp_Click"/>
+            <Button Content="Employés"  Width="100" Height="Auto" Margin="100,0,0,0" Click="employeLst" />
+            <Button Content="Projets"   Width="100" Height="Auto" Margin="25,0,0,0"  Click="projetLst"/>
+            <Button Content="Paies"     Width="100" Height="Auto" Margin="25,0,0,0"  Click="paieLst" />
+            <Button Content="Rapports"  Width="100" Height="Auto" Margin="25,0,0,0"  Click="EcranRapport" />
         </StackPanel>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,50,0">
             <Label   FontSize="18" FontStyle="Italic" Foreground="White" Content="GEM-C Générer mieux"/>
