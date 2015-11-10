@@ -102,12 +102,12 @@
 
         </Style>
         <Style x:Key="BouttonAdd" TargetType="{x:Type Button}">
-            <Setter Property="Background">
+           <!--<Setter Property="Background">
                 <Setter.Value>
                     <ImageBrush ImageSource="../image/apple-xcode-icon.png"/>
 
                 </Setter.Value>
-            </Setter>
+            </Setter>-->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -140,52 +140,12 @@
                 </Setter.Value>
             </Setter>
 
-        </Style>
-
-        <Style x:Key="BouttonRecherche" TargetType="{x:Type Button}">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <ImageBrush ImageSource="../image/filter.ico"/>
-
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Name="Chrome"
-                                Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="true">
-                            <ContentPresenter Name="Presenter" Margin="{TemplateBinding Padding}"
-                                    RecognizesAccessKey="True"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="RenderTransform">
-                                    <Setter.Value>
-                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
-
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect ShadowDepth="0" Color="#FF3212FF" Opacity="1" BlurRadius="20"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
     </UserControl.Resources>
     
     <Grid Name="ProjetGrid">
 
-        <DataGrid IsReadOnly="True" CanUserAddRows="False" Name="mygrid" Padding="10"  Margin="50,0,50,300" ItemsSource="{Binding Projet}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="370" VerticalAlignment="Bottom">
+        <DataGrid IsReadOnly="True" CanUserAddRows="False" Name="mygrid" Padding="10"  Margin="50,0,50,300" ItemsSource="{Binding Projet}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="370" VerticalAlignment="Bottom" EnableRowVirtualization="False">
 
             <DataGrid.Columns>
                 <DataGridTemplateColumn  Width="0.3*" Header="ID" >
