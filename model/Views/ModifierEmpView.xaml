@@ -3,6 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="720" Width="1280">
     <UserControl.Resources>
+        <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
+            <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd" BorderBrush="Black"
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="Width" Value="Auto">
+                    <Setter Property="MinWidth" Value="100"/>
+                </Trigger>
+                <Trigger Property="Height" Value="Auto">
+                    <Setter Property="MinHeight" Value="20"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
         <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource styleHeader}"/>
         </Style>
@@ -64,14 +83,16 @@
     </UserControl.Resources>
 
     <StackPanel Orientation="Vertical" Margin="50,0,50,0" >
+        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Modification d'un employe</Label>
         <StackPanel Orientation="Horizontal" Height="250" >
-            <StackPanel Orientation="Vertical" >
+                <StackPanel Orientation="Vertical" >
                 <Label VerticalAlignment="Top" Width="200"  Height="180" FontSize="12" Content="Photo :"/>
-                <Button  Width="100" Height="50"  Name="btnImage" Click="btnUplaod">Modifier photo</Button>
+                <Button  Width="140" Height="50"  Name="btnImage" Click="btnUplaod">Modifier photo</Button>
             </StackPanel>
-            <Image  Width="200" Height="250" Name="imgPhoto"  Source="/image/employe.png" ></Image>
-            
-            <StackPanel Height="200" Width="400" Margin="150,0,0,0">
+            <Border BorderThickness="2" BorderBrush="DarkOrange"  Width="200" Height="240" >
+                <Image  Width="200" Height="240" Name="imgPhoto"  ></Image>
+            </Border>
+            <StackPanel Height="200" Width="410" Margin="150,0,0,0">
                 <DataGrid IsReadOnly="True"  CanUserAddRows="False" x:Name="gridProjet"  ItemsSource="{Binding LiaisonProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                     <DataGrid.Columns >
                         
@@ -83,7 +104,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Width="100" Header="Occupé" >
+                        <DataGridTemplateColumn Width="110" Header="Occupé" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <CheckBox Margin="35,0,0,0" VerticalAlignment="Center" Name="cbxProjetEmploye"  IsChecked="{Binding Occupe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -98,27 +119,27 @@
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0" >
             <Label Width="200"  Height="25" FontSize="12" >Numéro de l'employé :</Label>
-            <TextBox Name="txtNum" IsReadOnly="True" Width="200"  Height="25" FontSize="12" Background="DarkGray" Text="{Binding Employe.ID}" ></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtNum" IsReadOnly="True" Width="200"  Height="25" FontSize="12" Background="DarkGray" Text="{Binding Employe.ID}" ></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Nom de famille :</Label>
-            <TextBox Name="txtNom" Width="200"  Height="25" FontSize="12" Text="{Binding Path=Employe.Nom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtNom" Width="200"  Height="25" FontSize="12" Text="{Binding Path=Employe.Nom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Prénom :</Label>
-            <TextBox Name="txtPrenom" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Prenom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtPrenom" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Prenom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label Width="200" Height="25" FontSize="12">Poste :</Label>
-            <TextBox Name="txtPoste" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Poste}" MaxLength="20" ></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtPoste" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Poste}" MaxLength="20" ></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
             <Label Width="200"  Height="25" FontSize="12">Salaire par heure:</Label>
-            <TextBox Name="txtSalaire" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Salaire , StringFormat=N2}" MaxLength="6" KeyDown="numSeulement" ></TextBox>
+            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtSalaire" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Salaire , StringFormat=N2}" MaxLength="6" KeyDown="numSeulement" ></TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,600,0">

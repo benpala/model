@@ -3,6 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="720" Width="1280">
     <UserControl.Resources>
+        <Style x:Key="AlternatingListViewItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="True"/>
+                        <Condition Property="ItemsControl.AlternationIndex" Value="0"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Foreground" Value="LightBlue"/>
+                        <Setter Property="Background" Value="LightBlue"/>
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="True"/>
+                        <Condition Property="ItemsControl.AlternationIndex"
+                              Value="1"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Foreground" Value="LightBlue"/>
+                        <Setter Property="Background" Value="LightBlue"/>
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+            </Style.Triggers>
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"  Color="LightBlue"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightBlue"/>
+            </Style.Resources>
+            <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
+        </Style>
         <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource styleHeader}"/>
         </Style>
@@ -63,13 +99,18 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Rapport employés</Label>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Gestion rapport</Label>
 
-        <StackPanel Orientation="Horizontal" Margin="39,40,61,10" >
-            <StackPanel Orientation="Vertical" Margin="50,0,50,0" >
-                <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Choisir un employé :"  HorizontalAlignment="Left"/>
-                <ComboBox x:Name="cbxEmploye" Width="280" Height="40" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding Employe}" SelectedIndex="0"  >
-                    <ComboBox.ItemTemplate>
+        <StackPanel Orientation="Horizontal" Margin="50,50,50,10" >
+            <StackPanel Orientation="Vertical" Margin="20,20,50,0" Width="300" >
+                <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="25">Rapport employé</Label>
+                <StackPanel Orientation="Horizontal"  >
+                    <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Choisir un employé :"  HorizontalAlignment="Left"/>
+                    <Button Style="{StaticResource BaseButtonStyle}" Content="Tous"  HorizontalAlignment="Center"  Width="80" Click="ChoisirTousEmploye" Height="30" VerticalAlignment="Center" />
+                </StackPanel>
+                
+                <ListBox Name="lstRapportEmploye" ItemsSource="{Binding Employe}"  AlternationCount="2"   SelectionMode="Multiple" Height="100">
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock FontSize="18">
                                 <TextBlock.Text>
@@ -80,28 +121,77 @@
                                 </TextBlock.Text>
                             </TextBlock>
                         </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                
-                <Label  Width="300"  Height="50" FontSize="20" Content="Choisir information à afficher :"  HorizontalAlignment="Left"/>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label  Width="300"  Height="50" FontSize="20" Content="Choisir l'information(s) à afficher :"  HorizontalAlignment="Left"/>
                 <Border CornerRadius="10" BorderBrush="Gray" Background="LightGray" BorderThickness="5" Padding="1" Width="300" HorizontalAlignment="Left" >
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
                             <Label  Width="220"  Height="50" FontSize="20" Content="Information générale :" HorizontalAlignment="Left" />
-                            <CheckBox Name="chxDateEmbauche" Margin="10,0,0,0" VerticalAlignment="Center" />
+                            <CheckBox Name="chxInfoGenerale" Margin="10,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <Label  Width="220"  Height="50" FontSize="20" Content="Détail financière:"  />
-                            <CheckBox Name="chxDateInactif" Margin="10,0,0,0" VerticalAlignment="Center" />
+                            <CheckBox Name="chxDetailFinanciere" Margin="10,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Width="220"  Height="50" FontSize="20" Content="Les projets :"  />
-                            <CheckBox Name="chxSalaire" Margin="10,0,0,0" VerticalAlignment="Center" />
+                            <CheckBox Name="chxProjetEmploye" Margin="10,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
                     </StackPanel>
                 </Border>
+                <Button Style="{StaticResource BaseButtonStyle}" Content="Générer en PDF"  HorizontalAlignment="Center"  Width="200" Click="GenererRapportEmploye" Height="50" VerticalAlignment="Bottom" Margin="0,30,0,0"/>
             </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="20,20,50,0" Width="300" >
+                <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="25">Rapport projet</Label>
+                <StackPanel Orientation="Horizontal"  >
+                    <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Choisir un projet :"  HorizontalAlignment="Left"/>
+                    <Button Style="{StaticResource BaseButtonStyle}" Content="Tous"  HorizontalAlignment="Center"  Width="80" Click="ChoisirTousProjet" Height="30" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <ListBox Name="lstRapportProjet" ItemsSource="{Binding Projet}"  AlternationCount="2"   SelectionMode="Multiple" Height="100">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock FontSize="18">
+                                <TextBlock.Text>
+                                        <Binding Path="nom"/>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label  Width="300"  Height="50" FontSize="20" Content="Choisir information à afficher :"  HorizontalAlignment="Left"/>
+                <Border CornerRadius="10" BorderBrush="Gray" Background="LightGray" BorderThickness="5" Padding="1" Width="300" HorizontalAlignment="Left" >
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <Label  Width="220"  Height="50" FontSize="20" Content="???? :" HorizontalAlignment="Left" />
+                            <CheckBox Name="chxX" Margin="10,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label  Width="220"  Height="50" FontSize="20" Content="???? :"  />
+                            <CheckBox Name="chxZ" Margin="10,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Width="220"  Height="50" FontSize="20" Content="???? :"  />
+                            <CheckBox Name="chxW" Margin="10,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Button Style="{StaticResource BaseButtonStyle}" Content="Générer en PDF"  HorizontalAlignment="Center"  Width="200" Click="GenererRapportEmploye" Height="50" VerticalAlignment="Bottom" Margin="0,30,0,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="50,20,20,0" Width="300" >
+                <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="25">Rapport financié</Label>
+                <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Date de début :"  HorizontalAlignment="Center"/>
+                <DatePicker Name="dtDateDebut"   Height="30" Width="200"  ></DatePicker>
+                <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Date de fin :"  HorizontalAlignment="Center"/>
+                <DatePicker Name="dtDateFin" Height="30" Width="200"   ></DatePicker>
+            </StackPanel>
+            <Button Style="{StaticResource BaseButtonStyle}" Content="Générer en PDF"  HorizontalAlignment="Center"  Width="200" Click="GenererRapportFinancie" Height="50" VerticalAlignment="Bottom" Margin="0,30,0,0"/>
+
         </StackPanel>
     </Grid>
 

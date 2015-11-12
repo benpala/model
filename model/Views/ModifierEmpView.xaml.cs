@@ -89,11 +89,11 @@ namespace model.Views
             int id = Int32.Parse(_Employe.ID);               // get ID d'employe et convertir en INT
 
             //Validation nom,prénom
-            if (txtNom.Text.Length < 2 || txtPrenom.Text.Length < 2 || txtPoste.Text.Length < 3)
-                MessageBox.Show("Le minimum de 2 caractères est requis pour nom, prénom et 3 caractères pour le poste !!");
-            //Vérification si le même nom et prénom de l'employé existe ou non
-            else if (_ServiceMysql.ExisteEmploye(txtNom.Text,txtPrenom.Text,txtNum.Text))
-                MessageBox.Show("Erreur : Il y existe déjà un employé avec le même nom et le même prénom!!!");
+            if (txtNom.Text.Length < 2 || txtNom.Text.Length > 20 || txtPrenom.Text.Length < 2 || txtPrenom.Text.Length > 20)
+                MessageBox.Show("Le nombre de caractère pour nom et prénom doit être entre 2 et 20 !!");
+            //Validation Poste
+            else if (txtPoste.Text.Length < 3 || txtPoste.Text.Length > 20)
+                MessageBox.Show("Le nombre de caractère pour la poste doit être entre 3 et 20 !!");
             //validation salaire
             else if (!ValidSalaire(txtSalaire.Text))
                 MessageBox.Show("Le salaire ne peut pas laisser vide et il doit être entre 0 et 500 !!");
@@ -101,7 +101,7 @@ namespace model.Views
             { //Update la BD
                 _ServiceMysql.UpdateInfoEmploye(_Employe,cbx);
                 _ServiceMysql.UpdateProjetEmploye(LiaisonProjetEmploye, _Employe.ID);
-                MessageBox.Show("Les informations sont modifiées");
+                MessageBox.Show("Les informations ont été modifiées");
                 retourMenu(this, null);
             }
         }

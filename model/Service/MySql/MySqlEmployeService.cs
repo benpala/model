@@ -6,6 +6,9 @@ using System.Text;
 using model.Models;
 using model.Service.Helpers;
 using MySql.Data.MySqlClient;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace model.Service.MySql
 {
@@ -114,30 +117,20 @@ namespace model.Service.MySql
                 };
         }
 
-       /* public List<bool> GetIDExist(string EmpID)
-        {
-            List<bool> ExisteID = new List<bool>();
-
-            foreach (string ID in liaisonID)
-                if (ID == EmpID)
-                    ExisteID.Add(true);
-                else 
-                    ExisteID.Add(false);
-            return ExisteID;
-        }*/
-
         //Ajouter un employé
-        public void AjoutUnEmploye(string Nom, string Prenom, string Poste, string Salaire, ObservableCollection<LiaisonProjetEmploye> Liaison)
+        public void AjoutUnEmploye(string Nom, string Prenom, string Poste, string Salaire,bool horsFonction, ObservableCollection<LiaisonProjetEmploye> Liaison)
         {
             try
             {
                 connexion = new MySqlConnexion();
                 StringBuilder buildReq = new StringBuilder();
-                buildReq.Append("INSERT INTO Employes (nom,prenom) VALUES ('");
+                buildReq.Append("INSERT INTO Employes (nom,prenom,horsFonction) VALUES ('");
                 buildReq.Append(Nom);
                 buildReq.Append("' , '");
                 buildReq.Append(Prenom);
-                buildReq.Append("')");
+                buildReq.Append("' , ");
+                buildReq.Append(horsFonction);
+                buildReq.Append(")");
                 connexion.Query(buildReq.ToString());
 
                 buildReq = new StringBuilder();
@@ -150,11 +143,17 @@ namespace model.Service.MySql
                 string ID = IDdataSet.Tables[0].Rows[0].ItemArray[0].ToString(); 
 
                 buildReq = new StringBuilder();
-                buildReq.Append("INSERT INTO detailfinancies (titreEmploi,tauxHoraireNormal,idEmploye) VALUES ('");
+                buildReq.Append("INSERT INTO detailfinancies (titreEmploi,tauxHoraireNormal,tauxHoraireOver,idEmploye) VALUES ('");
                 buildReq.Append(Poste);
                 buildReq.Append("' , '");
                 Salaire = Salaire.Replace(',', '.');
                 buildReq.Append(Salaire);
+                buildReq.Append("' , '");
+                Salaire = Salaire.Replace('.', ',');
+                Double salaireOver = Convert.ToSingle(Salaire) * 3 / 2;
+                salaireOver = Math.Round( salaireOver,2);
+                string s = salaireOver.ToString().Replace(',', '.');
+                buildReq.Append(s);
                 buildReq.Append("' , ");
                 buildReq.Append(ID);
                 buildReq.Append(")");
@@ -237,6 +236,10 @@ namespace model.Service.MySql
                     buildReq = new StringBuilder();
                     buildReq.Append("UPDATE detailfinancies SET titreEmploi = '");
                     buildReq.Append(emp.Poste);
+                    buildReq.Append("', tauxHoraireOver = '");
+                    double s = emp.Salaire * 3 / 2;
+                    string sOver = s.ToString().Replace(',','.');
+                    buildReq.Append(sOver);
                     buildReq.Append("', tauxHoraireNormal = '");
                     string salaire = emp.Salaire.ToString().Replace(',','.');
                     buildReq.Append(salaire);
@@ -251,7 +254,7 @@ namespace model.Service.MySql
                  throw;
              }            
          }
-         public void UpdateProjetEmploye(ObservableCollection<LiaisonProjetEmploye> liaisonPE,string ID)
+        public void UpdateProjetEmploye(ObservableCollection<LiaisonProjetEmploye> liaisonPE,string ID)
         {
         try
              {
@@ -303,5 +306,55 @@ namespace model.Service.MySql
                 throw;
             } 
         }
+        public void AjouterPhoto(Byte[] ImageData)
+        {
+            try
+            {
+                connexion = new MySqlConnexion();
+
+
+                StringBuilder buildReq = new StringBuilder();
+                buildReq.Append("INSERT INTO Photos (nom,typePhoto,codePhoto) VALUES (");
+                buildReq.Append("'TestPhoto' ,");
+                buildReq.Append("'JPG' ,'");
+                buildReq.Append(ImageData.ToString());
+                buildReq.Append("')");
+                connexion.Query(buildReq.ToString());
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+        }
+        public Byte[] GetPhoto()
+        {
+            
+            try
+            {
+                connexion = new MySqlConnexion();
+                StringBuilder buildReq = new StringBuilder();
+                buildReq.Append("SELECT codePhoto FROM Photos WHERE idPhoto = 1");
+                DataSet dataset = connexion.Query(buildReq.ToString());
+                Byte[] photo = Encoding.ASCII.GetBytes(dataset.Tables[0].Rows[0][0].ToString());
+                return photo;
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+        }
+        public static Byte[] GetBytesFromDataSet(DataSet ds)
+        {
+            Byte[] data = null;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                IFormatter bf = new BinaryFormatter();
+                ds.RemotingFormat = SerializationFormat.Binary;
+                bf.Serialize(stream, ds);
+                data = stream.ToArray();
+            }
+            return data;
+        }
+
     }
 }
