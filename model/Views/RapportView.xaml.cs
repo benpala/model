@@ -36,8 +36,10 @@ namespace model.Views
     {
         private ObservableCollection<Employe> _employe = new ObservableCollection<Employe>();
         private ObservableCollection<Projet> _projet = new ObservableCollection<Projet>();
+        private ObservableCollection<Paie> _paie = new ObservableCollection<Paie>();
         private IEmployeService _ServiceEmploye;
         private IProjetService _ServiceProjet;
+        private IPaiesService _ServicePaie;
         private IApplicationService _applicationService;
 
         public RetrieveEmployeArgs RetrieveArgs { get; set; }
@@ -52,6 +54,8 @@ namespace model.Views
             Employe = new ObservableCollection<Employe>(_ServiceEmploye.RetrieveAll());
             _ServiceProjet = ServiceFactory.Instance.GetService<IProjetService>();
             Projet = new ObservableCollection<Projet>(_ServiceProjet.retrieveAll());
+            _ServicePaie = ServiceFactory.Instance.GetService<IPaiesService>();
+            Paie = new ObservableCollection<Paie>(_ServicePaie.RetrieveAll());
             DataContext = this;
 
         }
@@ -88,6 +92,25 @@ namespace model.Views
 
                 RaisePropertyChanging();
                 _projet = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Paie> Paie
+        {
+            get
+            {
+                return _paie;
+            }
+            set
+            {
+                if (_paie == value)
+                {
+                    return;
+                }
+
+                RaisePropertyChanging();
+                _paie = value;
                 RaisePropertyChanged();
             }
         }
@@ -232,7 +255,21 @@ namespace model.Views
 
         private void GenererRapportFinancie(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("PDF");
+            try 
+            {
+                PeriodePaie tmp = new PeriodePaie(Convert.ToDateTime(dtDateDebut.Text), Convert.ToDateTime(dtDateFin.Text));
+
+                foreach(Paie paie in Paie)
+                { 
+                    
+                }
+                
+                MessageBox.Show("PDF");
+            }
+            catch(Exception)
+            { 
+                MessageBox.Show("Veuillez entrer des dates");
+            }
         }
 
         private void ChoisirTousProjet(object sender, RoutedEventArgs e)
