@@ -66,13 +66,19 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid>   
+           
         <DockPanel>
-            <StackPanel Orientation="Vertical" Background="#5f5f5f" Width="Auto" Height="100" Margin="50,50,0,0" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top">
-                <Button  Content="Ajout de périodes"  HorizontalAlignment="Left" Width="200" Click="click_addPeriode"  Margin="0,0,0,0"  Height="50" VerticalAlignment="Bottom" />
-                <Button  Content="Générer les relevés"  CommandParameter="{Binding ID}" Width="200" HorizontalAlignment="Left"  Margin="3,0,0,0" Height="50" Click="click_genereReleve"   VerticalAlignment="Bottom"/>
+            <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,0" HorizontalAlignment="Left" Width="300">
+                <TextBlock TextAlignment="Justify" DockPanel.Dock="Left" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300">Liste des paies</TextBlock>
             </StackPanel>
-            <DataGrid  DockPanel.Dock="Left" HorizontalAlignment="Left" IsReadOnly="True" Padding="10"  CanUserAddRows="False" Name="mygrid" Grid.Row="0"  Margin="50,50,50,200" ItemsSource="{Binding Paies}" CanUserSortColumns="True"  AutoGenerateColumns="False" >
+            <StackPanel Orientation="Vertical" Background="#5f5f5f" Width="Auto" Height="100" Margin="0,0,0,0" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top">
+                <Button  Content="Ajout de périodes"  Width="300" Click="click_addPeriode"  Margin="0,0,0,0"  Height="50" VerticalAlignment="Bottom" >
+          
+                </Button>
+                <Button  Content="Générer les relevés"  CommandParameter="{Binding ID}" Width="300" HorizontalAlignment="Left"  Margin="0,0,0,0" Height="50" Click="click_genereReleve"   VerticalAlignment="Bottom"/>
+            </StackPanel>
+            <DataGrid  DockPanel.Dock="Left" HorizontalAlignment="Left" IsReadOnly="True" Padding="10"  CanUserAddRows="False" Name="mygrid" Grid.Row="0"  Margin="0,-47,0,0" ItemsSource="{Binding Paies}" CanUserSortColumns="True"  AutoGenerateColumns="False" >
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="{x:Type DataGridColumnHeader}">
                         <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>

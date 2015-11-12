@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             Height="550" Width="1280">
+             Height="Auto" Width="Auto">
     <UserControl.Resources>
         <Style x:Key="BouttonAdd" TargetType="{x:Type Button}">
             <Setter Property="Background">
@@ -122,19 +122,19 @@
     </UserControl.Resources>
     <Grid>
         <DockPanel>
-            <StackPanel DockPanel.Dock="Top"  VerticalAlignment="Top" Orientation="Horizontal" Height="60">
-                <Label Margin="100,0,0,0" FontSize="18"   FontWeight="Bold" >Fin des périodes déjà enregistrés</Label>
-                <Label Margin="100,0,0,0" FontSize="18"  FontWeight="Bold" >Ajouter une période de paie</Label>
-                <Label Margin="220,0,0,0" FontSize="18" FontWeight="Bold">Fin des nouvelles périodes</Label>
+            <StackPanel Opacity="0.5" Background="#5f5f5f" Margin="0,0,0,0" Orientation="Horizontal" Width="Auto"  Height="Auto" DockPanel.Dock="Top">
+                <TextBlock TextAlignment="Center" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="100,0,0,0">Ajout de période(s) de paie(s)</TextBlock>
+
             </StackPanel>
-            <ListView Margin="135,0,0,0" DockPanel.Dock="Left" Background="LightGray" Width="200" Height="300" ItemsSource="{Binding Periodes}" HorizontalAlignment="Left"  VerticalAlignment="Top">
+            <ListView Margin="50,0,0,0"  DockPanel.Dock="Left" Background="LightGray" Width="150" Height="300" ItemsSource="{Binding Periodes}" HorizontalAlignment="Left"  VerticalAlignment="Top">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Fin}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListView>
-            <StackPanel Margin="150,0,0,0"  DockPanel.Dock="Left" Height="300"  Width="250"  VerticalAlignment="Top" >
+            <StackPanel Margin="100,0,0,0" DockPanel.Dock="Left" Height="300"  Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Top" >
+                
                 <Label >Date de début :</Label>
                 <DatePicker Name="datedebut"  Width="200"></DatePicker>
                 <Label FontWeight="Bold"  Width="200">l'heure de début est : 00:00:00</Label>
@@ -143,7 +143,7 @@
                 <DatePicker Name="datefin"  Width="200"></DatePicker>
                 <Label FontWeight="Bold"  Width="200">l'heure de fin est : 23:59:59</Label>
             </StackPanel>
-            <StackPanel Margin="50,0,0,0" DockPanel.Dock="Left"  Height="255" VerticalAlignment="Top"  Width="90">
+            <StackPanel DockPanel.Dock="Left" Margin="100,0,100,0" Height="255" VerticalAlignment="Top"  Width="100">
                 <Button Margin="5" Style="{StaticResource BouttonAdd}" Click="click_periodeList"   Width="75"  Height="75"  >
                     <Button.ToolTip>
                         <ToolTip Content="Ajouter à la liste"/>
@@ -160,7 +160,7 @@
                     </Button.ToolTip>
                 </Button>
             </StackPanel>
-            <ListView Margin="-20,0,0,0" Background="LightGray"  DockPanel.Dock="Left" Width="200" Height="300" VerticalAlignment="Top" ItemsSource="{Binding nouvPeriodes}" >
+            <ListView Background="LightGray" Margin="0,0,50,0"  DockPanel.Dock="Right" Width="150" Height="300" VerticalAlignment="Top" ItemsSource="{Binding nouvPeriodes}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Fin}"/>

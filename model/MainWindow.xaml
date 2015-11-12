@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="GEM-C" Height="720" Width="1280"  MinHeight="720" MinWidth="1280">
     <Window.Background>
-        <SolidColorBrush Color="#f5e3cb"></SolidColorBrush>
+        <SolidColorBrush Color="#fff3e5"></SolidColorBrush>
     </Window.Background>
     <Window.Resources>
-        <Style TargetType="{x:Type Button}">
+        <Style TargetType="{x:Type Button}" x:Key="MainMenu">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="White"></Setter>
             <Setter Property="FontWeight" Value="ExtraBold"></Setter>
@@ -26,6 +26,33 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="{x:Type Button}" x:Key="UnderMenu" >
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="FontWeight" Value="ExtraBold"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Expander">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="FontWeight" Value="ExtraBold"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -36,11 +63,20 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal"  Background="#5f5f5f" >
-            <Button Content="Quitter"   Width="100" Height="Auto" Margin="50,0,0,0"  Click="closeApp_Click"/>
-            <Button Content="Employés"  Width="100" Height="Auto" Margin="100,0,0,0" Click="employeLst" />
-            <Button Content="Projets"   Width="100" Height="Auto" Margin="25,0,0,0"  Click="projetLst"/>
-            <Button Content="Paies"     Width="100" Height="Auto" Margin="25,0,0,0"  Click="paieLst" />
-            <Button Content="Rapports"  Width="100" Height="Auto" Margin="25,0,0,0"  Click="EcranRapport" />
+            <Button Style="{StaticResource MainMenu}" Content="Quitter"   Width="100" Height="Auto" Margin="50,0,0,0"  Click="closeApp_Click"/>
+            <Button Style="{StaticResource MainMenu}">
+                <Expander Name="hcontCtrl" Header="Gestion">
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal"  >
+                        <Button Style="{StaticResource UnderMenu}" Content="Employés"  Width="100" Height="Auto" Margin="0,0,0,0"  Click="employeLst" />
+                        <Button Style="{StaticResource UnderMenu}" Content="Projets"   Width="100" Height="Auto" Margin="0,0,0,0"  Click="projetLst"/>
+                        <Button Style="{StaticResource UnderMenu}" Content="Paies"     Width="100" Height="Auto" Margin="0,0,0,0"  Click="paieLst" />
+                        <Button Style="{StaticResource UnderMenu}" Content="Rapports"  Width="100" Height="Auto" Margin="0,0,0,0"  Click="EcranRapport" />
+                    </StackPanel>
+                </Expander>
+            </Button>
+           
+            
+           
         </StackPanel>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,50,0">
             <Label   FontSize="18" FontStyle="Italic" Foreground="White" Content="GEM-C Générer mieux"/>
