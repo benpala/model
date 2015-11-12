@@ -121,19 +121,19 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <DockPanel>
+        <DockPanel Width="720">
             <StackPanel Opacity="0.5" Background="#5f5f5f" Margin="0,0,0,0" Orientation="Horizontal" Width="Auto"  Height="Auto" DockPanel.Dock="Top">
-                <TextBlock TextAlignment="Center" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="100,0,0,0">Ajout de période(s) de paie(s)</TextBlock>
+                <TextBlock TextAlignment="Center" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0">Ajout de période(s) de paie(s)</TextBlock>
 
             </StackPanel>
-            <ListView Margin="50,0,0,0"  DockPanel.Dock="Left" Background="LightGray" Width="150" Height="300" ItemsSource="{Binding Periodes}" HorizontalAlignment="Left"  VerticalAlignment="Top">
+            <ListView Margin="0,0,0,0"  DockPanel.Dock="Left" Background="LightGray" Width="150" Height="300" ItemsSource="{Binding Periodes}" HorizontalAlignment="Left"  VerticalAlignment="Top">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Fin}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListView>
-            <StackPanel Margin="100,0,0,0" DockPanel.Dock="Left" Height="300"  Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <StackPanel Margin="50,0,0,0" DockPanel.Dock="Left" Height="300"  Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Top" >
                 
                 <Label >Date de début :</Label>
                 <DatePicker Name="datedebut"  Width="200"></DatePicker>
@@ -143,7 +143,15 @@
                 <DatePicker Name="datefin"  Width="200"></DatePicker>
                 <Label FontWeight="Bold"  Width="200">l'heure de fin est : 23:59:59</Label>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Left" Margin="100,0,100,0" Height="255" VerticalAlignment="Top"  Width="100">
+           
+            <ListView Background="LightGray"  DockPanel.Dock="Right" Width="150" Height="300" VerticalAlignment="Top" ItemsSource="{Binding nouvPeriodes}" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Fin}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListView>
+            <StackPanel DockPanel.Dock="Right" Margin="0,0,0,0" Height="255" VerticalAlignment="Top"  Width="Auto">
                 <Button Margin="5" Style="{StaticResource BouttonAdd}" Click="click_periodeList"   Width="75"  Height="75"  >
                     <Button.ToolTip>
                         <ToolTip Content="Ajouter à la liste"/>
@@ -160,13 +168,6 @@
                     </Button.ToolTip>
                 </Button>
             </StackPanel>
-            <ListView Background="LightGray" Margin="0,0,50,0"  DockPanel.Dock="Right" Width="150" Height="300" VerticalAlignment="Top" ItemsSource="{Binding nouvPeriodes}" >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Fin}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListView>
         </DockPanel>
     </Grid>
 </UserControl>
