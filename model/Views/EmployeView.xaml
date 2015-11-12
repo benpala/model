@@ -99,62 +99,98 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        <Style x:Key="BouttonPrint" TargetType="{x:Type Button}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="../image/Edit.png"/>
 
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Chrome"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter Name="Presenter" Margin="{TemplateBinding Padding}"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" Color="#FF3212FF" Opacity="1" BlurRadius="20"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
     <Grid>
+                    <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Employés</Label>
 
-        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Employés</Label>
+        <DockPanel>
+            <StackPanel Orientation="Vertical" Background="#5f5f5f" Width="Auto" Height="50" Margin="50,50,0,0" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top">
+                <Button Content="Ajout d'un employé"  Click="click_addEmploye" HorizontalAlignment="Left" Width="200" Height="50" VerticalAlignment="Bottom" />
+            </StackPanel>
+            <DataGrid  DockPanel.Dock="Left" IsReadOnly="True" HorizontalAlignment="Left" Padding="10" CanUserAddRows="False" Name="mygrid" Grid.Row="0"  Margin="50,50,50,200" Height="450" ItemsSource="{Binding Employe}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}"  VerticalAlignment="Bottom"  EnableRowVirtualization="False">
+                <DataGrid.Columns >
+                    <DataGridTemplateColumn  Width="0.3*" Header="ID" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
 
-        <DataGrid IsReadOnly="True"  CanUserAddRows="False" Name="mygrid"  Margin="50,0,50,300" ItemsSource="{Binding Employe}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="370" VerticalAlignment="Bottom">
-            <DataGrid.Columns >
-                <DataGridTemplateColumn  Width="0.3*" Header="ID" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                                <TextBox Text="{Binding ID}"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Width="1*" Header="Prénom"  >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
 
-                            <TextBox Text="{Binding ID}"></TextBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn  Width="1*" Header="Prénom"  >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                                <TextBox Text="{Binding Prenom}"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Width="1*" Header="Nom de famille">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
 
-                            <TextBox Text="{Binding Prenom}"></TextBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn  Width="1*" Header="Nom de famille">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                                <TextBox Text="{Binding Nom}"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="1*" Header="Poste occupé">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
 
-                            <TextBox Text="{Binding Nom}"></TextBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="1*" Header="Poste occupé">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                                <TextBox Text="{Binding Poste}"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="0.5*" Header="Modifier">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource BouttonPrint}" Padding="20px" Height="35" Width="40" Click="click_Modifier" CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
 
-                            <TextBox Text="{Binding Poste}"></TextBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="1*" Header="Modifier">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Style="{StaticResource BaseButtonStyle}" Padding="5px" Height="30" Width="280" Content="Modifier" Click="click_Modifier" CommandParameter="{Binding}"></Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <Button Style="{StaticResource BouttonAdd}"  Margin="50,0,0,195" Click="click_addEmploye" HorizontalAlignment="Left" Width="75" Height="75" VerticalAlignment="Bottom">
-            <Button.ToolTip>
-                <ToolTip>Ajouté un employé</ToolTip>
-            </Button.ToolTip>
-        </Button>
-
+        </DockPanel>
     </Grid>
 </UserControl>

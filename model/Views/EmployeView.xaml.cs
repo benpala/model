@@ -41,29 +41,29 @@ namespace model.Views
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
             Employe = new ObservableCollection<Employe>(_ServiceEmploye.RetrieveAll());
-            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                int compteur = 0;
-                foreach (Employe emp in Employe)
-                {
-                    DataGridRow row = (DataGridRow)mygrid.ItemContainerGenerator.ContainerFromIndex(compteur);
-                    if (emp.HorsFonction == true)
-                    {
-                        var converter = new System.Windows.Media.BrushConverter();
-                        var brush = (Brush)converter.ConvertFromString("#DC143C");
-                        //row.Background = brush;
-                        compteur++;
-                    }
-                    else
-                    {
-                        var converter = new System.Windows.Media.BrushConverter();
-                        var brush = (Brush)converter.ConvertFromString("#00FF00");
-                        //row.Background = brush;
-                        compteur++;
-                    }
-                }
-                compteur = 0;
-            }));
+               Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+               {
+                   int compteur = 0;
+                   foreach (Employe emp in Employe)
+                   {
+                       DataGridRow row = (DataGridRow)mygrid.ItemContainerGenerator.ContainerFromIndex(compteur);
+                       if(row != null)
+                       { 
+                           if (emp.HorsFonction == true)
+                           {
+                               var converter = new System.Windows.Media.BrushConverter();
+                               row.Background = Brushes.Red;
+                           }
+                           else
+                           {
+                               var converter = new System.Windows.Media.BrushConverter();
+                               row.Background = Brushes.Green;
+                           }
+                           compteur++;
+                       }
+                   }
+                   compteur = 0;
+               }));
         }
 
         #region INotifyPropertyChanged INotifyPropertyChanging
