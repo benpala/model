@@ -37,9 +37,11 @@
     <Reference Include="MySql.Data">
       <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="PdfSharp, Version=1.31.1789.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\PdfSharp.dll</HintPath>
+    <Reference Include="PdfSharp">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp.resources, Version=1.31.1789.0, Culture=de, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -236,6 +238,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="image\saveFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Close.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

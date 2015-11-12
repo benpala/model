@@ -38,15 +38,9 @@ namespace model.Views
             RetrieveArgs = new RetrievePaieArgs();
             _periodeService = ServiceFactory.Instance.GetService<IPeriodeService>();
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
-            try
-            {
-                Periodes = new ObservableCollection<PeriodePaie>(_periodeService.RetrieveAll());
-                
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Votre base de données n'est pas accessible. Veuillez vous référer au document de configuration");
-            }
+
+            try  { Periodes = new ObservableCollection<PeriodePaie>(_periodeService.RetrieveAll()); }
+            catch (Exception) {  MessageBox.Show("Votre base de données n'est pas accessible. Veuillez vous référer au document de configuration"); }
         }
         #region INotifyPropertyChanged INotifyPropertyChanging
         public event PropertyChangedEventHandler PropertyChanged;
@@ -111,6 +105,7 @@ namespace model.Views
             {
                 PeriodePaie Periode = new PeriodePaie(Convert.ToDateTime(datedebut.Text), Convert.ToDateTime(datefin.Text));
                 nouvPeriodes.Add(Periode);
+                MessageBox.Show("Réussite de l'enregistrement des périodes");
             }catch(Exception){
                 MessageBox.Show("Les champs que vous avez entrez ne correspondes pas à des dates.");
             }
@@ -118,7 +113,7 @@ namespace model.Views
 
         private void deletelast_click_list(object sender, RoutedEventArgs e)
         {
-            try{  nouvPeriodes.Remove(nouvPeriodes.Max()); } catch (Exception ){ MessageBox.Show("Action non permise."); }
+            try{  nouvPeriodes.Remove(nouvPeriodes.Last()); } catch (Exception ){ MessageBox.Show("Action non permise."); }
         }
     }
 }
