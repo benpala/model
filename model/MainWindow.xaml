@@ -63,10 +63,19 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal"  Background="#5f5f5f" >
-            <Button Style="{StaticResource MainMenu}" Content="Quitter"   Width="100" Height="Auto" Margin="50,0,0,0"  Click="closeApp_Click"/>
-            <Button Style="{StaticResource MainMenu}">
+            <Button Style="{StaticResource MainMenu}" Content="Quitter"   Width="150" Height="Auto" Margin="0,0,0,0"  Click="closeApp_Click">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <Image Width="25" Height="25" Source="image/Close.png" />
+                            <TextBlock TextAlignment="Center">Quitter</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Style="{StaticResource MainMenu}" Width="Auto" MinWidth="150" Height="Auto" Margin="0,0,0,0">
                 <Expander Name="hcontCtrl" Header="Gestion">
-                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal"  >
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="15,0,0,0"  >
                         <Button Style="{StaticResource UnderMenu}" Content="Employés"  Width="100" Height="Auto" Margin="0,0,0,0"  Click="employeLst" />
                         <Button Style="{StaticResource UnderMenu}" Content="Projets"   Width="100" Height="Auto" Margin="0,0,0,0"  Click="projetLst"/>
                         <Button Style="{StaticResource UnderMenu}" Content="Paies"     Width="100" Height="Auto" Margin="0,0,0,0"  Click="paieLst" />
