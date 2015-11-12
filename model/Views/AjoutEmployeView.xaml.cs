@@ -13,6 +13,7 @@ using Microsoft.Win32;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Media;
 
 namespace model.Views
 {
@@ -189,11 +190,13 @@ namespace model.Views
               "Portable Network Graphic (*.png)|*.png";
             if (op.ShowDialog() == true)
             {
-              /*  MemoryStream ms = new MemoryStream();
+               
+                /*MemoryStream ms = new MemoryStream();
                 Byte[] bindata = _ServiceMysql.GetPhoto();
                 ms.Write(bindata, 0, bindata.Length);
                 imgPhoto.Source = ToImage(bindata);*/
 
+                
                 imgPhoto.Source = new BitmapImage(new Uri(op.FileName));
                 FileStream fs;
                 BinaryReader br;
@@ -212,20 +215,18 @@ namespace model.Views
              appStartPath = String.Format(appStartPath + "\\{0}\\" + filename, foldername);
              return appStartPath;
          }*/
-        public BitmapImage ToImage(Byte[] image)
+        public ImageSource ToImage(Byte[] imageData)
         {
-            BitmapImage imageSource = new BitmapImage();
 
-            using (MemoryStream stream = new MemoryStream(image))
-            {
-                stream.Seek(0, SeekOrigin.Begin);
-                imageSource.BeginInit();
-                imageSource.StreamSource = stream;
-                imageSource.CacheOption = BitmapCacheOption.OnLoad;
-                imageSource.EndInit();
-            }
+            BitmapImage biImg = new BitmapImage();
+            MemoryStream ms = new MemoryStream(imageData);
+            biImg.BeginInit();
+            biImg.StreamSource = ms;
+            biImg.EndInit();
 
-            return imageSource;
+            ImageSource imgSrc = biImg as ImageSource;
+
+            return imgSrc;
         }
         public Byte[] ImageToByte(BitmapImage imageSource)
         {
@@ -241,6 +242,8 @@ namespace model.Views
 
             return buffer;
         }
+
+        
         #endregion
     }
 }

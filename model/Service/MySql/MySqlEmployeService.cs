@@ -311,15 +311,23 @@ namespace model.Service.MySql
             try
             {
                 connexion = new MySqlConnexion();
-
-
+                MySqlCommand cmd;
+                cmd.Connection = (MySql.Data.MySqlClient.MySqlConnexion)connexion;
+                string SQLcmd = "INSERT INTO Photos (nom,typePhoto,codePhoto) VALUES (@nom ,@type , @image)";
+                cmd = new MySqlCommand(SQLcmd);
+                cmd.Parameters.Add("@nom","testPhoto");
+                cmd.Parameters.Add("@type","JPG");
+                cmd.Parameters.Add("@image", MySqlDbType.Blob).Value = ImageData;
+                
+                cmd.ExecuteNonQuery();
+                /*
                 StringBuilder buildReq = new StringBuilder();
                 buildReq.Append("INSERT INTO Photos (nom,typePhoto,codePhoto) VALUES (");
                 buildReq.Append("'TestPhoto' ,");
-                buildReq.Append("'JPG' ,'");
-                buildReq.Append(ImageData.ToString());
-                buildReq.Append("')");
-                connexion.Query(buildReq.ToString());
+                buildReq.Append("'JPG' , ");
+                buildReq.Append(ImageData);
+                buildReq.Append(")");
+                connexion.Query(buildReq.ToString());*/
             }
             catch (MySqlException)
             {
@@ -333,9 +341,9 @@ namespace model.Service.MySql
             {
                 connexion = new MySqlConnexion();
                 StringBuilder buildReq = new StringBuilder();
-                buildReq.Append("SELECT codePhoto FROM Photos WHERE idPhoto = 1");
+                buildReq.Append("SELECT codePhoto FROM Photos WHERE idPhoto = 8");
                 DataSet dataset = connexion.Query(buildReq.ToString());
-                Byte[] photo = Encoding.ASCII.GetBytes(dataset.Tables[0].Rows[0][0].ToString());
+                 Byte[] photo = Encoding.ASCII.GetBytes(dataset.Tables[0].Rows[0][0].ToString());
                 return photo;
             }
             catch (MySqlException)
