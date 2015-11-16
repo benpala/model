@@ -258,17 +258,70 @@ namespace model.Views
             try 
             {
                 PeriodePaie tmp = new PeriodePaie(Convert.ToDateTime(dtDateDebut.Text), Convert.ToDateTime(dtDateFin.Text));
+                float BruteTotal = 0;
+
+                PdfDocument pdf = new PdfDocument();
+                pdf.Info.Title = "Rapport Paie";
+                PdfPage page;
+                page = pdf.AddPage();
+                page.Orientation = PageOrientation.Portrait;
+                page.Size = PageSize.A4;
+                XGraphics graph = XGraphics.FromPdfPage(page);
+
+                XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
+                var formatter = new XTextFormatter(graph);
+                int height = 0;
+
+                var layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
 
                 foreach(Paie paie in Paie)
-                { 
-                    
+                {
+                    int tmpD = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Debut);
+                    int tmpF = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Fin);
+
+                    if (height > 700)
+                    {
+                        page = pdf.AddPage();
+                        graph = XGraphics.FromPdfPage(page);
+                        formatter = new XTextFormatter(graph);
+                        height = 0;
+                    }
+
+                    if (tmpD > 0 && tmpF < 0)
+                    {
+                        layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
+                        formatter.DrawString((paie.DateGenerationRapport.ToString() + " " + paie.Nom.ToString()+" "+paie.ID), font, XBrushes.Black, layoutRectangle);
+                        layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
+                        formatter.DrawString(("Montant Brute : " + Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+                        BruteTotal = BruteTotal + paie.MontantBrute;
+                    }
+
+                    graph.DrawLine(XPens.Black, 10, height += 20, 500, height);
                 }
-                
-                MessageBox.Show("PDF");
+
+                if(BruteTotal == 0)
+                    throw new Exception("erreur");
+
+                layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
+                formatter.DrawString(("Cout Pour la période : " +tmp.Debut+" à "+tmp.Fin+" Montant : "+Math.Round(Convert.ToSingle(BruteTotal), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+
+                Process[] processlist = Process.GetProcesses();
+
+                foreach(Process theprocess in processlist)
+                {
+                    //MessageBox.Show("Process: "+theprocess.ProcessName+" ID: "+theprocess.Id);
+                }
+
+                string pdfFilename = "RapportPaie.pdf";
+                pdf.Save(pdfFilename);
+                Process.Start(pdfFilename);
             }
-            catch(Exception)
+            catch(Exception E)
             { 
-                MessageBox.Show("Veuillez entrer des dates");
+                if(E.Message != "erreur")
+                    MessageBox.Show("Veuillez entrer des dates");
+                else
+                    MessageBox.Show("Aucune paie durant cette période");
             }
         }
 
