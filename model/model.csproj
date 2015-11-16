@@ -45,7 +45,7 @@
     </Reference>
     <Reference Include="PdfSharp.resources, Version=1.31.1789.0, Culture=de, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\de\PdfSharp.resources.dll</HintPath>
+      <HintPath>P:\Projets\PROJ_420A0-A15\GEM-C\Debug\PdfSharp.resources.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

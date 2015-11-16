@@ -310,7 +310,7 @@ namespace model.Service.MySql
         {
             try
             {
-                connexion = new MySqlConnexion();
+               /* connexion = new MySqlConnexion();
                 MySqlCommand cmd;
                 cmd.Connection = (MySql.Data.MySqlClient.MySqlConnexion)connexion;
                 string SQLcmd = "INSERT INTO Photos (nom,typePhoto,codePhoto) VALUES (@nom ,@type , @image)";

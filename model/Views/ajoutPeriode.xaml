@@ -162,7 +162,7 @@
                         <ToolTip Content="Enlever de la liste"/>
                     </Button.ToolTip>
                 </Button>
-                <Button Margin="8" Style="{StaticResource saveFile}" Click="click_periodeList"   Width="70"  Height="70"  >
+                <Button Margin="8" Style="{StaticResource saveFile}" Click="click_enregistrer"   Width="70"  Height="70"  >
                     <Button.ToolTip>
                         <ToolTip Content="Enregistrer la liste"/>
                     </Button.ToolTip>

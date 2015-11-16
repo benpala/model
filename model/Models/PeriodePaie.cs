@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using model.Service.MySql;
 
 namespace model.Models
 {
@@ -31,6 +32,10 @@ namespace model.Models
             {
                 throw new Exception();
             }
+        }
+        public bool register(PeriodePaie p){
+            MySqlPeriodeService _service = new MySqlPeriodeService();
+            return (_service.registerPeriode(p));
         }
     }
 }

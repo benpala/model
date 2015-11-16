@@ -43,9 +43,25 @@ namespace model.Service.MySql
         {
             return new PeriodePaie(Convert.ToDateTime(row["dateDebut"]), Convert.ToDateTime(row["dateFin"])){};
         }
-        public void registerPeriode()
+        public bool registerPeriode(PeriodePaie p)
         {
-            // ne fait rien pour le momment.
+            try
+            {
+               
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append("INSERT INTO PeriodePaies (dateDebut, dateFin) VALUES('");
+                sb.Append(p.Debut.ToString());
+                sb.Append("', '");
+                sb.Append(p.Fin.ToString());
+                sb.Append("')");
+                connexion.Query(sb.ToString());
+                return true;
+            }
+            catch (MySqlException)
+            {
+                return false;
+            }
         }
     }
 }

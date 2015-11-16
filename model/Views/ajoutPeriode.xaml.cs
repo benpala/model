@@ -104,8 +104,44 @@ namespace model.Views
             try
             {
                 PeriodePaie Periode = new PeriodePaie(Convert.ToDateTime(datedebut.Text), Convert.ToDateTime(datefin.Text));
-                nouvPeriodes.Add(Periode);
-                MessageBox.Show("Réussite de l'enregistrement des périodes");
+                string message ="";
+                foreach (PeriodePaie p in Periodes)
+                {
+                    if (p.Debut == Periode.Debut)
+                    {
+                        message = "Cette période à déjà été enregistré dans le passé!";
+                    }   
+                }
+                if(message == "")
+                {
+                    if (nouvPeriodes.Count() == 0)
+                    {
+                        nouvPeriodes.Add(Periode);
+                    }
+                    else
+                    {
+                        foreach (PeriodePaie p2 in nouvPeriodes)
+                        {
+                            if (p2.Debut == Periode.Debut)
+                            {
+                               message = "Vous avez déjà choisi cette période!";
+                            }
+                        }
+                        if(message == "")
+                        {
+                            nouvPeriodes.Add(Periode);
+                        }
+                        else
+                        {
+                            MessageBox.Show(message);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(message);
+                }
+               
             }catch(Exception){
                 MessageBox.Show("Les champs que vous avez entrez ne correspondes pas à des dates.");
             }
@@ -114,6 +150,31 @@ namespace model.Views
         private void deletelast_click_list(object sender, RoutedEventArgs e)
         {
             try{  nouvPeriodes.Remove(nouvPeriodes.Last()); } catch (Exception ){ MessageBox.Show("Action non permise."); }
+        }
+
+        private void click_enregistrer(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                foreach (PeriodePaie p in nouvPeriodes)
+                {
+                    if(p.register(p))
+                    {
+                        nouvPeriodes.Remove(p);
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                    
+                }
+                
+                MessageBox.Show("Tous les dates on bien étés enregistrés.");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Les dates n'ont pas étés correctement ajoutés.");
+            }
         }
     }
 }
