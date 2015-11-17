@@ -71,6 +71,7 @@ namespace model.Models
         public virtual string DateGenerationRapport { get; set; }
         // Comme l'employé à une liste d'heure nous savons ici c'est quoi les heures pour l'employé.
         public virtual string Nom { get; set; }
+        public virtual string salaire { get; set; }
         private float montantbrute;
         public virtual float MontantBrute {
             get
@@ -110,7 +111,7 @@ namespace model.Models
         public virtual float MontantAllocations { get; set; }
         public virtual float MontantCommission { get; set; }
         public virtual float MontantPourboire { get; set; }
-
+        public virtual string updatedetail { get; set; }
         public float getTauxFederal(float montantBrute, float heure, float heureSupp, String idPeriode) 
         {
             MySqlPaieService _service = new MySqlPaieService();
@@ -175,7 +176,8 @@ namespace model.Models
 
             NombreHeureSupp = 0;
             MontantPrime = 0;
-
+            salaire = String.Empty;
+            updatedetail= String.Empty;
             MontantIndemnite = 0;
             MontantAllocations = 0;
             MontantCommission = 0;
@@ -260,7 +262,7 @@ namespace model.Models
                         }
                     }
                     // change la période paye à terminé.
-                    throw new Exception("Réussite de la génération des paies pour la période de :" + start.ToString() + " aux " + end.ToString());
+                    throw new Exception("Réussite de la génération des paies pour la période de :" + start.Date.ToString() + " aux " + end.Date.ToString());
                 }
             }
             catch (Exception e)
@@ -268,6 +270,8 @@ namespace model.Models
                 throw e;
             }
         }
+        
+    
     }
 
 }

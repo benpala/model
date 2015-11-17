@@ -77,7 +77,11 @@
                 <TextBlock  Margin="20,0,0,0" FontWeight="Bold" Name="nomEmploye"  Height="20" Width="Auto" Text="{Binding Paies.Nom}" ></TextBlock>
             </StackPanel>
             <StackPanel Background="#E5E4E2"  Margin="0,-47,0,0" DockPanel.Dock="Left" Width="350">
-                <Label  Margin="0,50,0,0"  Width="Auto" Height="25" >Montant brute $:</Label>
+                <StackPanel Orientation="Horizontal">
+                    <Label  Margin="0,50,0,0"  Width="Auto" Height="25" >Montant brute $ aux taux de :</Label>
+                    <TextBlock Margin="5,50,0,-5" FontWeight="Bold" Name="Salaire" HorizontalAlignment="Left"  Height="20" Width="100" Text="{Binding Paies.salaire, StringFormat=N2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBlock>
+
+                </StackPanel>
                 <TextBlock Margin="5,0,0,0" FontWeight="Bold" Name="Montant" HorizontalAlignment="Left"  Height="20" Width="100" Text="{Binding Paies.MontantBrute, StringFormat=N2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBlock>
                 <Label  Width="Auto" Height="25" >Montant net $:</Label>
                 <TextBlock Margin="5,0,0,0" FontWeight="Bold" Name="montantNet"  HorizontalAlignment="Left"  Height="20" Width="100" Text="{Binding Paies.MontantNet, StringFormat=N2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBlock>

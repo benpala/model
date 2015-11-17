@@ -21,12 +21,13 @@ namespace model.Service.MySql
                 connexion = new MySqlConnexion();
 
                 string requete = "SELECT paies.idPaies, CONCAT(Employes.prenom,' ',Employes.nom) AS name,"
-                + "CONCAT(periodepaies.dateDebut,' aux ', periodepaies.dateFin) AS periodeP, dateGenerationRapport, montantDueBrute,"
+                + "CONCAT(DATE(periodepaies.dateDebut),' aux ', DATE(periodepaies.dateFin)) AS periodeP, dateGenerationRapport, montantDueBrute,"
                 + "montantDueNet, nombreHeure, nombreHeureSupp, montantPrime, montantIndemnites,montantAllocations,"
-                + "montantCommissions,montantPourboire,paies.idPeriode, paies.idEmploye "
+                + "montantCommissions,montantPourboire,paies.idPeriode, paies.idEmploye,detailfinancies.tauxHoraireNormal, paies.updatedetail "
                 + "FROM Paies "
                 + "INNER JOIN Employes ON Employes.idEmploye=Paies.idEmploye "
-                + "INNER JOIN periodepaies ON periodepaies.idPeriode=paies.idPeriode";
+                + "INNER JOIN detailfinancies ON Employes.idEmploye=detailfinancies.idEmploye "
+                + "INNER JOIN periodepaies ON periodepaies.idPeriode=paies.idPeriode ORDER BY name ASC, dateGenerationRapport DESC";
 
                 DataSet dataset = connexion.Query(requete);
                 DataTable table = dataset.Tables[0];
@@ -105,7 +106,8 @@ namespace model.Service.MySql
                 req.Append("', montantAllocations='"); req.Append(updatePaie.MontantAllocations.ToString().Replace(",", "."));
                 req.Append("', montantCommissions='"); req.Append(updatePaie.MontantCommission.ToString().Replace(",", "."));
                 req.Append("', montantPourboire='"); req.Append(updatePaie.MontantPourboire.ToString().Replace(",", "."));
-                req.Append("' WHERE idPaies='");
+                req.Append("', updatedetail=NOW() "); 
+                req.Append(" WHERE idPaies='");
                 req.Append(updatePaie.ID.ToString());
                 req.Append("' ");
 
@@ -235,7 +237,9 @@ namespace model.Service.MySql
                 MontantCommission = (float)row["montantCommissions"],
                 MontantPourboire = (float)row["montantPourboire"],
                 idPeriode = row["idPeriode"].ToString(),
-                idEmploye = row["idEmploye"].ToString()
+                idEmploye = row["idEmploye"].ToString(),
+                salaire = row["tauxHoraireNormal"].ToString(),
+                updatedetail = row["updatedetail"].ToString()
             };
         }
     }
