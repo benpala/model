@@ -305,23 +305,19 @@ namespace model.Views
                 layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
                 formatter.DrawString(("Cout Pour la période : " +tmp.Debut+" à "+tmp.Fin+" Montant : "+Math.Round(Convert.ToSingle(BruteTotal), 2) + " $"), font, XBrushes.Black, layoutRectangle);
 
-                Process[] processlist = Process.GetProcesses();
-
-                foreach(Process theprocess in processlist)
-                {
-                    //MessageBox.Show("Process: "+theprocess.ProcessName+" ID: "+theprocess.Id);
-                }
-
                 string pdfFilename = "RapportPaie.pdf";
                 pdf.Save(pdfFilename);
                 Process.Start(pdfFilename);
             }
             catch(Exception E)
             { 
-                if(E.Message != "erreur")
-                    MessageBox.Show("Veuillez entrer des dates");
-                else
+                if(E.Message == "erreur")
                     MessageBox.Show("Aucune paie durant cette période");
+                else if(E.Message == "Le processus ne peut pas accéder au fichier 'D:\\model\\model\\bin\\Debug\\RapportPaie.pdf', car il est en cours d'utilisation par un autre processus.")
+                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer");
+                else
+                    MessageBox.Show("Veuillez entrer des dates");
+                    
             }
         }
 
