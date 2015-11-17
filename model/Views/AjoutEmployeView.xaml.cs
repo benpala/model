@@ -24,6 +24,9 @@ namespace model.Views
     {
         MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
         private ObservableCollection<LiaisonProjetEmploye> _LiaisonProjetEmploye;
+        private Byte[] photoData;
+        private string format;
+
         public AjoutEmployeView()
         {
             InitializeComponent();
@@ -68,13 +71,8 @@ namespace model.Views
                 MessageBox.Show("Le salaire ne peut pas laisser vide et il doit être entre 0 et 500 !!");
             else
             {   //Insérer dans la BD
-                _ServiceMysql.AjoutUnEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text,this.chxHorsFonction.IsChecked.Value, LiaisonProjetEmploye);
-                /* string filepath = "EmployePhoto.jpg";
-                 string name = System.IO.Path.GetFileName(filepath);
-                 string destinationPath = GetDestinationPath(name, "image");
-
-                 File.Copy(filepath, destinationPath, true);*/
-                
+                _ServiceMysql.AjoutUnEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text,this.chxHorsFonction.IsChecked.Value,DateEmbauche.ToString(), LiaisonProjetEmploye);
+                _ServiceMysql.AjouterPhoto(photoData, txtAjoutNom.Text , txtAjoutPrenom.Text, format);
                 MessageBox.Show("Le nouveau employé est ajouté!");
                 retourMenu(this, null);
             }
@@ -183,66 +181,29 @@ namespace model.Views
         #region Photo
         private void btnUplaod(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog op = new OpenFileDialog();
+           OpenFileDialog op = new OpenFileDialog();
             op.Title = "Select a picture";
             op.Filter = "Tous les formats |*.jpg;*.png|" +
               "JPG (*.jpg;)|*.jpg;|" +
               "Portable Network Graphic (*.png)|*.png";
             if (op.ShowDialog() == true)
             {
-               
-                /*MemoryStream ms = new MemoryStream();
-                Byte[] bindata = _ServiceMysql.GetPhoto();
-                ms.Write(bindata, 0, bindata.Length);
-                imgPhoto.Source = ToImage(bindata);*/
-
-                
                 imgPhoto.Source = new BitmapImage(new Uri(op.FileName));
+                if(op.FileName.Contains(".jpg") ||op.FileName.Contains(".JPG"))
+                    format = "JPG";
+                else if(op.FileName.Contains(".png") ||op.FileName.Contains(".PNG"))
+                    format = "PNG";
                 FileStream fs;
                 BinaryReader br;
                 string FileName = op.FileName;
                 fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
                 br = new BinaryReader(fs);
                 Byte[] ImageData = br.ReadBytes((int)fs.Length);
+                photoData = ImageData;
                 br.Close();
                 fs.Close();
-                _ServiceMysql.AjouterPhoto(ImageData);
             }
         }
-        /*   private static String GetDestinationPath(string filename, string foldername)
-         {
-             String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-             appStartPath = String.Format(appStartPath + "\\{0}\\" + filename, foldername);
-             return appStartPath;
-         }*/
-        public ImageSource ToImage(Byte[] imageData)
-        {
-
-            BitmapImage biImg = new BitmapImage();
-            MemoryStream ms = new MemoryStream(imageData);
-            biImg.BeginInit();
-            biImg.StreamSource = ms;
-            biImg.EndInit();
-
-            ImageSource imgSrc = biImg as ImageSource;
-
-            return imgSrc;
-        }
-        public Byte[] ImageToByte(BitmapImage imageSource)
-        {
-            Stream stream = imageSource.StreamSource;
-            Byte[] buffer = null;
-            if (stream != null && stream.Length > 0)
-            {
-                using (BinaryReader br = new BinaryReader(stream))
-                {
-                    buffer = br.ReadBytes((Int32)stream.Length);
-                }
-            }
-
-            return buffer;
-        }
-
         
         #endregion
     }

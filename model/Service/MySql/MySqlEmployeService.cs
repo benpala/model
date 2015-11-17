@@ -25,7 +25,7 @@ namespace model.Service.MySql
                 StringBuilder buildReq = new StringBuilder();
                 buildReq.Append("SELECT Employes.idEmploye,detailfinancies.titreEmploi, detailfinancies.tauxHoraireNormal , detailfinancies.tauxHoraireOver, Employes.nom, Employes.prenom, Employes.horsFonction FROM Employes ");
                 buildReq.Append(" INNER JOIN detailfinancies ON detailfinancies.idEmploye = Employes.idEmploye ");
-                buildReq.Append(" ORDER BY horsFonction ASC");
+                buildReq.Append(" ORDER BY horsFonction, idEmploye ASC ");
                 DataSet dataset = connexion.Query(buildReq.ToString());
                 DataTable table = dataset.Tables[0];
 
@@ -118,7 +118,7 @@ namespace model.Service.MySql
         }
 
         //Ajouter un employé
-        public void AjoutUnEmploye(string Nom, string Prenom, string Poste, string Salaire,bool horsFonction, ObservableCollection<LiaisonProjetEmploye> Liaison)
+        public void AjoutUnEmploye(string Nom, string Prenom, string Poste, string Salaire,bool horsFonction,string date, ObservableCollection<LiaisonProjetEmploye> Liaison)
         {
             try
             {
@@ -141,9 +141,9 @@ namespace model.Service.MySql
                 buildReq.Append("'");
                 DataSet IDdataSet = connexion.Query(buildReq.ToString());
                 string ID = IDdataSet.Tables[0].Rows[0].ItemArray[0].ToString(); 
-
+                /*
                 buildReq = new StringBuilder();
-                buildReq.Append("INSERT INTO detailfinancies (titreEmploi,tauxHoraireNormal,tauxHoraireOver,idEmploye) VALUES ('");
+                buildReq.Append("INSERT INTO detailfinancies (titreEmploi,tauxHoraireNormal,tauxHoraireOver,idEmploye,dateEmbauche) VALUES ('");
                 buildReq.Append(Poste);
                 buildReq.Append("' , '");
                 Salaire = Salaire.Replace(',', '.');
@@ -156,9 +156,11 @@ namespace model.Service.MySql
                 buildReq.Append(s);
                 buildReq.Append("' , ");
                 buildReq.Append(ID);
-                buildReq.Append(")");
+                buildReq.Append(", '");
+                buildReq.Append(Convert.ToDateTime(date));
+                buildReq.Append("')");
                 connexion.Query(buildReq.ToString());
-
+                */
                 UpdateProjetEmploye(Liaison, ID);
             }
             catch (MySqlException)
@@ -306,45 +308,82 @@ namespace model.Service.MySql
                 throw;
             } 
         }
-        public void AjouterPhoto(Byte[] ImageData)
+        public void SupprimerPhoto(string ID)
+        {
+            connexion = new MySqlConnexion();
+            StringBuilder buildReq = new StringBuilder();
+            buildReq.Append("SELECT idPhoto FROM Employes WHERE idEmploye = ");
+            buildReq.Append(ID);
+            DataSet dataset = connexion.Query(buildReq.ToString());
+            string idPhoto = dataset.Tables[0].Rows[0][0].ToString();
+            if (idPhoto !="")
+            { 
+                buildReq = new StringBuilder();
+                buildReq.Append("UPDATE Employes SET idPhoto = null WHERE idEmploye = ");
+                buildReq.Append(ID);
+                connexion.Query(buildReq.ToString());
+
+                buildReq = new StringBuilder();
+                buildReq.Append("DELETE FROM Photos WHERE idPhoto = ");
+                buildReq.Append(idPhoto);
+                connexion.Query(buildReq.ToString());
+            }
+        }
+        public void AjouterPhoto(Byte[] ImageData,string nom,string prenom,string format)
         {
             try
             {
-               /* connexion = new MySqlConnexion();
-                MySqlCommand cmd;
-                //cmd.Connection = (MySql.Data.MySqlClient.MySqlConnexion)connexion;
-                string SQLcmd = "INSERT INTO Photos (nom,typePhoto,codePhoto) VALUES (@nom ,@type , @image)";
-                cmd = new MySqlCommand(SQLcmd);
-                cmd.Parameters.Add("@nom","testPhoto");
-                cmd.Parameters.Add("@type","JPG");
-                cmd.Parameters.Add("@image", MySqlDbType.Blob).Value = ImageData;
-                
-                cmd.ExecuteNonQuery();
-                /*
+                connexion = new MySqlConnexion();
+                connexion.AjouterPhoto(ImageData, nom + prenom , format);
+
                 StringBuilder buildReq = new StringBuilder();
-                buildReq.Append("INSERT INTO Photos (nom,typePhoto,codePhoto) VALUES (");
-                buildReq.Append("'TestPhoto' ,");
-                buildReq.Append("'JPG' , ");
-                buildReq.Append(ImageData);
-                buildReq.Append(")");
-                connexion.Query(buildReq.ToString());*/
+                buildReq.Append("SELECT idEmploye FROM Employes WHERE nom = '");
+                buildReq.Append(nom);
+                buildReq.Append("' AND prenom = '");
+                buildReq.Append(prenom);
+                buildReq.Append("'");
+                DataSet dataset = connexion.Query(buildReq.ToString());
+                string IDEmploye = dataset.Tables[0].Rows[0][0].ToString();
+
+                buildReq = new StringBuilder();
+                buildReq.Append("SELECT idPhoto FROM Photos WHERE nom LIKE '%");
+                buildReq.Append(nom+prenom);
+                buildReq.Append("%'");
+                dataset = connexion.Query(buildReq.ToString());
+                string IDPhoto = dataset.Tables[0].Rows[0][0].ToString();
+
+                buildReq = new StringBuilder();
+                buildReq.Append("UPDATE Employes SET idPhoto = ");
+                buildReq.Append(IDPhoto);
+                buildReq.Append(" WHERE idEmploye = ");
+                buildReq.Append(IDEmploye);
+                connexion.Query(buildReq.ToString());
             }
+
             catch (MySqlException)
             {
                 throw;
             }
         }
-        public Byte[] GetPhoto()
+        public Byte[] GetPhoto(string ID)
         {
             
             try
             {
-                connexion = new MySqlConnexion();
-                StringBuilder buildReq = new StringBuilder();
-                buildReq.Append("SELECT codePhoto FROM Photos WHERE idPhoto = 8");
-                DataSet dataset = connexion.Query(buildReq.ToString());
-                 Byte[] photo = Encoding.ASCII.GetBytes(dataset.Tables[0].Rows[0][0].ToString());
-                return photo;
+                if(ID.Length>0)
+                { 
+                    connexion = new MySqlConnexion();
+                    StringBuilder buildReq = new StringBuilder();
+                    buildReq.Append("SELECT idPhoto FROM Employes WHERE idEmploye = ");
+                    buildReq.Append(ID);
+                    DataSet dataset = connexion.Query(buildReq.ToString());
+                    string idPhoto = dataset.Tables[0].Rows[0][0].ToString();
+                    if (idPhoto !="")
+                        return connexion.GetCodePhoto(idPhoto);
+                    else 
+                        return null;
+                }
+                return null;
             }
             catch (MySqlException)
             {

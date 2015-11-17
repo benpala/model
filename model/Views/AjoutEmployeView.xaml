@@ -116,25 +116,37 @@
                 </DataGrid>
             </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Nom de famille :"/>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutNom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prenom :"/>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Width="200" Height="25" FontSize="12" Content="Poste :"/>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutPoste" Width="200"  Height="25" FontSize="12"  MaxLength="20" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure:"/>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" MaxLength="6" KeyDown="numSeulement" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
-            <CheckBox Name="chxHorsFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.HorsFonction}"/>
+        <StackPanel Orientation="Horizontal" Height="150">
+            <StackPanel Orientation="Vertical" Width="550" Margin="0,0,50,0">
+                <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Nom de famille :"/>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutNom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prenom :"/>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" >
+                    <Label Width="200" Height="25" FontSize="12" Content="Poste :"/>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutPoste" Width="200"  Height="25" FontSize="12"  MaxLength="20" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure:"/>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" MaxLength="6" KeyDown="numSeulement" />
+                </StackPanel>
+        
+                <StackPanel Orientation="Horizontal" >
+                    <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
+                    <CheckBox Name="chxHorsFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.HorsFonction}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Width="250">
+                <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Date embauche :"  HorizontalAlignment="Center"/>
+                <DatePicker Name="DateEmbauche"   Height="30" Width="200"  ></DatePicker>
+            </StackPanel>
         </StackPanel>
         <Button Style="{StaticResource BaseButtonStyle}" Content="Ajouter"  Click="AjouterEmploye"  Width="200" Height="50"/>
         <Button Style="{StaticResource BaseButtonStyle}" Content="Retour"  Width="200" Click="retourMenu" Height="50" VerticalAlignment="Bottom"/>

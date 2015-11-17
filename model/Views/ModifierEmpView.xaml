@@ -90,8 +90,13 @@
                 <Button  Width="140" Height="50"  Name="btnImage" Click="btnUplaod">Modifier photo</Button>
             </StackPanel>
             <Border BorderThickness="2" BorderBrush="DarkOrange"  Width="200" Height="240" >
-                <Image  Width="200" Height="240" Name="imgPhoto"  ></Image>
+                <Image  Width="200" Height="240" Name="imgPhoto" Source="{Binding }" ></Image>
             </Border>
+            <!--<Rectangle Width="200" Height="240">
+                <Rectangle.Background>
+                    <ImageBrush ImageSource="{Binding}"/>
+                </Rectangle.Background>
+            </Rectangle>-->
             <StackPanel Height="200" Width="410" Margin="150,0,0,0">
                 <DataGrid IsReadOnly="True"  CanUserAddRows="False" x:Name="gridProjet"  ItemsSource="{Binding LiaisonProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                     <DataGrid.Columns >

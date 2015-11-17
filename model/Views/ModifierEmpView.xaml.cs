@@ -16,6 +16,8 @@ using Microsoft.Win32;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Media;
+using System.Drawing;
 
 namespace model.Views
 {
@@ -26,14 +28,17 @@ namespace model.Views
     {
         MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
         private ObservableCollection<LiaisonProjetEmploye> _LiaisonProjetEmploye;
-
+        private string format;
         private Employe _Employe;
+        private Byte[] photoData;
+        Byte[] photoBD;
+        bool photoChanged = false;
 
         public ModifierEmpView()
         {
             InitializeComponent();
             DataContext = this;
-
+            
         }
 
         public ModifierEmpView(IDictionary<string, object> parametre) : this()
@@ -42,7 +47,11 @@ namespace model.Views
             LiaisonProjetEmploye = new ObservableCollection<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(_Employe.ID.ToString()));
             List<LiaisonProjetEmploye> ToutProjet = new List<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(null));
             LiaisonProjetEmploye = new ObservableCollection<LiaisonProjetEmploye>(ComparerListe(ToutProjet, _ServiceMysql.GetLiaison(_Employe.ID.ToString())));
-
+            //Retrieve Photo
+            
+            photoBD = _ServiceMysql.GetPhoto(_Employe.ID.ToString());
+            if (photoBD != null)
+                imgPhoto.Source = BitmapToImageSource(ToImage(photoBD));
         }
         #region GET SET
         public Employe Employe
@@ -101,6 +110,11 @@ namespace model.Views
             { //Update la BD
                 _ServiceMysql.UpdateInfoEmploye(_Employe,cbx);
                 _ServiceMysql.UpdateProjetEmploye(LiaisonProjetEmploye, _Employe.ID);
+                if (photoChanged)
+                { 
+                    _ServiceMysql.SupprimerPhoto(_Employe.ID.ToString());
+                    _ServiceMysql.AjouterPhoto(photoData, txtNom.Text, txtPrenom.Text, format);
+                }
                 MessageBox.Show("Les informations ont été modifiées");
                 retourMenu(this, null);
             }
@@ -225,20 +239,47 @@ namespace model.Views
             if (op.ShowDialog() == true)
             {
                 imgPhoto.Source = new BitmapImage(new Uri(op.FileName));
-               
-               /* string name = System.IO.Path.GetFileName(op.FileName);
-                string destinationPath = GetDestinationPath(name, "/image");
-                File.Copy(op.FileName, destinationPath, true);*/
-
+                if (op.FileName.Contains(".jpg") || op.FileName.Contains(".JPG"))
+                    format = "JPG";
+                else if (op.FileName.Contains(".png") || op.FileName.Contains(".PNG"))
+                    format = "PNG";
+                FileStream fs;
+                BinaryReader br;
+                string FileName = op.FileName;
+                fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
+                br = new BinaryReader(fs);
+                Byte[] ImageData = br.ReadBytes((int)fs.Length);
+                if (ImageData != null)
+                { 
+                    photoData = ImageData;
+                    photoChanged = true;
+                }
+                br.Close();
+                fs.Close();
             }
         }
-        /* private static String GetDestinationPath(string filename, string foldername)
-         {
-             String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
 
-             appStartPath = String.Format(appStartPath + "\\{0}\\" + filename, foldername);
-             return appStartPath;
-         }*/
+        public Bitmap ToImage(Byte[] bPhoto)
+        {
+            MemoryStream ms = new MemoryStream();
+            ms.Write(bPhoto, 0, bPhoto.Length);
+            return new Bitmap(ms);
+        }
+        BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+
+                return bitmapimage;
+            }
+        }
         #endregion
     }
 }

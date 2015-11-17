@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace model.Service.Helpers
 {
@@ -201,7 +202,29 @@ namespace model.Service.Helpers
             }
         }
 
-
-
+        public void AjouterPhoto(Byte[] ImageData,string nom,string format)
+        {
+            MySqlCommand cmd;
+            string SQLcmd = "INSERT INTO Photos (nom,typePhoto,codePhoto) VALUES (@nom ,@type , @image)";
+            cmd = new MySqlCommand(SQLcmd, connection);
+            cmd.Parameters.Add("@nom", nom);
+            cmd.Parameters.Add("@type", format);
+            cmd.Parameters.Add("@image", MySqlDbType.Blob).Value = ImageData;
+            Open();
+            cmd.ExecuteNonQuery();
+        }
+        public Byte[] GetCodePhoto(string ID)
+        {
+            Byte[] blob = null;
+            string SQLcmd = "SELECT codePhoto FROM Photos WHERE idPhoto = " + ID;
+            MySqlDataAdapter adapt = new MySqlDataAdapter(SQLcmd,connection);
+            DataTable dt = new DataTable();
+            adapt.Fill(dt);
+            foreach(DataRow row in dt.Rows)
+            {
+                blob = (Byte[])row["codePhoto"];
+            }
+            return blob;
+        }
     }
 }
