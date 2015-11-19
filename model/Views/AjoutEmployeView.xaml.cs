@@ -69,9 +69,13 @@ namespace model.Views
             //validation salaire
             else if (!ValidSalaire(txtAjoutSalaire.Text))
                 MessageBox.Show("Le salaire ne peut pas laisser vide et il doit être entre 0 et 500 !!");
+            else if(txtAjoutEmployeur.Text.Length > 0 && txtAjoutEmployeur.Text.Length <= 3)
+                MessageBox.Show("Le nom d'employeur est trop court (Au moins 4 caractères) !!");
             else
             {   //Insérer dans la BD
-                _ServiceMysql.AjoutUnEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text,this.chxHorsFonction.IsChecked.Value,DateEmbauche.ToString(), LiaisonProjetEmploye);
+                if (txtAjoutEmployeur.Text.Length < 4)
+                    txtAjoutEmployeur.Text = null;
+                _ServiceMysql.AjoutUnEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text, this.chxHorsFonction.IsChecked.Value, DateEmbauche.ToString(), txtAjoutEmployeur.Text, LiaisonProjetEmploye);
                 _ServiceMysql.AjouterPhoto(photoData, txtAjoutNom.Text , txtAjoutPrenom.Text, format);
                 MessageBox.Show("Le nouveau employé est ajouté!");
                 retourMenu(this, null);

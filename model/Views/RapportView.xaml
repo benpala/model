@@ -109,7 +109,7 @@
                     <Button Style="{StaticResource BaseButtonStyle}" Content="Tous"  HorizontalAlignment="Center"  Width="80" Click="ChoisirTousEmploye" Height="30" VerticalAlignment="Center" />
                 </StackPanel>
                 
-                <ListBox Name="lstRapportEmploye" ItemsSource="{Binding Employe}"  AlternationCount="2"   SelectionMode="Multiple" Height="100">
+                <ListBox Name="lstRapportEmploye" ItemsSource="{Binding Employe}"  AlternationCount="2"   SelectionMode="Multiple" Height="150">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock FontSize="18">
@@ -131,10 +131,7 @@
                             <CheckBox Name="chxInfoGenerale" Margin="10,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal">
-                            <Label  Width="220"  Height="50" FontSize="20" Content="Détail financière:"  />
-                            <CheckBox Name="chxDetailFinanciere" Margin="10,0,0,0" VerticalAlignment="Center" />
-                        </StackPanel>
+                        
                         <StackPanel Orientation="Horizontal">
                             <Label Width="220"  Height="50" FontSize="20" Content="Les projets :"  />
                             <CheckBox Name="chxProjetEmploye" Margin="10,0,0,0" VerticalAlignment="Center" />

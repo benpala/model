@@ -122,34 +122,47 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,600,0" >
-            <Label Width="200"  Height="25" FontSize="12" >Numéro de l'employé :</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtNum" IsReadOnly="True" Width="200"  Height="25" FontSize="12" Background="DarkGray" Text="{Binding Employe.ID}" ></TextBox>
-        </StackPanel>
+        <StackPanel Orientation="Horizontal" Height="180">
+            <StackPanel Orientation="Vertical" Width="550" Margin="0,0,50,0">
+                <StackPanel Orientation="Horizontal" >
+                    <Label Width="200"  Height="25" FontSize="12" >Numéro de l'employé :</Label>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtNum" IsReadOnly="True" Width="200"  Height="25" FontSize="12" Background="DarkGray" Text="{Binding Employe.ID}" ></TextBox>
+                </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Nom de famille :</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtNom" Width="200"  Height="25" FontSize="12" Text="{Binding Path=Employe.Nom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
-        </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Nom de famille :</Label>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtNom" Width="200"  Height="25" FontSize="12" Text="{Binding Path=Employe.Nom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
+                </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Prénom :</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtPrenom" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Prenom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
-        </StackPanel>
+                <StackPanel Orientation="Horizontal" >
+                    <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12">Prénom :</Label>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtPrenom" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Prenom}" MaxLength="20" KeyDown="textSeulement"></TextBox>
+                </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label Width="200" Height="25" FontSize="12">Poste :</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtPoste" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Poste}" MaxLength="20" ></TextBox>
-        </StackPanel>
+                <StackPanel Orientation="Horizontal" >
+                    <Label Width="200" Height="25" FontSize="12">Poste :</Label>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtPoste" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Poste}" MaxLength="20" ></TextBox>
+                </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label Width="200"  Height="25" FontSize="12">Salaire par heure:</Label>
-            <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtSalaire" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Salaire , StringFormat=N2}" MaxLength="6" KeyDown="numSeulement" ></TextBox>
-        </StackPanel>
+                <StackPanel Orientation="Horizontal" >
+                    <Label Width="200"  Height="25" FontSize="12">Salaire par heure:</Label>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"  Name="txtSalaire" Width="200"  Height="25" FontSize="12" Text="{Binding Employe.Salaire , StringFormat=N2}" MaxLength="6" KeyDown="numSeulement" ></TextBox>
+                </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,600,0">
-            <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
-            <CheckBox Name="chxHorsFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.HorsFonction}"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="200"  Height="25" FontSize="12" Content="Employeur :"/>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtEmployeur" Width="200"  Height="25" FontSize="12" MaxLength="6" KeyDown="textSeulement" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
+                    <CheckBox Name="chxHorsFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.HorsFonction}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Width="250">
+                <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Date embauche :"  HorizontalAlignment="Center"/>
+                <DatePicker Name="DateEmbauche"   Height="30" Width="200"  ></DatePicker>
+            </StackPanel>
         </StackPanel>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="Enregistrer" Click="EnregistrerEmp"  Width="200" Height="50"/>

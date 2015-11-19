@@ -52,6 +52,30 @@ namespace model.Service.MySql
                 HorsFonction = (bool)row["horsFonction"]
             };
         }
+        public string getEmployeur(string ID)
+        {
+            connexion = new MySqlConnexion();
+            StringBuilder buildReq = new StringBuilder();
+            buildReq.Append("SELECT employeur FROM detailfinancies WHERE idEmploye = ");
+            buildReq.Append(ID);
+            DataSet dataset = connexion.Query(buildReq.ToString());
+            string employeur = dataset.Tables[0].Rows[0][0].ToString();
+            if (employeur.Length > 0 )
+                return employeur;
+            return null;
+        }
+        public string getDateEmbauche(string ID)
+        {
+            connexion = new MySqlConnexion();
+            StringBuilder buildReq = new StringBuilder();
+            buildReq.Append("SELECT DATE_FORMAT(dateEmbauche, '%Y-%m-%d') AS 'dateEmbauche' FROM detailfinancies WHERE idEmploye = ");
+            buildReq.Append(ID);
+            DataSet dataset = connexion.Query(buildReq.ToString());
+            string date = dataset.Tables[0].Rows[0][0].ToString();
+            if (date.Length > 0)
+                return date;
+            return null;
+        }
         //Get liaison des projets pour un employé
         public IList<LiaisonProjetEmploye> GetLiaison(string EmpID)
         {
@@ -116,9 +140,8 @@ namespace model.Service.MySql
                     Occupe = false
                 };
         }
-
         //Ajouter un employé
-        public void AjoutUnEmploye(string Nom, string Prenom, string Poste, string Salaire,bool horsFonction,string date, ObservableCollection<LiaisonProjetEmploye> Liaison)
+        public void AjoutUnEmploye(string Nom, string Prenom, string Poste, string Salaire,bool horsFonction,string date,string employeur, ObservableCollection<LiaisonProjetEmploye> Liaison)
         {
             try
             {
@@ -141,9 +164,9 @@ namespace model.Service.MySql
                 buildReq.Append("'");
                 DataSet IDdataSet = connexion.Query(buildReq.ToString());
                 string ID = IDdataSet.Tables[0].Rows[0].ItemArray[0].ToString(); 
-                /*
+                
                 buildReq = new StringBuilder();
-                buildReq.Append("INSERT INTO detailfinancies (titreEmploi,tauxHoraireNormal,tauxHoraireOver,idEmploye,dateEmbauche) VALUES ('");
+                buildReq.Append("INSERT INTO detailfinancies (titreEmploi,tauxHoraireNormal,tauxHoraireOver,idEmploye,dateEmbauche,employeur) VALUES ('");
                 buildReq.Append(Poste);
                 buildReq.Append("' , '");
                 Salaire = Salaire.Replace(',', '.');
@@ -157,10 +180,12 @@ namespace model.Service.MySql
                 buildReq.Append("' , ");
                 buildReq.Append(ID);
                 buildReq.Append(", '");
-                buildReq.Append(Convert.ToDateTime(date));
+                buildReq.Append(date);
+                buildReq.Append("' , '");
+                buildReq.Append(employeur);
                 buildReq.Append("')");
                 connexion.Query(buildReq.ToString());
-                */
+                
                 UpdateProjetEmploye(Liaison, ID);
             }
             catch (MySqlException)
@@ -200,16 +225,15 @@ namespace model.Service.MySql
                 throw;
             }
         }
-
         //Modifier Informations d'un employé
-        public void UpdateInfoEmploye(Employe emp, bool hF)
+        public void UpdateInfoEmploye(Employe emp, bool hF,string employeur,string date)
          {
              try
              {
                 // nom, prenom
                 connexion = new MySqlConnexion();
                 StringBuilder buildReq = new StringBuilder();
-                buildReq.Append("SELECT Employes.idEmploye,detailfinancies.titreEmploi, detailfinancies.tauxHoraireNormal, detailfinancies.tauxHoraireOver, Employes.nom, Employes.prenom, Employes.horsFonction FROM Employes ");
+                buildReq.Append("SELECT Employes.idEmploye,detailfinancies.titreEmploi, detailfinancies.tauxHoraireNormal, detailfinancies.tauxHoraireOver, Employes.nom, Employes.prenom, Employes.horsFonction,detailfinancies.employeur,DATE_FORMAT(detailfinancies.dateEmbauche, '%Y-%m-%d') AS 'dateEmbauche' FROM Employes ");
                 buildReq.Append(" INNER JOIN detailfinancies ON detailfinancies.idEmploye = ");             
                 buildReq.Append(emp.ID);
                 DataSet result = connexion.Query(buildReq.ToString());
@@ -233,18 +257,25 @@ namespace model.Service.MySql
                 //float salaire = Convert.ToSingle(s);
                 string poste =  table.Rows[0]["titreEmploi"].ToString();
                 //Poste + salaire
-                if (emp.Poste != poste || emp.Salaire != Convert.ToSingle(table.Rows[0]["tauxHoraireNormal"]))
+                if (emp.Poste != poste || emp.Salaire != Convert.ToSingle(table.Rows[0]["tauxHoraireNormal"]) || employeur != table.Rows[0]["employeur"].ToString() || date != table.Rows[0]["dateEmbauche"].ToString())
                 {
                     buildReq = new StringBuilder();
                     buildReq.Append("UPDATE detailfinancies SET titreEmploi = '");
                     buildReq.Append(emp.Poste);
                     buildReq.Append("', tauxHoraireOver = '");
-                    double s = emp.Salaire * 3 / 2;
+                    double s = Math.Round((emp.Salaire * 3 / 2), 2); ;
                     string sOver = s.ToString().Replace(',','.');
                     buildReq.Append(sOver);
                     buildReq.Append("', tauxHoraireNormal = '");
                     string salaire = emp.Salaire.ToString().Replace(',','.');
                     buildReq.Append(salaire);
+                    if(employeur.Length > 0)
+                    { 
+                        buildReq.Append("' , employeur = '");
+                        buildReq.Append(employeur);
+                    }
+                    buildReq.Append("' , dateEmbauche = '");
+                    buildReq.Append(date);
                     buildReq.Append("' WHERE idEmploye = '");
                     buildReq.Append(emp.ID);
                     buildReq.Append("'");
@@ -308,6 +339,7 @@ namespace model.Service.MySql
                 throw;
             } 
         }
+        #region Photo
         public void SupprimerPhoto(string ID)
         {
             connexion = new MySqlConnexion();
@@ -378,7 +410,7 @@ namespace model.Service.MySql
                     buildReq.Append(ID);
                     DataSet dataset = connexion.Query(buildReq.ToString());
                     string idPhoto = dataset.Tables[0].Rows[0][0].ToString();
-                    if (idPhoto !="")
+                    if (idPhoto.Length > 0 )
                         return connexion.GetCodePhoto(idPhoto);
                     else 
                         return null;
@@ -402,6 +434,39 @@ namespace model.Service.MySql
             }
             return data;
         }
+        #endregion
+        public float CompteursProjets(string IDEmp, string nomProj)
+        {
+            try
+            {
+                float S_temps = 0;
+                connexion = new MySqlConnexion();
+                StringBuilder buildReq = new StringBuilder();
+                buildReq = new StringBuilder();
+                buildReq.Append("SELECT idProjet FROM Projets WHERE nom = '");
+                buildReq.Append(nomProj);
+                buildReq.Append("'");
+                DataSet dataset = connexion.Query(buildReq.ToString());
+                string IDProj = dataset.Tables[0].Rows[0][0].ToString();
 
+
+                buildReq = new StringBuilder();
+                buildReq.Append("SELECT SUM(TIMESTAMPDIFF( MINUTE, dateTimerStart, dateTimerEnd)/60) as temps FROM compteurstemps WHERE idEmploye = ");
+                buildReq.Append(IDEmp);
+                buildReq.Append(" AND idProjet = ");
+                buildReq.Append(IDProj);
+                dataset = connexion.Query(buildReq.ToString());
+                string temps = dataset.Tables[0].Rows[0][0].ToString();
+                if (temps.Length > 0 )
+                    S_temps = (float)Math.Round(Convert.ToSingle(temps), 2);
+                
+                // float temps = (float)S_temps;
+                return S_temps;
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+        }
     }
 }

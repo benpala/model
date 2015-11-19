@@ -152,99 +152,116 @@ namespace model.Views
 
         private void GenererRapportEmploye(object sender, RoutedEventArgs e)
         {
-            if (Convert.ToSingle(lstRapportEmploye.SelectedItems.Count.ToString()) > 0)
+            try 
             {
-                if (chxProjetEmploye.IsChecked.Value || chxInfoGenerale.IsChecked.Value || chxDetailFinanciere.IsChecked.Value)
+                if (Convert.ToSingle(lstRapportEmploye.SelectedItems.Count.ToString()) > 0)
                 {
-                    PdfDocument pdf = new PdfDocument();
-                    pdf.Info.Title = "Rapport Employe";
-                    PdfPage page;
-                    page = pdf.AddPage();
-                    page.Orientation = PageOrientation.Portrait;
-                    page.Size = PageSize.A4;
-                    XGraphics graph = XGraphics.FromPdfPage(page);
-                    List<LiaisonProjetEmploye> Liaison = new List<LiaisonProjetEmploye>();
-                    MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
-
-
-                    XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
-                    var formatter = new XTextFormatter(graph);
-                    int height = 0;
-                    foreach (Employe emp in lstRapportEmploye.SelectedItems)
+                    if (chxProjetEmploye.IsChecked.Value || chxInfoGenerale.IsChecked.Value)
                     {
+                        PdfDocument pdf = new PdfDocument();
+                        pdf.Info.Title = "Rapport Employe";
+                        PdfPage page;
+                        page = pdf.AddPage();
+                        page.Orientation = PageOrientation.Portrait;
+                        page.Size = PageSize.A4;
+                        XGraphics graph = XGraphics.FromPdfPage(page);
+                        List<LiaisonProjetEmploye> Liaison = new List<LiaisonProjetEmploye>();
+                        MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
+
+
+                        XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
+                        var formatter = new XTextFormatter(graph);
+                        int height = 0;
+                        foreach (Employe emp in lstRapportEmploye.SelectedItems)
+                        {
                     
-                    if (height > 700)
-                        {
-                            page = pdf.AddPage();
-                            graph = XGraphics.FromPdfPage(page);
-                            formatter = new XTextFormatter(graph);
-                            height = 0;
-                        }
-                        var layoutRectangle = new XRect(10, height += 15, page.Width , page.Height );
-                        formatter.DrawString((emp.Prenom.ToString() + " " + emp.Nom.ToString()), font, XBrushes.Black, layoutRectangle);
-
-                        if (chxInfoGenerale.IsChecked.Value)
-                        {
-                            layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                            formatter.DrawString(("Titre d'emploi : " + emp.Poste.ToString()), font, XBrushes.Black, layoutRectangle);
-                            
-                            if (!emp.HorsFonction)
+                        if (height > 700)
+                            {
+                                page = pdf.AddPage();
+                                graph = XGraphics.FromPdfPage(page);
+                                formatter = new XTextFormatter(graph);
+                                height = 0;
+                            }
+                            int y = height;
+                            var layoutRectangle = new XRect(10, height += 15, page.Width , page.Height );
+                            formatter.DrawString((emp.Prenom.ToString() + " " + emp.Nom.ToString()), font, XBrushes.Black, layoutRectangle);
+                            //Section info employé
+                            if (chxInfoGenerale.IsChecked.Value)
                             {
                                 layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                                formatter.DrawString("Status : En service", font, XBrushes.Black, layoutRectangle);
-                            }
-                            else
-                            {
+                                formatter.DrawString(("Titre d'emploi : " + emp.Poste.ToString()), font, XBrushes.Black, layoutRectangle);
+
                                 layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                                formatter.DrawString("Status : Hors service", font, XBrushes.Black, layoutRectangle);
-                            }
-                        }
+                                formatter.DrawString(("Employeur : " + _ServiceMysql.getEmployeur(emp.ID)), font, XBrushes.Black, layoutRectangle);
 
-                        if (chxDetailFinanciere.IsChecked.Value)
-                        {
-                            layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                            formatter.DrawString(("Saliare par l'heure : " + Math.Round(Convert.ToSingle(emp.Salaire), 2) + " $"), font, XBrushes.Black, layoutRectangle);
-                            layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                            formatter.DrawString(("Saliare par l'heures supplémentaire : " + Math.Round( Convert.ToSingle(emp.SalaireOver), 2) + " $"), font, XBrushes.Black, layoutRectangle);
-                        }
+                                layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
+                                formatter.DrawString(("Date embauche : " + _ServiceMysql.getDateEmbauche(emp.ID)), font, XBrushes.Black, layoutRectangle);
 
-                        if (chxProjetEmploye.IsChecked.Value)
-                        {
-                            Liaison = new List<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(emp.ID));
-                            int count = 0;
-                            int x = 10;
-                            int y = height + 15;
-                            if (Liaison.Count > 0)
-                            {
-                                layoutRectangle = new XRect(x, height += 15, page.Width, page.Height);
-                                formatter.DrawString(("Projet(s) occupé(s) : "), font, XBrushes.Black, layoutRectangle);
-                                foreach (LiaisonProjetEmploye liaison in Liaison)
+                                if (!emp.HorsFonction)
                                 {
-                                    count++;
-                                    if (count % 3 == 0)
-                                    {
-                                        x += 125;
-                                        y -= 45;
-                                    }
-                                    layoutRectangle = new XRect(x, y += 15, page.Width, page.Height);
-                                    formatter.DrawString(count + " : " + liaison.ProjNom.ToString(), font, XBrushes.Black, layoutRectangle);
+                                    layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
+                                    formatter.DrawString("Status : En service", font, XBrushes.Black, layoutRectangle);
                                 }
-                                height += 30;
-                                if (y > height)
-                                    height = y;
+                                else
+                                {
+                                    layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
+                                    formatter.DrawString("Status : Hors service", font, XBrushes.Black, layoutRectangle);
+                                }
+                            
+                                layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
+                                formatter.DrawString(("Saliare par l'heure : " + Math.Round(Convert.ToSingle(emp.Salaire), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+                                layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
+                                formatter.DrawString(("Saliare par l'heures supplémentaire : " + Math.Round( Convert.ToSingle(emp.SalaireOver), 2) + " $"), font, XBrushes.Black, layoutRectangle);
                             }
+                            //Section projets des employés
+                            if (chxProjetEmploye.IsChecked.Value)
+                            {
+                                Liaison = new List<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(emp.ID));
+                                int count = 0;
+                                int x = 300;
+                                if (Liaison.Count > 0)
+                                {
+                                    layoutRectangle = new XRect(x, y += 15, page.Width, page.Height);
+                                    formatter.DrawString(("Projet(s) occupé(s) : "), font, XBrushes.Black, layoutRectangle);
+                                    layoutRectangle = new XRect(x + 180, y , page.Width, page.Height);
+                                    formatter.DrawString(("Temps travaillé : "), font, XBrushes.Black, layoutRectangle);
+                                    foreach (LiaisonProjetEmploye liaison in Liaison)
+                                    {
+                                        count++;
+                                        layoutRectangle = new XRect(x, y += 15, page.Width, page.Height);
+                                        formatter.DrawString(count + " : " + liaison.ProjNom.ToString(), font, XBrushes.Black, layoutRectangle);
+
+                                        layoutRectangle = new XRect(x + 180, y , page.Width, page.Height);
+                                        formatter.DrawString( _ServiceMysql.CompteursProjets(emp.ID,liaison.ProjNom) + " heures", font, XBrushes.Black, layoutRectangle);
+
+                                    }
+                                    height += 30;
+                                    if (y > height)
+                                        height = y;
+                                }
+                            }
+                            graph.DrawLine(XPens.Black, 10, height+=20 , 800, height);
                         }
-                        graph.DrawLine(XPens.Black, 10, height+=20 , 500, height);
+                        string pdfFilename = "RapportEmploye.pdf";
+                        pdf.Save(pdfFilename);
+                        Process.Start(pdfFilename);
                     }
-                    string pdfFilename = "RapportEmploye.pdf";
-                    pdf.Save(pdfFilename);
-                    Process.Start(pdfFilename);
+                    else
+                        MessageBox.Show("Aucune information choisi");
                 }
                 else
-                    MessageBox.Show("Aucune information choisi");
+                    MessageBox.Show("Ancune employé selectionné");
             }
-            else
-                MessageBox.Show("Ancune employé selectionné");
+            catch (Exception E)
+            {
+                if (E.Message == "erreur")
+                    MessageBox.Show("Aucune paie durant cette période");
+                else if (E.Message == "Le processus ne peut pas accéder au fichier 'D:\\model\\model\\bin\\Debug\\RapportEmploye.pdf', car il est en cours d'utilisation par un autre processus.")
+                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regénérer");
+                else
+                    MessageBox.Show("Veuillez entrer des dates");
+
+            }
         }
 
         private void ChoisirTousEmploye(object sender, RoutedEventArgs e)

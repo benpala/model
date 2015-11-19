@@ -134,10 +134,15 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure:"/>
+                    <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure :"/>
                     <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" MaxLength="6" KeyDown="numSeulement" />
                 </StackPanel>
-        
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="200"  Height="25" FontSize="12" Content="Employeur :"/>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutEmployeur" Width="200"  Height="25" FontSize="12" MaxLength="30" KeyDown="textSeulement" />
+                </StackPanel>
+
                 <StackPanel Orientation="Horizontal" >
                     <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
                     <CheckBox Name="chxHorsFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.HorsFonction}"/>

@@ -48,10 +48,12 @@ namespace model.Views
             List<LiaisonProjetEmploye> ToutProjet = new List<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(null));
             LiaisonProjetEmploye = new ObservableCollection<LiaisonProjetEmploye>(ComparerListe(ToutProjet, _ServiceMysql.GetLiaison(_Employe.ID.ToString())));
             //Retrieve Photo
-            
             photoBD = _ServiceMysql.GetPhoto(_Employe.ID.ToString());
             if (photoBD != null)
                 imgPhoto.Source = BitmapToImageSource(ToImage(photoBD));
+
+            txtEmployeur.Text = _ServiceMysql.getEmployeur(_Employe.ID.ToString());
+            DateEmbauche.Text = _ServiceMysql.getDateEmbauche(_Employe.ID.ToString());
         }
         #region GET SET
         public Employe Employe
@@ -106,9 +108,13 @@ namespace model.Views
             //validation salaire
             else if (!ValidSalaire(txtSalaire.Text))
                 MessageBox.Show("Le salaire ne peut pas laisser vide et il doit être entre 0 et 500 !!");
+            else if (txtEmployeur.Text.Length > 0 && txtEmployeur.Text.Length <= 3)
+                MessageBox.Show("Le nom d'employeur est trop court (Au moins 4 caractères) !!");
             else
             { //Update la BD
-                _ServiceMysql.UpdateInfoEmploye(_Employe,cbx);
+                if (txtEmployeur.Text.Length < 4)
+                    txtEmployeur.Text = null;
+                _ServiceMysql.UpdateInfoEmploye(_Employe, cbx, txtEmployeur.Text, DateEmbauche.Text);
                 _ServiceMysql.UpdateProjetEmploye(LiaisonProjetEmploye, _Employe.ID);
                 if (photoChanged)
                 { 
