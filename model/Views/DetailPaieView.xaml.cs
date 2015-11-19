@@ -255,5 +255,12 @@ namespace model.Views
             }
         }
 
+        private void click_print(object sender, RoutedEventArgs e)
+        {
+            _Paie.generateSlipePay(_Paie);
+        }
+
+        
+
     }
 }

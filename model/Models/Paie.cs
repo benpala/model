@@ -9,6 +9,11 @@ using model.Service.MySql;
 using model.Service.Helpers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
+using PdfSharp;
+using PdfSharp.Drawing.Layout;
+using System.Diagnostics;
 namespace model.Models
 {
     public class Paie : INotifyPropertyChanged, INotifyPropertyChanging
@@ -270,8 +275,83 @@ namespace model.Models
                 throw e;
             }
         }
-        
-    
+        public void generateSlipePay(Paie p){
+            
+            PdfDocument pdf = new PdfDocument();
+            pdf.Info.Title = p.Nom + "_Paie";
+            PdfPage page;
+            page = pdf.AddPage();
+            page.Orientation = PageOrientation.Portrait;
+            page.Size = PageSize.A4;
+            XGraphics graph = XGraphics.FromPdfPage(page);
+            List<LiaisonProjetEmploye> Liaison = new List<LiaisonProjetEmploye>();
+            MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
+            XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
+            var formatter = new XTextFormatter(graph);
+            XPen penn = new XPen(XColors.Black, 1);
+            penn.DashStyle = XDashStyle.Dash;
+
+            graph.DrawLine(penn, 0, 3, 800, 3);  
+            graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(95,95,95)), new XRect(0, 5, 800, 60));
+            var layoutRectangle = new XRect(5, 25, page.Width, page.Height);
+            formatter.DrawString("GEM-C Rapport de paie de : " + (p.Nom), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(300, 25, page.Width, page.Height);
+            formatter.DrawString(("Talon pour la période du : " + p.Periode), font, XBrushes.Black, layoutRectangle);
+
+          
+
+            graph.DrawLine(penn, 0, 67, 800, 67);
+            graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(255, 243, 229)), new XRect(0, 70, 800, 255));
+            layoutRectangle = new XRect(20, 90, page.Width, page.Height);
+            formatter.DrawString("Calcule du salaire :", font, XBrushes.Black, layoutRectangle);
+            graph.DrawLine(penn, 20, 110, 150, 110);
+            // Commission
+            layoutRectangle = new XRect(20, 120, page.Width, page.Height);
+            formatter.DrawString(("Montant commission : "), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(350, 120, page.Width, page.Height);
+            formatter.DrawString((Math.Round(p.MontantCommission, 2) + " $"), font, XBrushes.Black, layoutRectangle);
+
+            // Indemnite
+            layoutRectangle = new XRect(20, 140, page.Width, page.Height);
+            formatter.DrawString(("Montant indemnite : " ), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(350, 140, page.Width, page.Height);
+            formatter.DrawString((Math.Round(p.MontantIndemnite, 2) + " $"), font, XBrushes.Black, layoutRectangle);
+
+
+            layoutRectangle = new XRect(20, 160, page.Width, page.Height);
+            formatter.DrawString(("Montant pourboire : " + Math.Round(p.MontantPourboire, 2) + " $"), font, XBrushes.Black, layoutRectangle);
+
+            layoutRectangle = new XRect(20, 180, page.Width, page.Height);
+            formatter.DrawString(("Montant prime : " + Math.Round(p.MontantPrime, 2) + " $"), font, XBrushes.Black, layoutRectangle);
+
+
+            graph.DrawLine(penn, 20, 200, 150, 200);
+
+            layoutRectangle = new XRect(20, 220, page.Width, page.Height);
+            formatter.DrawString(("Heure regulier : " + p.NombreHeure), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(20, 240, page.Width, page.Height);
+            formatter.DrawString(("Heure suplémentaire : " + p.NombreHeureSupp), font, XBrushes.Black, layoutRectangle);
+
+            layoutRectangle = new XRect(20, 260, page.Width, page.Height);
+            formatter.DrawString(("Montant Brute : " + p.NombreHeure + " X " + p.salaire.ToString() + "( " + p.NombreHeureSupp + " X " + p.salaire + " X 1.5) = " + Math.Round(p.montantbrute, 2) + " $"), font, XBrushes.Black, layoutRectangle);
+            
+         
+            
+
+            layoutRectangle = new XRect(20, 280, page.Width, page.Height);
+            formatter.DrawString(("Montant impôt combiné (Fédéral et provincial): " + Math.Round((p.MontantBrute - p.MontantNet), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+
+            layoutRectangle = new XRect(400, 300, page.Width, page.Height);
+            formatter.DrawString(("Montant Net due : " + Math.Round(p.MontantNet, 2) + " $"), font, XBrushes.Black, layoutRectangle);
+
+         
+
+            graph.DrawLine(XPens.Black, 0, 320 , 800, 320);
+                    
+            string pdfFilename = "Slipe.pdf";
+            pdf.Save(pdfFilename);
+            Process.Start(pdfFilename);
+        }
     }
 
 }
