@@ -42,6 +42,7 @@ namespace model.Views
             try
             {
                 Paies = new ObservableCollection<Paie>(_ServicePaie.RetrieveAll());
+                Paies.GroupBy(Paie => Paie.Nom);
             }catch(Exception){
                 MessageBox.Show("Votre base de données n'est pas accessible. Veuillez vous référer au document de configuration");
             }

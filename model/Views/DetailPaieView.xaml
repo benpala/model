@@ -64,8 +64,8 @@
             </StackPanel>
             <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="300" Height="Auto" Margin="0,0,0,0" HorizontalAlignment="Left"  VerticalAlignment="Top" >
                 <Button  Margin="0,0,0,0" Content="Enregistrer les modifications"  Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="300" Click="click_enregistre"/>
-                <Button  Margin="0,0,0,0" Content="Imprimet le relevé"  Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="300" Click="click_print"/>
-                <Button  Content="Retour à la liste des paies" Margin="0,0,0,0" Height="50" VerticalAlignment="Bottom" Click="click_retour" HorizontalAlignment="Left" Width="300"/>
+                <Button  Margin="0,0,0,0" Content="Imprimer le Talon courant    "  Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="300" Click="click_print"/>
+                <Button  Content="Retour à la liste des paies      " Margin="0,0,0,0" Height="50" VerticalAlignment="Bottom" Click="click_retour" HorizontalAlignment="Left" Width="300"/>
             </StackPanel>
             <StackPanel Background="#E5E4E2" Margin="0,-47,0,0"  DockPanel.Dock="Left" Width="350">
                 <Label Margin="15,50,0,0"  Width="Auto" Height="25" >Date :</Label>

@@ -65,9 +65,9 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+       
     </UserControl.Resources>
-    <Grid>   
-           
+    <Grid>
         <DockPanel>
             <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,0" HorizontalAlignment="Left" Width="300">
                 <TextBlock TextAlignment="Justify" DockPanel.Dock="Left" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300">Liste des paies</TextBlock>
@@ -79,15 +79,8 @@
                 <Button  Content="Générer les relevés"  CommandParameter="{Binding ID}" Width="300" HorizontalAlignment="Left"  Margin="0,0,0,0" Height="50" Click="click_genereReleve"   VerticalAlignment="Bottom"/>
             </StackPanel>
             <DataGrid  DockPanel.Dock="Left" HorizontalAlignment="Left" IsReadOnly="True" Padding="10"  CanUserAddRows="False" Name="mygrid" Grid.Row="0"  Margin="0,-47,0,0" ItemsSource="{Binding Paies}" CanUserSortColumns="True"  AutoGenerateColumns="False" >
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                        <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFont}" />
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        <Setter Property="FontSize" Value="20"></Setter>
-                        <Setter Property="FontWeight" Value="Bold"></Setter>
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
+               
+            
                 <DataGrid.Columns >
                     <DataGridTextColumn   Width="0.5*" Header="Nom : " Binding="{Binding Nom}" />
                     <DataGridTextColumn   Width="0.5*" Header="Généré le: " Binding="{Binding DateGenerationRapport}" />
@@ -109,13 +102,13 @@
                                 <TextBox Background="LightGray" DockPanel.Dock="Left" Text="{Binding NombreHeure}"  Width="150"></TextBox>
                                 <TextBox Background="LightGray" DockPanel.Dock="Left" Text="{Binding MontantBrute, StringFormat=N2}"  Width="150"></TextBox>
                                 <TextBox Background="LightGray" DockPanel.Dock="Left" Text="{Binding MontantNet,  StringFormat=N2}"  Width="150"></TextBox>
-                                
+
                                 <Button Style="{StaticResource BouttonPrint}" Padding="20px" Height="35" Width="40" Click="click_modifierImprimer" CommandParameter="{Binding}"/>
-                               
                             </DockPanel>
-                    </StackPanel>
+                        </StackPanel>
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
+             
             </DataGrid>
         </DockPanel>
     </Grid>
