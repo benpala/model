@@ -26,6 +26,7 @@ using PdfSharp.Pdf;
 using System.Diagnostics;
 using System.Drawing;
 using PdfSharp.Drawing.Layout;
+using System.Configuration;
 
 namespace model.Views
 {
@@ -41,6 +42,10 @@ namespace model.Views
         private IProjetService _ServiceProjet;
         private IPaiesService _ServicePaie;
         private IApplicationService _applicationService;
+
+        private static readonly string nomEntreprise;
+
+        public string NomEntreprice() { return nomEntreprise; }
 
         public RetrieveEmployeArgs RetrieveArgs { get; set; }
 
@@ -59,6 +64,12 @@ namespace model.Views
             DataContext = this;
 
         }
+
+        static RapportView()
+        {
+            nomEntreprise = ConfigurationManager.AppSettings["nomEntreprise"].ToString();
+        }
+
         public ObservableCollection<Employe> Employe
         {
             get
@@ -95,7 +106,6 @@ namespace model.Views
                 RaisePropertyChanged();
             }
         }
-
         public ObservableCollection<Paie> Paie
         {
             get
@@ -275,7 +285,7 @@ namespace model.Views
             try 
             {
                 PeriodePaie tmp = new PeriodePaie(Convert.ToDateTime(dtDateDebut.Text), Convert.ToDateTime(dtDateFin.Text));
-                float BruteTotal = 0;
+                float BruteTotal = 0;                
 
                 PdfDocument pdf = new PdfDocument();
                 pdf.Info.Title = "Rapport Paie";
@@ -286,12 +296,25 @@ namespace model.Views
                 XGraphics graph = XGraphics.FromPdfPage(page);
 
                 XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
-                var formatter = new XTextFormatter(graph);
+                XTextFormatter formatter = new XTextFormatter(graph);
                 int height = 0;
 
-                var layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
+                XRect layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
 
-                foreach(Paie paie in Paie)
+                EnteteDPF(ref formatter, ref font, layoutRectangle, tmp);
+
+                graph.DrawLine(XPens.Black, 10, 50, page.Width - 10, 50);
+
+                MessageBox.Show(page.Width.ToString());
+
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 55, page.Width - 442, 60);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 153, 55, page.Width - 442, 60);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 296, 55, page.Width - 442, 60);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 439, 55, page.Width - 452, 60);
+
+                layoutRectangle = new XRect(10, height += 50, page.Width, page.Height);
+
+                foreach (Paie paie in Paie)
                 {
                     int tmpD = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Debut);
                     int tmpF = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Fin);
@@ -307,20 +330,19 @@ namespace model.Views
                     if (tmpD > 0 && tmpF < 0)
                     {
                         layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
-                        formatter.DrawString((paie.DateGenerationRapport.ToString() + " " + paie.Nom.ToString()+" "+paie.ID), font, XBrushes.Black, layoutRectangle);
+                        formatter.DrawString((paie.DateGenerationRapport.ToString() + " " + paie.Nom.ToString() + " " + paie.ID), font, XBrushes.Black, layoutRectangle);
                         layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
                         formatter.DrawString(("Montant Brute : " + Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + " $"), font, XBrushes.Black, layoutRectangle);
                         BruteTotal = BruteTotal + paie.MontantBrute;
                     }
 
-                    graph.DrawLine(XPens.Black, 10, height += 20, 500, height);
                 }
 
-                if(BruteTotal == 0)
+                if (BruteTotal == 0)
                     throw new Exception("erreur");
 
                 layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
-                formatter.DrawString(("Cout Pour la période : " +tmp.Debut+" à "+tmp.Fin+" Montant : "+Math.Round(Convert.ToSingle(BruteTotal), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+                formatter.DrawString(("Cout Pour la période : " + tmp.Debut + " à " + tmp.Fin + " Montant : " + Math.Round(Convert.ToSingle(BruteTotal), 2) + " $"), font, XBrushes.Black, layoutRectangle);
 
                 string pdfFilename = "RapportPaie.pdf";
                 pdf.Save(pdfFilename);
@@ -342,6 +364,17 @@ namespace model.Views
         {
             lstRapportProjet.SelectAll();
             
+        }
+
+        private void EnteteDPF(ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, PeriodePaie tmp)
+        {
+            DateTime now = DateTime.Now;
+
+            layoutRectangle = new XRect(25, 25, 200, 25);
+            formatter.DrawString((nomEntreprise + "\t\t\t\t\t Rapport de Paies"), font, XBrushes.Black, layoutRectangle);
+
+            layoutRectangle = new XRect(300, 25, 300, 25);
+            formatter.DrawString(("Date de Génération : " + now.ToString()), font, XBrushes.Black, layoutRectangle);
         }
     }
 }
