@@ -190,16 +190,16 @@
                 <Border CornerRadius="10" BorderBrush="Gray" Background="LightGray" BorderThickness="5" Padding="1" Width="300" HorizontalAlignment="Left" >
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
-                            <Label  Width="220"  Height="50" FontSize="20" Content="???? :" HorizontalAlignment="Left" />
+                            <Label  Width="220"  Height="50" FontSize="20" Content="Atomique :" HorizontalAlignment="Left" />
                             <CheckBox Name="chxA" Margin="10,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <Label  Width="220"  Height="50" FontSize="20" Content="???? :"  />
+                            <Label  Width="220"  Height="50" FontSize="20" Content="Atomique détails :"  />
                             <CheckBox Name="chxB" Margin="10,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Width="220"  Height="50" FontSize="20" Content="???? :"  />
+                            <Label Width="220"  Height="50" FontSize="20" Content="Regroupement :"  />
                             <CheckBox Name="chxC" Margin="10,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
                     </StackPanel>
