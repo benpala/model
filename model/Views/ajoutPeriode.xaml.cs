@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using model.Models;
 using model.Service;
+using model.Service.MySql;
 
 namespace model.Views
 {
@@ -153,23 +154,28 @@ namespace model.Views
         }
 
         private void click_enregistrer(object sender, RoutedEventArgs e)
-        {
+        { 
             try
             {
+              
                 foreach (PeriodePaie p in nouvPeriodes)
                 {
-                    if(p.register(p))
+                    if(p.register())
                     {
                         nouvPeriodes.Remove(p);
+                        if (nouvPeriodes.Count() == 0)
+                        {
+                            break;
+                        }
                     }
                     else
                     {
                         throw new Exception();
                     }
-                    
                 }
-                
                 MessageBox.Show("Tous les dates on bien étés enregistrés.");
+                IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
+                applicationService.ChangeView<ajoutPeriode>(new ajoutPeriode());
             }
             catch (Exception)
             {

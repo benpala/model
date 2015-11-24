@@ -33,9 +33,9 @@ namespace model.Models
                 throw new Exception();
             }
         }
-        public bool register(PeriodePaie p){
+        public bool register(){
             MySqlPeriodeService _service = new MySqlPeriodeService();
-            return (_service.registerPeriode(p));
+            return (_service.registerPeriode(this));
         }
     }
 }

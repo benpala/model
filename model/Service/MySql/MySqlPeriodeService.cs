@@ -49,13 +49,14 @@ namespace model.Service.MySql
             {
                
                 StringBuilder sb = new StringBuilder();
-
+                connexion = new MySqlConnexion();
                 sb.Append("INSERT INTO PeriodePaies (dateDebut, dateFin) VALUES('");
-                sb.Append(p.Debut.ToString());
+                sb.Append(p.Debut);
                 sb.Append("', '");
-                sb.Append(p.Fin.ToString());
-                sb.Append("')");
-                connexion.Query(sb.ToString());
+                sb.Append(p.Fin);
+                sb.Append("');");
+                string req = sb.ToString();
+                connexion.Query(req);
                 return true;
             }
             catch (MySqlException)

@@ -211,6 +211,12 @@ namespace model.Models
                 {
                     DateTime start = (DateTime)Periode.Rows[0][0],
                     end = (DateTime)Periode.Rows[0][1];
+                    DateTime date = DateTime.Now;
+                    PeriodePaie tmpTime = new PeriodePaie(date, date);
+                    if(tmpTime.Fin < end)
+                    {
+                        throw new Exception("La période que vous essayez de générer est en cours.");
+                    }
                     float HeureSupp = 0;
                     int compteurTemps = 0;
                     int totalEmp = emp.Count;
@@ -276,7 +282,9 @@ namespace model.Models
             }
         }
         public void generateSlipePay(Paie p){
-            
+            int PDF_WIDTH = 500;
+            int PDF_MARGIN_LEFT=20;
+            int NEXT_MARGIN_TOP = 120;
             PdfDocument pdf = new PdfDocument();
             pdf.Info.Title = p.Nom + "_Paie";
             PdfPage page;
@@ -293,64 +301,76 @@ namespace model.Models
 
             graph.DrawLine(penn, 0, 3, 800, 3);  
             graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(95,95,95)), new XRect(0, 5, 800, 60));
+
             var layoutRectangle = new XRect(5, 25, page.Width, page.Height);
             formatter.DrawString("GEM-C Rapport de paie de : " + (p.Nom), font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(300, 25, page.Width, page.Height);
             formatter.DrawString(("Talon pour la période du : " + p.Periode), font, XBrushes.Black, layoutRectangle);
 
-          
-
             graph.DrawLine(penn, 0, 67, 800, 67);
+
             graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(255, 243, 229)), new XRect(0, 70, 800, 255));
-            layoutRectangle = new XRect(20, 90, page.Width, page.Height);
-            formatter.DrawString("Calcule du salaire :", font, XBrushes.Black, layoutRectangle);
-            graph.DrawLine(penn, 20, 110, 150, 110);
-            // Commission
-            layoutRectangle = new XRect(20, 120, page.Width, page.Height);
-            formatter.DrawString(("Montant commission : "), font, XBrushes.Black, layoutRectangle);
-            layoutRectangle = new XRect(350, 120, page.Width, page.Height);
-            formatter.DrawString((Math.Round(p.MontantCommission, 2) + " $"), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(PDF_MARGIN_LEFT, 90, page.Width, page.Height);
+            formatter.DrawString("Calcul du salaire :", font, XBrushes.Black, layoutRectangle);
+            graph.DrawLine(penn, PDF_MARGIN_LEFT, 110, 150, 110);
 
-            // Indemnite
-            layoutRectangle = new XRect(20, 140, page.Width, page.Height);
-            formatter.DrawString(("Montant indemnite : " ), font, XBrushes.Black, layoutRectangle);
-            layoutRectangle = new XRect(350, 140, page.Width, page.Height);
-            formatter.DrawString((Math.Round(p.MontantIndemnite, 2) + " $"), font, XBrushes.Black, layoutRectangle);
+            if(p.MontantCommission != 0)
+            {
+                drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font,layoutRectangle, formatter,"Montant commission : ", Math.Round(p.MontantCommission,2).ToString());
+                NEXT_MARGIN_TOP+=20;
+            }
+            if (p.MontantIndemnite != 0)
+            {
+                drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant indemnite : ", Math.Round(p.MontantIndemnite,2).ToString());
+                NEXT_MARGIN_TOP += 20;
+            }
+            if (p.MontantPourboire != 0)
+            {
+                drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant pourboire : ", Math.Round(p.MontantPourboire,2).ToString());
+                NEXT_MARGIN_TOP += 20;
+            }
+            if (p.MontantPrime != 0)
+            {
+                drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant prime : ", Math.Round(p.MontantPrime,2).ToString());
+                NEXT_MARGIN_TOP += 20;
+            }
+            // ce qui nou intéresse commence
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Heure regulier : ", Math.Round(p.NombreHeure, 2).ToString(), "");
+            NEXT_MARGIN_TOP += 20;
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Heure suplémentaire : ", Math.Round(p.NombreHeureSupp, 2).ToString(), "");
+            NEXT_MARGIN_TOP += 20;
 
-
-            layoutRectangle = new XRect(20, 160, page.Width, page.Height);
-            formatter.DrawString(("Montant pourboire : " + Math.Round(p.MontantPourboire, 2) + " $"), font, XBrushes.Black, layoutRectangle);
-
-            layoutRectangle = new XRect(20, 180, page.Width, page.Height);
-            formatter.DrawString(("Montant prime : " + Math.Round(p.MontantPrime, 2) + " $"), font, XBrushes.Black, layoutRectangle);
-
-
-            graph.DrawLine(penn, 20, 200, 150, 200);
-
-            layoutRectangle = new XRect(20, 220, page.Width, page.Height);
-            formatter.DrawString(("Heure regulier : " + p.NombreHeure), font, XBrushes.Black, layoutRectangle);
-            layoutRectangle = new XRect(20, 240, page.Width, page.Height);
-            formatter.DrawString(("Heure suplémentaire : " + p.NombreHeureSupp), font, XBrushes.Black, layoutRectangle);
-
-            layoutRectangle = new XRect(20, 260, page.Width, page.Height);
-            formatter.DrawString(("Montant Brute : " + p.NombreHeure + " X " + p.salaire.ToString() + "( " + p.NombreHeureSupp + " X " + p.salaire + " X 1.5) = " + Math.Round(p.montantbrute, 2) + " $"), font, XBrushes.Black, layoutRectangle);
-            
+            graph.DrawLine(penn, 450, NEXT_MARGIN_TOP, 200, NEXT_MARGIN_TOP);
+            NEXT_MARGIN_TOP+=20;
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, ("Montant Brut - Salaire Regulier: " + p.salaire.ToString() + "$ Salaire supp.: ( " + (Convert.ToDouble(p.salaire) * 1.5).ToString() + " $ ) "), Math.Round(p.montantbrute, 2).ToString());
+            NEXT_MARGIN_TOP += 20;
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant impôt combiné (Fédéral et provincial): ", Math.Round(p.MontantNet, 2).ToString());
+            NEXT_MARGIN_TOP += 20;
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant Net du : ", Math.Round(p.MontantNet, 2).ToString());
          
-            
-
-            layoutRectangle = new XRect(20, 280, page.Width, page.Height);
-            formatter.DrawString(("Montant impôt combiné (Fédéral et provincial): " + Math.Round((p.MontantBrute - p.MontantNet), 2) + " $"), font, XBrushes.Black, layoutRectangle);
-
-            layoutRectangle = new XRect(400, 300, page.Width, page.Height);
-            formatter.DrawString(("Montant Net due : " + Math.Round(p.MontantNet, 2) + " $"), font, XBrushes.Black, layoutRectangle);
-
-         
-
-            graph.DrawLine(XPens.Black, 0, 320 , 800, 320);
-                    
-            string pdfFilename = "Slipe.pdf";
-            pdf.Save(pdfFilename);
+            graph.DrawLine(XPens.Black, 0, 320 , 800, 320);     
+            StringBuilder b = new StringBuilder();
+            b.Append("talon_");
+            b.Append(p.Nom.ToString());
+            b.Append("_");
+            b.Append(String.Format("{0:M/d/yyyy}", Convert.ToDateTime(p.DateGenerationRapport)));
+            b.Append(".pdf");
+            string pdfFilename = b.ToString();
+            pdf.Save(pdfFilename.Trim());
             Process.Start(pdfFilename);
+        }
+        public void drawPDF(int PDF_WIDTH, int NEXT_MARGIN_TOP, 
+                            int PDF_MARGIN_LEFT, PdfPage page, 
+                            XFont font, XRect layoutRectangle, 
+                            XTextFormatter formatter,
+                            string text, string ligne, string dollar = " $")
+        {
+            
+            layoutRectangle = new XRect(PDF_MARGIN_LEFT, NEXT_MARGIN_TOP, page.Width, page.Height);
+            formatter.DrawString((text), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(PDF_WIDTH, NEXT_MARGIN_TOP, page.Width, page.Height);
+            formatter.DrawString((ligne + dollar), font, XBrushes.Black, layoutRectangle);
+            NEXT_MARGIN_TOP += 20;
         }
     }
 
