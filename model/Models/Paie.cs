@@ -301,7 +301,7 @@ namespace model.Models
             penn.DashStyle = XDashStyle.Dash;
            
             graph.DrawLine(penn, 0, 3, page.Height, 3);  
-            graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(95,95,95)), new XRect(0, 5, page.Height, 30));
+            graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(95,95,95)), new XRect(0, 3, page.Height, 30));
 
             var layoutRectangle = new XRect(5, 12.5, page.Width, page.Height);
             formatter.DrawString("GEM-C Rapport de paie de : " + (p.Nom), font, XBrushes.White, layoutRectangle);
@@ -316,6 +316,8 @@ namespace model.Models
             graph.DrawLine(penn, PDF_MARGIN_LEFT, 55, 150, 55);
             #endregion
 
+
+          
             if(p.MontantCommission != 0)
             {
                 drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font,layoutRectangle, formatter,"Montant commission : ", Math.Round(p.MontantCommission,2).ToString());
@@ -359,11 +361,15 @@ namespace model.Models
             NEXT_MARGIN_TOP += 10;
             
 
-            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, ("Taux rég : " + p.salaire.ToString() + "$ supp : " + Math.Round((Convert.ToDouble(p.salaire) * 1.5), 2).ToString() + " $"), (Math.Round(p.montantbrute - lesmontants, 2)).ToString());
-            NEXT_MARGIN_TOP+=10;
-            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant brute total :  ", Math.Round((p.MontantBrute), 2).ToString());
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, ("Taux rég : " + p.salaire.ToString() + "$ "), Math.Round((p.NombreHeureSupp*(Convert.ToDouble(p.salaire))),2).ToString());
+            NEXT_MARGIN_TOP+=10; supp :
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Taux supp :  " + Math.Round((Convert.ToDouble(p.salaire) * 1.5), 4).ToString() + " $", Math.Round((p.MontantBrute - lesmontants) - (p.NombreHeure * Convert.ToDouble(p.salaire)), 2).ToString());
             NEXT_MARGIN_TOP += 10;
 
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "", "--------------", "");
+            NEXT_MARGIN_TOP += 10;
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant brute total :  ", Math.Round((p.MontantBrute), 2).ToString());
+            NEXT_MARGIN_TOP += 10;
             drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "", "--------------", "");
             NEXT_MARGIN_TOP += 10;
             
