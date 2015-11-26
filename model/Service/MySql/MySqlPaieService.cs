@@ -240,6 +240,8 @@ namespace model.Service.MySql
                 idEmploye = row["idEmploye"].ToString(),
                 salaire = row["tauxHoraireNormal"].ToString(),
                 updatedetail = row["updatedetail"].ToString()
+              
+                
             };
         }
     }

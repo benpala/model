@@ -90,6 +90,8 @@
                 <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeHeure" IsReadOnly="false"  Name="heure"  HorizontalAlignment="Left"  Height="20" Width="150"  Text="{Binding Paies.NombreHeure, StringFormat=N2}" ></TextBox>
                 <Label  Width="Auto" Height="25" >Heure(s) suplémentaire(s) :</Label>
                 <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeHeureSupp" IsReadOnly="false"  Name="heureSupp" HorizontalAlignment="Left"  Height="20" Width="150" Text="{Binding Paies.NombreHeureSupp, StringFormat=N2}" ></TextBox>
+                <Label  Width="Auto" Height="25" >Dernière modification éffectuer :</Label>
+                <TextBlock Margin="5,0,0,0" FontWeight="Bold" Name="update" HorizontalAlignment="Left"  Height="20" Width="150" Text="{Binding Paies.updatedetail, TargetNullValue='Aucunes modifications'}"  ></TextBlock>
             </StackPanel>
             <StackPanel Background="#E5E4E2"  Margin="0,-47,0,0" DockPanel.Dock="Left" >
                 <Label Margin="0,50,0,0" Width="Auto" Height="25" >Montant prime $:</Label>

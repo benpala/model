@@ -119,8 +119,9 @@ namespace model.Views
                 }
 
                 MessageBox.Show("Enregistrement complété.");
+                Dictionary<string, object> parametre = new Dictionary<string, object>() { { "paie", _Paie } };
                 IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
-                applicationService.ChangeView<ListePaieView>(new ListePaieView());
+                applicationService.ChangeView<DetailPaieView>(new DetailPaieView(parametre));
             }catch(Exception){
                 MessageBox.Show("Une erreure s'est produite, veuillez recommencer");
             }
@@ -257,7 +258,19 @@ namespace model.Views
 
         private void click_print(object sender, RoutedEventArgs e)
         {
-            _Paie.generateSlipePay(_Paie);
+            try
+            {
+                _Paie.generateSlipePay(_Paie);
+            }
+            catch (Exception E)
+            {
+                if (E.Message == "Le processus ne peut pas accéder au fichier 'D:\\model\\model\\bin\\Debug\\RapportPaie.pdf', car il est en cours d'utilisation par un autre processus.")
+                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer");
+                else
+                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer");
+
+            }
+            
         }
 
         

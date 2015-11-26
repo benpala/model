@@ -182,7 +182,7 @@ namespace model.Models
             NombreHeureSupp = 0;
             MontantPrime = 0;
             salaire = String.Empty;
-            updatedetail= String.Empty;
+            updatedetail= "Aucunes modifications";
             MontantIndemnite = 0;
             MontantAllocations = 0;
             MontantCommission = 0;
@@ -282,9 +282,10 @@ namespace model.Models
             }
         }
         public void generateSlipePay(Paie p){
-            int PDF_WIDTH = 500;
+            #region headerPDF
+            int PDF_WIDTH = 250;
             int PDF_MARGIN_LEFT=20;
-            int NEXT_MARGIN_TOP = 120;
+            int NEXT_MARGIN_TOP = 60;
             PdfDocument pdf = new PdfDocument();
             pdf.Info.Title = p.Nom + "_Paie";
             PdfPage page;
@@ -294,83 +295,105 @@ namespace model.Models
             XGraphics graph = XGraphics.FromPdfPage(page);
             List<LiaisonProjetEmploye> Liaison = new List<LiaisonProjetEmploye>();
             MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
-            XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
+            XFont font = new XFont("Consolas", 10.0); //new XFont("Verdana", 20, XFontStyle.Bold);
             var formatter = new XTextFormatter(graph);
             XPen penn = new XPen(XColors.Black, 1);
             penn.DashStyle = XDashStyle.Dash;
+           
+            graph.DrawLine(penn, 0, 3, page.Height, 3);  
+            graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(95,95,95)), new XRect(0, 5, page.Height, 30));
 
-            graph.DrawLine(penn, 0, 3, 800, 3);  
-            graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(95,95,95)), new XRect(0, 5, 800, 60));
+            var layoutRectangle = new XRect(5, 12.5, page.Width, page.Height);
+            formatter.DrawString("GEM-C Rapport de paie de : " + (p.Nom), font, XBrushes.White, layoutRectangle);
+            layoutRectangle = new XRect(300, 12.5, page.Width, page.Height);
+            formatter.DrawString(("Talon pour la période du : " + p.Periode), font, XBrushes.White, layoutRectangle);
 
-            var layoutRectangle = new XRect(5, 25, page.Width, page.Height);
-            formatter.DrawString("GEM-C Rapport de paie de : " + (p.Nom), font, XBrushes.Black, layoutRectangle);
-            layoutRectangle = new XRect(300, 25, page.Width, page.Height);
-            formatter.DrawString(("Talon pour la période du : " + p.Periode), font, XBrushes.Black, layoutRectangle);
+            graph.DrawLine(penn, 0, 33, 800, 33);
 
-            graph.DrawLine(penn, 0, 67, 800, 67);
-
-            graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(255, 243, 229)), new XRect(0, 70, 800, 255));
-            layoutRectangle = new XRect(PDF_MARGIN_LEFT, 90, page.Width, page.Height);
+            graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(255, 243, 229)), new XRect(0, 34, page.Height, 255));
+            layoutRectangle = new XRect(PDF_MARGIN_LEFT, 40, page.Width, page.Height);
             formatter.DrawString("Calcul du salaire :", font, XBrushes.Black, layoutRectangle);
-            graph.DrawLine(penn, PDF_MARGIN_LEFT, 110, 150, 110);
+            graph.DrawLine(penn, PDF_MARGIN_LEFT, 55, 150, 55);
+            #endregion
 
             if(p.MontantCommission != 0)
             {
                 drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font,layoutRectangle, formatter,"Montant commission : ", Math.Round(p.MontantCommission,2).ToString());
-                NEXT_MARGIN_TOP+=20;
+                NEXT_MARGIN_TOP+=10;
             }
             if (p.MontantIndemnite != 0)
             {
                 drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant indemnite : ", Math.Round(p.MontantIndemnite,2).ToString());
-                NEXT_MARGIN_TOP += 20;
+                NEXT_MARGIN_TOP += 10;
             }
             if (p.MontantPourboire != 0)
             {
                 drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant pourboire : ", Math.Round(p.MontantPourboire,2).ToString());
-                NEXT_MARGIN_TOP += 20;
+                NEXT_MARGIN_TOP += 10;
             }
             if (p.MontantPrime != 0)
             {
                 drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant prime : ", Math.Round(p.MontantPrime,2).ToString());
-                NEXT_MARGIN_TOP += 20;
+                NEXT_MARGIN_TOP += 10;
             }
+            if (p.MontantAllocations != 0)
+            {
+                drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant allocations : ", Math.Round(p.MontantAllocations, 2).ToString());
+                NEXT_MARGIN_TOP += 10;
+            }
+            double lesmontants = Math.Round((p.MontantAllocations + p.MontantCommission + p.MontantIndemnite + p.MontantPourboire + p.MontantPrime), 2);
+            if (lesmontants != 0)
+            {
+                drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "", "--------------", "");
+                NEXT_MARGIN_TOP += 10;
+                drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Total des montants :  ", lesmontants.ToString());
+                NEXT_MARGIN_TOP += 30;
+            }    
+                
             // ce qui nou intéresse commence
-            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Heure regulier : ", Math.Round(p.NombreHeure, 2).ToString(), "");
-            NEXT_MARGIN_TOP += 20;
-            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Heure suplémentaire : ", Math.Round(p.NombreHeureSupp, 2).ToString(), "");
+            
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Heure regulier : ", Math.Round(p.NombreHeure, 2).ToString(), " hr(s)");
+            NEXT_MARGIN_TOP += 10;
+            
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Heure suplémentaire : ", Math.Round(p.NombreHeureSupp, 2).ToString(), " hr(s)");
+            NEXT_MARGIN_TOP += 10;
+            
+
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, ("Taux rég : " + p.salaire.ToString() + "$ supp : " + Math.Round((Convert.ToDouble(p.salaire) * 1.5), 2).ToString() + " $"), (Math.Round(p.montantbrute - lesmontants, 2)).ToString());
+            NEXT_MARGIN_TOP+=10;
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant brute total :  ", Math.Round((p.MontantBrute), 2).ToString());
+            NEXT_MARGIN_TOP += 10;
+
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "", "--------------", "");
+            NEXT_MARGIN_TOP += 10;
+            
+            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant impôt combiné (Féd. et prov.): ", "-" + (Math.Round(p.MontantBrute, 2) - Math.Round(p.MontantNet, 2)).ToString());
             NEXT_MARGIN_TOP += 20;
 
-            graph.DrawLine(penn, 450, NEXT_MARGIN_TOP, 200, NEXT_MARGIN_TOP);
-            NEXT_MARGIN_TOP+=20;
-            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, ("Montant Brut - Salaire Regulier: " + p.salaire.ToString() + "$ Salaire supp.: ( " + (Convert.ToDouble(p.salaire) * 1.5).ToString() + " $ ) "), Math.Round(p.montantbrute, 2).ToString());
-            NEXT_MARGIN_TOP += 20;
-            drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant impôt combiné (Fédéral et provincial): ", Math.Round(p.MontantNet, 2).ToString());
-            NEXT_MARGIN_TOP += 20;
+            graph.DrawRectangle(XPens.Black, XBrushes.LightSeaGreen, 5, NEXT_MARGIN_TOP-2.5, page.Width-10, page.Height-825);
+            
             drawPDF(PDF_WIDTH, NEXT_MARGIN_TOP, PDF_MARGIN_LEFT, page, font, layoutRectangle, formatter, "Montant Net du : ", Math.Round(p.MontantNet, 2).ToString());
-         
-            graph.DrawLine(XPens.Black, 0, 320 , 800, 320);     
+
+            graph.DrawLine(XPens.Black, 0, 280, 800, 280);     
+            #region outputPDF
             StringBuilder b = new StringBuilder();
             b.Append("talon_");
             b.Append(p.Nom.ToString());
             b.Append("_");
             b.Append(String.Format("{0:M/d/yyyy}", Convert.ToDateTime(p.DateGenerationRapport)));
             b.Append(".pdf");
-            string pdfFilename = b.ToString();
-            pdf.Save(pdfFilename.Trim());
+            string pdfFilename = b.ToString().Replace(" ", "_");
+            pdf.Save(pdfFilename);
             Process.Start(pdfFilename);
+            #endregion
         }
-        public void drawPDF(int PDF_WIDTH, int NEXT_MARGIN_TOP, 
-                            int PDF_MARGIN_LEFT, PdfPage page, 
-                            XFont font, XRect layoutRectangle, 
-                            XTextFormatter formatter,
-                            string text, string ligne, string dollar = " $")
+        public void drawPDF(int PDF_WIDTH, int NEXT_MARGIN_TOP, int PDF_MARGIN_LEFT, PdfPage page,  XFont font, XRect layoutRectangle, XTextFormatter formatter, string text, string ligne, string dollar = " $")
         {
             
             layoutRectangle = new XRect(PDF_MARGIN_LEFT, NEXT_MARGIN_TOP, page.Width, page.Height);
             formatter.DrawString((text), font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(PDF_WIDTH, NEXT_MARGIN_TOP, page.Width, page.Height);
             formatter.DrawString((ligne + dollar), font, XBrushes.Black, layoutRectangle);
-            NEXT_MARGIN_TOP += 20;
         }
     }
 
