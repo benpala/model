@@ -291,11 +291,11 @@ namespace model.Views
                 pdf.Info.Title = "Rapport Paie";
                 PdfPage page;
                 page = pdf.AddPage();
-                page.Orientation = PageOrientation.Portrait;
+                page.Orientation = PageOrientation.Landscape;
                 page.Size = PageSize.A4;
                 XGraphics graph = XGraphics.FromPdfPage(page);
 
-                XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
+                XFont font = new XFont("Consolas", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
                 XTextFormatter formatter = new XTextFormatter(graph);
                 int height = 0;
 
@@ -306,28 +306,29 @@ namespace model.Views
                 graph.DrawLine(XPens.Black, 10, 50, page.Width - 10, 50);
 
                 MessageBox.Show(page.Height.ToString());
+                MessageBox.Show(page.Width.ToString());
 
                 //Étiquette
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 55, page.Width - 442, page.Height - 820);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 153, 55, page.Width - 442, page.Height - 820);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 296, 55, page.Width - 442, page.Height - 820);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 439, 55, page.Width - 450, page.Height - 820);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 55, page.Width - 730, page.Height - 547);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 215, 55, page.Width - 638, page.Height - 547);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 420, 55, page.Width - 636, page.Height - 547);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 627, 55, page.Width - 638, page.Height - 547);
 
-                layoutRectangle = new XRect(25, 60, page.Width - 447, page.Height - 820);
+                /*layoutRectangle = new XRect(25, 60, page.Width - 447, page.Height - 820);
                 formatter.DrawString("Date Génération Paie", font, XBrushes.Black, layoutRectangle);
                 layoutRectangle = new XRect(185, 60, page.Width - 447, page.Height - 820);
                 formatter.DrawString("Nom Employé", font, XBrushes.Black, layoutRectangle);
                 layoutRectangle = new XRect(345, 60, page.Width - 447, page.Height - 820);
                 formatter.DrawString("ID Paie", font, XBrushes.Black, layoutRectangle);
                 layoutRectangle = new XRect(474, 60, page.Width - 447, page.Height - 820);
-                formatter.DrawString("Montant Brut", font, XBrushes.Black, layoutRectangle);
+                formatter.DrawString("Montant Brut", font, XBrushes.Black, layoutRectangle);*/
                 //Contenu
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 77, page.Width - 442, page.Height - 200);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 153, 77, page.Width - 442, page.Height - 200);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 296, 77, page.Width - 442, page.Height - 200);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 439, 77, page.Width - 450, page.Height - 200);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 104, page.Width - 730, page.Height - 200);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 215, 104, page.Width - 638, page.Height - 200);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 420, 104, page.Width - 636, page.Height - 200);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 627, 104, page.Width - 638, page.Height - 200);
 
-                layoutRectangle = new XRect(10, height += 50, page.Width, page.Height);
+                layoutRectangle = new XRect(10, height += 75, page.Width, page.Height);
 
                 foreach (Paie paie in Paie)
                 {
@@ -344,10 +345,14 @@ namespace model.Views
 
                     if (tmpD > 0 && tmpF < 0)
                     {
-                        layoutRectangle = new XRect(15, height += 15, page.Width, page.Height);
-                        formatter.DrawString((paie.DateGenerationRapport.ToString() + " " + paie.Nom.ToString() + " " + paie.ID), font, XBrushes.Black, layoutRectangle);
-                        layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                        formatter.DrawString(("Montant Brut : " + Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+                        layoutRectangle = new XRect(30, height += 15, page.Width, page.Height);
+                        formatter.DrawString(String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(paie.DateGenerationRapport)), font, XBrushes.Black, layoutRectangle);
+                        layoutRectangle = new XRect(260, height, page.Width, page.Height);
+                        formatter.DrawString(paie.Nom.ToString(), font, XBrushes.Black, layoutRectangle);
+                        layoutRectangle = new XRect(510, height, page.Width, page.Height);
+                        formatter.DrawString(paie.ID.ToString(), font, XBrushes.Black, layoutRectangle);
+                        layoutRectangle = new XRect(700, height , page.Width, page.Height);
+                        formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + " $", font, XBrushes.Black, layoutRectangle);
                         BruteTotal = BruteTotal + paie.MontantBrute;
                     }
 
