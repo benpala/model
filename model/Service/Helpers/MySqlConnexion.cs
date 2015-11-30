@@ -226,5 +226,11 @@ namespace model.Service.Helpers
             }
             return blob;
         }
+
+        public string getBD()
+        {
+            CONNECTION_STRING.IndexOf("database=");
+            return CONNECTION_STRING.Substring(CONNECTION_STRING.IndexOf("database=") + 9);
+        }
     }
 }
