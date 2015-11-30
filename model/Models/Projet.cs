@@ -17,15 +17,12 @@ namespace model.Models
         public float prixSimulation { get; set;}
         public float prixReel { get; set;}
         public string etat { get; set;}
-
-        public Projet()
-        {
-
-        }
-
-        public void CalculerNbHeureSimule()
-        {
-
-        }
+        public string dateTerminer { get; set;}
+        public string dateAbandon { get; set;}
+        public int nbEmploye { get; set;}
+        public int nbRessourcesEstime { get; set;}
+        public int nbHeureTravail { get; set;}
+        public int nbQuart { get; set;}
+        public bool joursOuvrable { get; set;}
     }
 }

@@ -1,7 +1,8 @@
 ﻿<UserControl x:Class="model.Views.GestionProjetView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Height="450" Width="1050">
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             Height="450" Width="1100">
     <UserControl.Resources>
         <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource styleHeader}"/>
@@ -71,79 +72,126 @@
             <TextBox Name="txtNomProjet"  Height="25" Width="200" Text="{Binding Projet.nom}" PreviewTextInput="PreviewTextInput" TextChanged="ValidationNomProjet"></TextBox>
             <Label Name="lblDateDebut" Width="200" Height="30" >Date de début :</Label>
             <DatePicker Name="dtDateDebut" SelectedDate="{Binding Projet.dateun}"  Height="30" Width="200" SelectedDateChanged="CalculerTempsEstime" KeyUp="EffaceDate"></DatePicker>
-            <Label Name="lblDateFin" Width="200" Height="30" >Date de fin :</Label>
+            <Label x:Name="lblDateFin" Width="200" Height="30" Content="Date de fin prévue :" />
             <DatePicker Name="dtDateFin" Height="30" Width="200" SelectedDate="{Binding Projet.datedeux}" SelectedDateChanged="CalculerTempsEstime" KeyUp="EffaceDate"></DatePicker>
-            <Label Width="200" Height="30">État du projet :</Label>
+            <Label Name="lblEtat" Width="200" Height="30">État du projet :</Label>
 
             <DockPanel HorizontalAlignment="Center">
-                <Label>Simulé</Label>            
+                <Label Name="lblEtatS">Simulé</Label>            
                 <RadioButton Name="rboSIM" Width="15" VerticalAlignment="Center" IsChecked="True" Checked="AutoriserChampDroit" Unchecked="AutoriserChampDroit"></RadioButton>
-                <Label>En cours</Label>
-                <RadioButton Name="rboECS" Width="15" VerticalAlignment="Center"></RadioButton>
-                <Label>Abandonné</Label>
-                <RadioButton Name="rboABD" Width="15" VerticalAlignment="Center"></RadioButton>
-                <Label>Terminé</Label>
-                <RadioButton Name="rboEND" Width="15" VerticalAlignment="Center"></RadioButton>
+                <Label Name="lblEtatC">En cours</Label>
+                <RadioButton Name="rboECS" Width="15" VerticalAlignment="Center" Checked="ChangerEtat"></RadioButton>
+                <Label Name="lblEtatA">Abandonné</Label>
+                <RadioButton Name="rboABD" Width="15" VerticalAlignment="Center" Checked="ChangerEtat"></RadioButton>
+                <Label Name="lblEtatE">Terminé</Label>
+                <RadioButton Name="rboEND" Width="15" VerticalAlignment="Center" Checked="ChangerEtat"></RadioButton>
             </DockPanel>
+            <Label Name="lblDateTerminerOuAbandonner" HorizontalAlignment="Center"></Label>
+            <TextBox IsReadOnly="True" Name="txtDateTerminerOuAbandonner" Width="200" Margin="150,0,150,10"></TextBox>
 
-
-            <Button Style="{StaticResource BaseButtonStyle}" Content="Enregistrer"  HorizontalAlignment="Center"  Width="208" Click="EnregistrerProjet" Height="50" VerticalAlignment="Bottom" />
+            <Button  Name="btnEnregistrer" Style="{StaticResource BaseButtonStyle}" Content="Enregistrer"  HorizontalAlignment="Center"  Width="208" Click="EnregistrerProjet" Height="50" VerticalAlignment="Bottom" />
             <Button Style="{StaticResource BaseButtonStyle}" Content="Retour"  HorizontalAlignment="Center"  Width="208" Click="retourMenu" Height="50" VerticalAlignment="Bottom"/>
         </StackPanel>
 
-        <Canvas>
+        <Canvas Name="canvas">
             <Label Margin="125,0" Name="lblEmployesProjet" Content="Employés associés au projet" Width="250" Height="35" FontWeight="Bold" FontSize="15"></Label>
-            <DataGrid Width="500" Margin="0,50" CanUserAddRows="False" Name="gridEmployeProjet" Padding="10" AutoGenerateColumns="False" Style="{DynamicResource DataGridStyle1}" Height="300" >
+            <DataGrid Width="500" Margin="0,50" CanUserAddRows="False" Name="gridEmployeProjet" Padding="10" AutoGenerateColumns="False" Style="{DynamicResource DataGridStyle1}" ItemsSource="{Binding ProjetEmployeList}" Height="300" >
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <EventSetter Event="Click" Handler="columnHeader_Click"></EventSetter>
+                    </Style>
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="ID" Width="0.2*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
 
-                                <TextBox Text="1000"></TextBox>
+                                <TextBox Text="{Binding ID}"></TextBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Nom employé" Width="1*">
+                    <DataGridTemplateColumn Header="Nom" Width=".8*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
+                                <TextBox Text="{Binding Nom}"></TextBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Heures travaillés" Width="0.6*">
+                    <DataGridTemplateColumn Header="Poste" Width=".5*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Poste}"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Heures" Width="0.3*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
 
-                                <TextBox Text="100"></TextBox>
+                                <TextBox Text="{Binding Heure}"></TextBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
+                    <DataGridTemplateColumn Header="Coût" Width="0.3*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBox Text="{Binding Cout}"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
-
             </DataGrid>
+            <Label Margin="0,350,0,0">Temps estimé</Label>
+            <TextBox Margin="85,350,0,0" Name="txtTempsEstime" Width="50"></TextBox>
+            <Label Margin="135,350,0,0">Retard/Avance</Label>
+            <TextBox Name="txtRetard" Margin="225,350,0,0" Width="35"></TextBox>
+            <Label Margin="310,350,0,0">Total</Label>
+            <TextBox Name="txtHeure" Margin="350,350,0,0" Width="75"></TextBox>
+            <TextBox Name="txtCout" Margin="425,350,0,0" Width="75"></TextBox>       
         </Canvas>
-        <StackPanel VerticalAlignment="Top">
-            <Label x:Name="lblRessourcesAdmin" Content="Nombre de ressources admin" HorizontalAlignment="Center" Foreground="Gray"/>
-            <TextBox x:Name="txtRessourcesAdmin" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"/>
-            <Label x:Name="lblRessourcesSenior" Content="Nombre de ressources senior" HorizontalAlignment="Center" Foreground="Gray"/>
-            <TextBox x:Name="txtRessourcesSenior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"/>
-            <Label  x:Name="lblRessourcesJunior" Content="Nombre de ressources junior" HorizontalAlignment="Center" Foreground="Gray"/>
-            <TextBox x:Name="txtRessourcesJunior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"/>
-            <Label x:Name="lblNbrHeuresEstime" Content="Temps Estimé" HorizontalAlignment="Center" Foreground="Gray"/>
-            <TextBox x:Name="txtNbrHeuresEstime" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" TextChanged="CalculerPrix"/>
-            <Label x:Name="lblPrixEstimation" Content="Prix estimé" HorizontalAlignment="Center" Foreground="Gray"/>
-            <TextBox x:Name="txtPrixEstimation" Width="100" IsReadOnly="True" IsEnabled="False"/>
-        </StackPanel>
-        <StackPanel >
-            <Label Name="lblNbHeureAdmin" Foreground="Gray">Nombre d'heures de travail des admins</Label>
-            <TextBox Name="txtNbHeureAdmin" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"></TextBox>
-            <Label Name="lblNbHeureSenior" Foreground="Gray">Nombre d'heures de travail des seniors</Label>
-            <TextBox Name="txtNbHeureSenior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"></TextBox>
-            <Label Name="lblNbHeureJunior" Foreground="Gray">Nombre d'heures de travail des juniors</Label>
-            <TextBox Name="txtNbHeureJunior" Width="50" PreviewTextInput="PreviewTextInput" TextChanged="CalculerPrix" IsEnabled="False"></TextBox>
-        </StackPanel>
+        <DockPanel Name="DockSimule">
+            <StackPanel Name="DockChoixRessources" VerticalAlignment="Top">
+                <Label FontSize="18">Estimation du champs</Label>
+                <RadioButton Name="rboHeure" Checked="EstimerChampsManquantRb">Heures</RadioButton>
+                <RadioButton Name="rboEmploye" Checked="EstimerChampsManquantRb">Employés</RadioButton>
+                <RadioButton Name="rboDateFin" Checked="EstimerChampsManquantRb">Date de fin</RadioButton>
+                <StackPanel>
+                    <Label FontSize="18">Choix du nombre de jours/semaines</Label>
+                    <RadioButton Name="rboRessGen" VerticalAlignment="Center" Checked="EstimerChampsManquantRb">Ouvrables</RadioButton>
+                    <RadioButton Name="rboRessGen2" VerticalAlignment="Center" Checked="EstimerChampsManquantRb">Tout</RadioButton>
+                </StackPanel>
+                <Label Name="lblHeure">Heures de travail /jour</Label>
+                <xctk:IntegerUpDown Name="nbHeureJour" Margin="30,0,0,0" HorizontalAlignment="Left" Value="7" Maximum="24" Minimum="1" KeyUp="ValidationNombre" ValueChanged="CalculerPrix1" MaxWidth="40"/>
+                <Label Name="lblQuart">Quarts de travail</Label>
+                <xctk:IntegerUpDown Name="nbQuart" Margin="30,0,0,0" HorizontalAlignment="Left" Value="1" Maximum="24" Minimum="1" KeyUp="ValidationNombre" ValueChanged="CalculerPrix1" MaxWidth="40"/>
+            </StackPanel>
+            <StackPanel>
+                <Label x:Name="lblRessourcesAdmin" Content="Nombre de ressources" HorizontalAlignment="Center"/>
+                <xctk:IntegerUpDown Name="txtRessourcesAdmin"  Value="1" Minimum="1" HorizontalAlignment="Center" TabIndex="1" KeyUp="CalculerPrixKey" ValueChanged="CalculerPrix1"></xctk:IntegerUpDown>
+                <Label x:Name="lblNbrHeuresEstime" Content="Temps estimé non ouvrable" HorizontalAlignment="Center" Visibility="Collapsed"/>
+                <!--<TextBox x:Name="txtNbrHeuresEstime" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" TextChanged="CalculerPrix" Visibility="Collapsed"/>-->
+                <TextBox x:Name="txtNbrHeuresEstime" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" Visibility="Collapsed"/>
+                <Label x:Name="lblNbrHeuresEstimeOuvrable" Content="Temps estimé ouvrable" HorizontalAlignment="Center" Visibility="Collapsed" />
+                <!--<TextBox x:Name="txtNbrHeuresEstimeOuvrable" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" TextChanged="CalculerPrix" Visibility="Collapsed"/>-->
+                <TextBox x:Name="txtNbrHeuresEstimeOuvrable" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" Visibility="Collapsed"/>
+                <Label Name="lblHeuresEstime" HorizontalAlignment="Center">Heures estimées</Label>
+                <TextBox Name="txtEstimation" Width="50" TextChanged="CalculerPrix"></TextBox>
+                <Label Name="lblJours" HorizontalAlignment="Center">Jours</Label>
+                <DockPanel>
+                    <Label Name="lblOuvrable">ouvrables</Label>
+                    <TextBox Name="txtJourOuvr" Width="25" Background="AliceBlue" IsReadOnly="True"></TextBox>
+                    <Label Name="lblNonOuvrable">non ouvrables</Label>
+                    <TextBox Name="txtJourNon" Width="25" Background="AliceBlue" IsReadOnly="True"></TextBox>
+                </DockPanel>
+                <Label x:Name="lblPrixEstimation" Content="Coût estimé" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtPrixEstimation" Background="AliceBlue" Width="100" IsReadOnly="True" IsEnabled="False"/>
+            </StackPanel>
+        </DockPanel>
     </StackPanel>
 
 </UserControl>
