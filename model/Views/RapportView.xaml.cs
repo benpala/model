@@ -26,7 +26,6 @@ using PdfSharp.Pdf;
 using System.Diagnostics;
 using System.Drawing;
 using PdfSharp.Drawing.Layout;
-using System.Configuration;
 
 namespace model.Views
 {
@@ -43,10 +42,6 @@ namespace model.Views
         private IPaiesService _ServicePaie;
         private IApplicationService _applicationService;
 
-        private static readonly string nomEntreprise;
-
-        public string NomEntreprice() { return nomEntreprise; }
-
         public RetrieveEmployeArgs RetrieveArgs { get; set; }
 
         public RapportView()
@@ -56,6 +51,7 @@ namespace model.Views
             _ServiceEmploye = ServiceFactory.Instance.GetService<IEmployeService>();
             _applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
+            
             Employe = new ObservableCollection<Employe>(_ServiceEmploye.RetrieveAll());
             _ServiceProjet = ServiceFactory.Instance.GetService<IProjetService>();
             Projet = new ObservableCollection<Projet>(_ServiceProjet.retrieveAll());
@@ -64,12 +60,7 @@ namespace model.Views
             DataContext = this;
 
         }
-
-        static RapportView()
-        {
-            nomEntreprise = ConfigurationManager.AppSettings["nomEntreprise"].ToString();
-        }
-
+        #region get set 
         public ObservableCollection<Employe> Employe
         {
             get
@@ -124,7 +115,7 @@ namespace model.Views
                 RaisePropertyChanged();
             }
         }
-
+        #endregion
         #region INotifyPropertyChanged INotifyPropertyChanging
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -162,9 +153,26 @@ namespace model.Views
 
         private void GenererRapportEmploye(object sender, RoutedEventArgs e)
         {
+            List<Employe> lstEmp = new List<Employe>();
+            //Tri nom employé
+            foreach (Employe emp in lstRapportEmploye.SelectedItems)
+                lstEmp.Add(emp);
+
+            //Tri nom employé
+            if((bool)rbtTriNomAZ.IsChecked)
+                lstEmp = lstEmp.OrderBy(lst => lst.Nom).ToList();
+            else if ((bool)rbtTriNomZA.IsChecked)
+                lstEmp = lstEmp.OrderByDescending(lst => lst.Nom).ToList();
+
+            //Tri salaire
+            else if ((bool)rbtTriSalaireASC.IsChecked)// ASC 
+                lstEmp = lstEmp.OrderBy(lst => lst.Salaire).ToList();
+            else if ((bool)rbtTriSalaireDESC.IsChecked)// DESC
+                lstEmp = lstEmp.OrderByDescending(lst => lst.Salaire).ToList();
+
             try 
             {
-                if (Convert.ToSingle(lstRapportEmploye.SelectedItems.Count.ToString()) > 0)
+                if (Convert.ToSingle(lstEmp.Count.ToString()) > 0)
                 {
                     if (chxProjetEmploye.IsChecked.Value || chxInfoGenerale.IsChecked.Value)
                     {
@@ -172,85 +180,183 @@ namespace model.Views
                         pdf.Info.Title = "Rapport Employe";
                         PdfPage page;
                         page = pdf.AddPage();
-                        page.Orientation = PageOrientation.Portrait;
+                        page.Orientation = PageOrientation.Landscape;
                         page.Size = PageSize.A4;
                         XGraphics graph = XGraphics.FromPdfPage(page);
                         List<LiaisonProjetEmploye> Liaison = new List<LiaisonProjetEmploye>();
                         MySqlEmployeService _ServiceMysql = new MySqlEmployeService();
-
-
-                        XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
+                        XFont font = new XFont("Consolas", 20.0); 
                         var formatter = new XTextFormatter(graph);
-                        int height = 0;
-                        foreach (Employe emp in lstRapportEmploye.SelectedItems)
+                        int height = 70;
+                        XPen penn = new XPen(XColors.Black, 1);
+                        penn.DashStyle = XDashStyle.Dash;
+
+                        string date = DateTime.Now.ToString("dd/MM/yyyy");
+                        //Entête
+                        graph.DrawLine(penn, 3, 3, 850, 3);
+                        graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(95, 95, 95)), new XRect(0, 5, 850, 60));
+                        var layoutRectangle = new XRect(5, 25, page.Width, page.Height);
+                        formatter.DrawString("GEM-C Rapport des employés", font, XBrushes.Black, layoutRectangle);
+                        layoutRectangle = new XRect(600, 25, page.Width, page.Height);
+                        formatter.DrawString(("Date : " + date), font, XBrushes.Black, layoutRectangle);
+                        graph.DrawLine(penn, 3, 67, 850, 67);
+                        graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(255, 243, 229)), new XRect(0, 70, 850, 600));
+
+                        //Table 
+                        font = new XFont("Consolas", 10.0);
+
+                        graph.DrawRectangle(XPens.Black, new XRect(5, height + 5, 20, 60));
+                        layoutRectangle = new XRect(7, height + 5, page.Width, page.Height);
+                        formatter.DrawString("ID", font, XBrushes.Black, layoutRectangle);
+
+                        graph.DrawRectangle(XPens.Black, new XRect(25, height + 5, 150, 60));
+                        layoutRectangle = new XRect(27, height + 5, page.Width, page.Height);
+                        formatter.DrawString("Nom", font, XBrushes.Black, layoutRectangle);
+
+                        layoutRectangle = new XRect(27, height + 20, page.Width, page.Height);
+                        formatter.DrawString("Prénom", font, XBrushes.Black, layoutRectangle);
+                        
+                        if (chxInfoGenerale.IsChecked.Value)
                         {
-                    
-                        if (height > 700)
+                            graph.DrawRectangle(XPens.Black, new XRect(175, height + 5, 120, 60));
+                            layoutRectangle = new XRect(178, height + 5, page.Width, page.Height);
+                            formatter.DrawString("Information général", font, XBrushes.Black, layoutRectangle);
+
+                            layoutRectangle = new XRect(178, height + 20, page.Width, page.Height);
+                            formatter.DrawString("-Titre emploi", font, XBrushes.Black, layoutRectangle);
+
+                            layoutRectangle = new XRect(178, height + 30, page.Width, page.Height);
+                            formatter.DrawString("-'Date embauche'", font, XBrushes.Black, layoutRectangle);
+
+                            layoutRectangle = new XRect(178, height + 40, page.Width, page.Height);
+                            formatter.DrawString("-(Status)", font, XBrushes.Black, layoutRectangle);
+                        
+                            graph.DrawRectangle(XPens.Black, new XRect(295, height + 5, 130, 60));
+                            layoutRectangle = new XRect(298, height + 5, page.Width, page.Height);
+                            formatter.DrawString("Détail financiés", font, XBrushes.Black, layoutRectangle);
+
+                            layoutRectangle = new XRect(298, height + 20, page.Width, page.Height);
+                            formatter.DrawString("-Saliare par l'heures", font, XBrushes.Black, layoutRectangle);
+
+                            layoutRectangle = new XRect(298, height + 30, page.Width, page.Height);
+                            formatter.DrawString("-(Saliare par l'heures", font, XBrushes.Black, layoutRectangle);
+
+                            layoutRectangle = new XRect(298, height + 40, page.Width, page.Height);
+                            formatter.DrawString(" supplémentaire)", font, XBrushes.Black, layoutRectangle);
+                        }
+
+                        if (chxProjetEmploye.IsChecked.Value)
+                        {
+                            graph.DrawRectangle(XPens.Black, new XRect(175, height + 5, 250, 60));
+                            graph.DrawRectangle(XPens.Black, new XRect(425, height + 5, 170, 60));
+                            layoutRectangle = new XRect(430, height + 5, page.Width, page.Height);
+                            formatter.DrawString("Projet(s) occupé(s)", font, XBrushes.Black, layoutRectangle);
+                        
+                            graph.DrawRectangle(XPens.Black, new XRect(595, height + 5, 150, 60));
+                            layoutRectangle = new XRect(605, height + 5, page.Width, page.Height);
+                            formatter.DrawString("Temps travaillé", font, XBrushes.Black, layoutRectangle);
+                        }
+                        
+                        height = 130;
+                        foreach (Employe emp in lstEmp)
+                        {
+                            if (chxProjetEmploye.IsChecked.Value)
+                            {
+                                Liaison = new List<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(emp.ID));
+
+                                if (15 * Liaison.Count + height > 530)
+                                {
+                                    page = pdf.AddPage();
+                                    page.Orientation = PageOrientation.Landscape;
+                                    graph = XGraphics.FromPdfPage(page);
+                                    formatter = new XTextFormatter(graph);
+                                    height = 0;
+                                    graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(255, 243, 229)), new XRect(0, 0, 850, 600));
+                                }
+                            }
+                            else if (!chxProjetEmploye.IsChecked.Value && height > 550)
                             {
                                 page = pdf.AddPage();
+                                page.Orientation = PageOrientation.Landscape;
                                 graph = XGraphics.FromPdfPage(page);
                                 formatter = new XTextFormatter(graph);
                                 height = 0;
+                                graph.DrawRectangle(new XSolidBrush(XColor.FromArgb(255, 243, 229)), new XRect(0, 0, 850, 600));
                             }
+                            
                             int y = height;
-                            var layoutRectangle = new XRect(10, height += 15, page.Width , page.Height );
-                            formatter.DrawString((emp.Prenom.ToString() + " " + emp.Nom.ToString()), font, XBrushes.Black, layoutRectangle);
+
+                            layoutRectangle = new XRect(7, height += 15 , page.Width, page.Height);
+                            formatter.DrawString( emp.ID.ToString(), font, XBrushes.Black, layoutRectangle);
+
+                            layoutRectangle = new XRect(27, height , page.Width, page.Height);
+                            formatter.DrawString(emp.Nom.ToString(), font, XBrushes.Black, layoutRectangle);
+
+                            layoutRectangle = new XRect(27  , height + 15 , page.Width, page.Height);
+                            formatter.DrawString(emp.Prenom.ToString(), font, XBrushes.Black, layoutRectangle);
+ 
                             //Section info employé
                             if (chxInfoGenerale.IsChecked.Value)
                             {
-                                layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                                formatter.DrawString(("Titre d'emploi : " + emp.Poste.ToString()), font, XBrushes.Black, layoutRectangle);
 
-                                layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                                formatter.DrawString(("Employeur : " + _ServiceMysql.getEmployeur(emp.ID)), font, XBrushes.Black, layoutRectangle);
+                                layoutRectangle = new XRect(178, height , page.Width, page.Height);
+                                formatter.DrawString(emp.Poste.ToString(), font, XBrushes.Black, layoutRectangle);
 
-                                layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                                formatter.DrawString(("Date embauche : " + _ServiceMysql.getDateEmbauche(emp.ID)), font, XBrushes.Black, layoutRectangle);
+                                layoutRectangle = new XRect(178 , height + 15, page.Width, page.Height);
+                                formatter.DrawString(("'" + _ServiceMysql.getDateEmbauche(emp.ID) + "'"), font, XBrushes.Black, layoutRectangle);
 
                                 if (!emp.HorsFonction)
                                 {
-                                    layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                                    formatter.DrawString("Status : En service", font, XBrushes.Black, layoutRectangle);
+                                    layoutRectangle = new XRect(178 , height + 30, page.Width, page.Height);
+                                    formatter.DrawString("(En service)", font, XBrushes.Black, layoutRectangle);
                                 }
                                 else
                                 {
-                                    layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                                    formatter.DrawString("Status : Hors service", font, XBrushes.Black, layoutRectangle);
+                                    layoutRectangle = new XRect(178 , height + 30, page.Width, page.Height);
+                                    formatter.DrawString("(Hors service)", font, XBrushes.Black, layoutRectangle);
                                 }
-                            
-                                layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                                formatter.DrawString(("Saliare par l'heure : " + Math.Round(Convert.ToSingle(emp.Salaire), 2) + " $"), font, XBrushes.Black, layoutRectangle);
-                                layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                                formatter.DrawString(("Saliare par l'heures supplémentaire : " + Math.Round( Convert.ToSingle(emp.SalaireOver), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+
+                                layoutRectangle = new XRect(298, height , page.Width, page.Height);
+                                formatter.DrawString((Math.Round(Convert.ToSingle(emp.Salaire), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+                                layoutRectangle = new XRect(298, height + 15, page.Width, page.Height);
+                                formatter.DrawString(("(" + Math.Round( Convert.ToSingle(emp.SalaireOver), 2) + " $)"), font, XBrushes.Black, layoutRectangle);
                             }
                             //Section projets des employés
                             if (chxProjetEmploye.IsChecked.Value)
                             {
                                 Liaison = new List<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(emp.ID));
                                 int count = 0;
-                                int x = 300;
+                                
                                 if (Liaison.Count > 0)
                                 {
-                                    layoutRectangle = new XRect(x, y += 15, page.Width, page.Height);
-                                    formatter.DrawString(("Projet(s) occupé(s) : "), font, XBrushes.Black, layoutRectangle);
-                                    layoutRectangle = new XRect(x + 180, y , page.Width, page.Height);
-                                    formatter.DrawString(("Temps travaillé : "), font, XBrushes.Black, layoutRectangle);
+                                    //Tri nom projet
+                                    if ((bool)rbtTriProjetAZ.IsChecked)
+                                        Liaison = Liaison.OrderBy(lst => lst.ProjNom).ToList();
+                                    else if ((bool)rbtTriProjetZA.IsChecked)
+                                        Liaison = Liaison.OrderByDescending(lst => lst.ProjNom).ToList();
+                                    
+                                    //Tri nb heure
+                                    if ((bool)rbtTriNBheureASC.IsChecked)
+                                        Liaison = Liaison.OrderBy(lst => lst.ProjNom).ToList();
+                                    else if ((bool)rbtTriNBheureDESC.IsChecked)
+                                        Liaison = Liaison.OrderByDescending(lst => lst.ProjNom).ToList();
                                     foreach (LiaisonProjetEmploye liaison in Liaison)
                                     {
                                         count++;
-                                        layoutRectangle = new XRect(x, y += 15, page.Width, page.Height);
-                                        formatter.DrawString(count + " : " + liaison.ProjNom.ToString(), font, XBrushes.Black, layoutRectangle);
+                                        layoutRectangle = new XRect(425, y += 15, page.Width, page.Height);
+                                        formatter.DrawString(count + " - " + liaison.ProjNom.ToString(), font, XBrushes.Black, layoutRectangle);
 
-                                        layoutRectangle = new XRect(x + 180, y , page.Width, page.Height);
+                                        layoutRectangle = new XRect(605 , y, page.Width, page.Height);
                                         formatter.DrawString( _ServiceMysql.CompteursProjets(emp.ID,liaison.ProjNom) + " heures", font, XBrushes.Black, layoutRectangle);
 
                                     }
-                                    height += 30;
                                     if (y > height)
                                         height = y;
                                 }
                             }
+                            height += 30; 
                             graph.DrawLine(XPens.Black, 10, height+=20 , 800, height);
+
                         }
                         string pdfFilename = "RapportEmploye.pdf";
                         pdf.Save(pdfFilename);
@@ -264,13 +370,7 @@ namespace model.Views
             }
             catch (Exception E)
             {
-                if (E.Message == "erreur")
-                    MessageBox.Show("Aucune paie durant cette période");
-                else if (E.Message == "Le processus ne peut pas accéder au fichier 'D:\\model\\model\\bin\\Debug\\RapportEmploye.pdf', car il est en cours d'utilisation par un autre processus.")
-                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regénérer");
-                else
-                    MessageBox.Show("Veuillez entrer des dates");
-
+                 MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regénérer");
             }
         }
 
@@ -285,52 +385,23 @@ namespace model.Views
             try 
             {
                 PeriodePaie tmp = new PeriodePaie(Convert.ToDateTime(dtDateDebut.Text), Convert.ToDateTime(dtDateFin.Text));
-                float BruteTotal = 0;                
+                float BruteTotal = 0;
 
                 PdfDocument pdf = new PdfDocument();
                 pdf.Info.Title = "Rapport Paie";
                 PdfPage page;
                 page = pdf.AddPage();
-                page.Orientation = PageOrientation.Landscape;
+                page.Orientation = PageOrientation.Portrait;
                 page.Size = PageSize.A4;
                 XGraphics graph = XGraphics.FromPdfPage(page);
 
-                XFont font = new XFont("Consolas", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
-                XTextFormatter formatter = new XTextFormatter(graph);
+                XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
+                var formatter = new XTextFormatter(graph);
                 int height = 0;
 
-                XRect layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
+                var layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
 
-                EnteteDPF(ref formatter, ref font, layoutRectangle, tmp);
-
-                graph.DrawLine(XPens.Black, 10, 50, page.Width - 10, 50);
-
-                MessageBox.Show(page.Height.ToString());
-                MessageBox.Show(page.Width.ToString());
-
-                //Étiquette
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 55, page.Width - 730, page.Height - 547);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 215, 55, page.Width - 638, page.Height - 547);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 420, 55, page.Width - 636, page.Height - 547);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 627, 55, page.Width - 638, page.Height - 547);
-
-                /*layoutRectangle = new XRect(25, 60, page.Width - 447, page.Height - 820);
-                formatter.DrawString("Date Génération Paie", font, XBrushes.Black, layoutRectangle);
-                layoutRectangle = new XRect(185, 60, page.Width - 447, page.Height - 820);
-                formatter.DrawString("Nom Employé", font, XBrushes.Black, layoutRectangle);
-                layoutRectangle = new XRect(345, 60, page.Width - 447, page.Height - 820);
-                formatter.DrawString("ID Paie", font, XBrushes.Black, layoutRectangle);
-                layoutRectangle = new XRect(474, 60, page.Width - 447, page.Height - 820);
-                formatter.DrawString("Montant Brut", font, XBrushes.Black, layoutRectangle);*/
-                //Contenu
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 104, page.Width - 730, page.Height - 200);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 215, 104, page.Width - 638, page.Height - 200);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 420, 104, page.Width - 636, page.Height - 200);
-                graph.DrawRectangle(XPens.Black, XBrushes.White, 627, 104, page.Width - 638, page.Height - 200);
-
-                layoutRectangle = new XRect(10, height += 75, page.Width, page.Height);
-
-                foreach (Paie paie in Paie)
+                foreach(Paie paie in Paie)
                 {
                     int tmpD = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Debut);
                     int tmpF = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Fin);
@@ -345,24 +416,21 @@ namespace model.Views
 
                     if (tmpD > 0 && tmpF < 0)
                     {
-                        layoutRectangle = new XRect(30, height += 15, page.Width, page.Height);
-                        formatter.DrawString(String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(paie.DateGenerationRapport)), font, XBrushes.Black, layoutRectangle);
-                        layoutRectangle = new XRect(260, height, page.Width, page.Height);
-                        formatter.DrawString(paie.Nom.ToString(), font, XBrushes.Black, layoutRectangle);
-                        layoutRectangle = new XRect(510, height, page.Width, page.Height);
-                        formatter.DrawString(paie.ID.ToString(), font, XBrushes.Black, layoutRectangle);
-                        layoutRectangle = new XRect(700, height , page.Width, page.Height);
-                        formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + " $", font, XBrushes.Black, layoutRectangle);
+                        layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
+                        formatter.DrawString((paie.DateGenerationRapport.ToString() + " " + paie.Nom.ToString()+" "+paie.ID), font, XBrushes.Black, layoutRectangle);
+                        layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
+                        formatter.DrawString(("Montant Brute : " + Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + " $"), font, XBrushes.Black, layoutRectangle);
                         BruteTotal = BruteTotal + paie.MontantBrute;
                     }
 
+                    graph.DrawLine(XPens.Black, 10, height += 20, 500, height);
                 }
 
-                if (BruteTotal == 0)
+                if(BruteTotal == 0)
                     throw new Exception("erreur");
 
                 layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
-                formatter.DrawString(("Cout Pour la période : " + tmp.Debut + " à " + tmp.Fin + " Montant : " + Math.Round(Convert.ToSingle(BruteTotal), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+                formatter.DrawString(("Cout Pour la période : " +tmp.Debut+" à "+tmp.Fin+" Montant : "+Math.Round(Convert.ToSingle(BruteTotal), 2) + " $"), font, XBrushes.Black, layoutRectangle);
 
                 string pdfFilename = "RapportPaie.pdf";
                 pdf.Save(pdfFilename);
@@ -384,17 +452,6 @@ namespace model.Views
         {
             lstRapportProjet.SelectAll();
             
-        }
-
-        private void EnteteDPF(ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, PeriodePaie tmp)
-        {
-            DateTime now = DateTime.Now;
-
-            layoutRectangle = new XRect(25, 25, 200, 25);
-            formatter.DrawString((nomEntreprise + "\t\t\t\t\t Rapport de Paies"), font, XBrushes.Black, layoutRectangle);
-
-            layoutRectangle = new XRect(300, 25, 300, 25);
-            formatter.DrawString(("Date de Génération : " + now.ToString()), font, XBrushes.Black, layoutRectangle);
         }
     }
 }

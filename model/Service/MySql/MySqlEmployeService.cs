@@ -25,7 +25,8 @@ namespace model.Service.MySql
                 StringBuilder buildReq = new StringBuilder();
                 buildReq.Append("SELECT Employes.idEmploye,detailfinancies.titreEmploi, detailfinancies.tauxHoraireNormal , detailfinancies.tauxHoraireOver, Employes.nom, Employes.prenom, Employes.horsFonction FROM Employes ");
                 buildReq.Append(" INNER JOIN detailfinancies ON detailfinancies.idEmploye = Employes.idEmploye ");
-                buildReq.Append(" ORDER BY horsFonction, idEmploye ASC ");
+                buildReq.Append(" ORDER BY ");
+                buildReq.Append(" horsFonction, idEmploye ASC ");
                 DataSet dataset = connexion.Query(buildReq.ToString());
                 DataTable table = dataset.Tables[0];
 

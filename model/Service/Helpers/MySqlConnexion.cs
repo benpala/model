@@ -216,17 +216,18 @@ namespace model.Service.Helpers
         public Byte[] GetCodePhoto(string ID)
         {
             Byte[] blob = null;
-            string SQLcmd = "SELECT codePhoto FROM Photos WHERE idPhoto = " + ID;
+            string SQLcmd = "SELECT codePhoto, typePhoto FROM Photos WHERE idPhoto = " + ID;
             MySqlDataAdapter adapt = new MySqlDataAdapter(SQLcmd,connection);
             DataTable dt = new DataTable();
+            
             adapt.Fill(dt);
             foreach(DataRow row in dt.Rows)
             {
-                blob = (Byte[])row["codePhoto"];
+                if (row["typePhoto"].ToString() != "")
+                    blob = (Byte[])row["codePhoto"];
             }
             return blob;
         }
-
         public string getBD()
         {
             CONNECTION_STRING.IndexOf("database=");
