@@ -160,7 +160,7 @@
                         
                             <StackPanel Orientation="Horizontal">
                                 <Label Width="230"  Height="50" FontSize="20" Content="nom des projets :"  />
-                                <RadioButton GroupName="triProjet" Name="rbtTriProjetAZ" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                <RadioButton GroupName="triProjet" Name="rbtTriProjetAZ" VerticalAlignment="Center" />
                                 <Label Margin="10,0,0,0"  Height="50" FontSize="20" Content="|" HorizontalAlignment="Center" />
                                 <RadioButton GroupName="triProjet" Name="rbtTriProjetZA" Margin="10,0,0,0" VerticalAlignment="Center" />
                             </StackPanel>
