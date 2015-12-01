@@ -334,20 +334,31 @@ namespace model.Views
                                         Liaison = Liaison.OrderBy(lst => lst.ProjNom).ToList();
                                     else if ((bool)rbtTriProjetZA.IsChecked)
                                         Liaison = Liaison.OrderByDescending(lst => lst.ProjNom).ToList();
-                                    
+                                    Dictionary<string, float> lstProjHeure = new Dictionary<string, float>();
                                     //Tri nb heure
-                                    if ((bool)rbtTriNBheureASC.IsChecked)
-                                        Liaison = Liaison.OrderBy(lst => lst.ProjNom).ToList();
-                                    else if ((bool)rbtTriNBheureDESC.IsChecked)
-                                        Liaison = Liaison.OrderByDescending(lst => lst.ProjNom).ToList();
-                                    foreach (LiaisonProjetEmploye liaison in Liaison)
+                                    if ((bool)rbtTriNBheureASC.IsChecked)//ASC
+                                    {
+                                        foreach (LiaisonProjetEmploye liaison in Liaison)
+                                            lstProjHeure.Add(liaison.ProjNom, Convert.ToInt32(_ServiceMysql.CompteursProjets(emp.ID, liaison.ProjNom)));
+                                        lstProjHeure = (Dictionary<string, float>)lstProjHeure.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value); ;
+                                    }
+                                    else if ((bool)rbtTriNBheureDESC.IsChecked)//DESC
+                                    {
+                                        
+                                        foreach (LiaisonProjetEmploye liaison in Liaison)
+                                            lstProjHeure.Add(liaison.ProjNom, _ServiceMysql.CompteursProjets(emp.ID, liaison.ProjNom));
+                                        lstProjHeure = (Dictionary<string, float>)lstProjHeure.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value); ;
+                                    }
+
+
+                                    foreach (KeyValuePair<string, float> dict in lstProjHeure)
                                     {
                                         count++;
                                         layoutRectangle = new XRect(425, y += 15, page.Width, page.Height);
-                                        formatter.DrawString(count + " - " + liaison.ProjNom.ToString(), font, XBrushes.Black, layoutRectangle);
+                                        formatter.DrawString(count + " - " + dict.Key.ToString(), font, XBrushes.Black, layoutRectangle);
 
                                         layoutRectangle = new XRect(605 , y, page.Width, page.Height);
-                                        formatter.DrawString( _ServiceMysql.CompteursProjets(emp.ID,liaison.ProjNom) + " heures", font, XBrushes.Black, layoutRectangle);
+                                        formatter.DrawString(dict.Value + " heures", font, XBrushes.Black, layoutRectangle);
 
                                     }
                                     if (y > height)
