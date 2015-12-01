@@ -325,31 +325,24 @@ namespace model.Views
                             if (chxProjetEmploye.IsChecked.Value)
                             {
                                 Liaison = new List<LiaisonProjetEmploye>(_ServiceMysql.GetLiaison(emp.ID));
+                                Dictionary<string, float> lstProjHeure = new Dictionary<string, float>();
+                                foreach (LiaisonProjetEmploye liaison in Liaison)
+                                    lstProjHeure.Add(liaison.ProjNom, Convert.ToInt32(_ServiceMysql.CompteursProjets(emp.ID, liaison.ProjNom)));
                                 int count = 0;
                                 
                                 if (Liaison.Count > 0)
                                 {
                                     //Tri nom projet
                                     if ((bool)rbtTriProjetAZ.IsChecked)
-                                        Liaison = Liaison.OrderBy(lst => lst.ProjNom).ToList();
+                                        lstProjHeure = (Dictionary<string, float>)lstProjHeure.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value); 
                                     else if ((bool)rbtTriProjetZA.IsChecked)
-                                        Liaison = Liaison.OrderByDescending(lst => lst.ProjNom).ToList();
-                                    Dictionary<string, float> lstProjHeure = new Dictionary<string, float>();
+                                        lstProjHeure = (Dictionary<string, float>)lstProjHeure.OrderByDescending(x => x.Key).ToDictionary(x => x.Key, x => x.Value); 
+                                    
                                     //Tri nb heure
                                     if ((bool)rbtTriNBheureASC.IsChecked)//ASC
-                                    {
-                                        foreach (LiaisonProjetEmploye liaison in Liaison)
-                                            lstProjHeure.Add(liaison.ProjNom, Convert.ToInt32(_ServiceMysql.CompteursProjets(emp.ID, liaison.ProjNom)));
-                                        lstProjHeure = (Dictionary<string, float>)lstProjHeure.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value); ;
-                                    }
+                                        lstProjHeure = (Dictionary<string, float>)lstProjHeure.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value); 
                                     else if ((bool)rbtTriNBheureDESC.IsChecked)//DESC
-                                    {
-                                        
-                                        foreach (LiaisonProjetEmploye liaison in Liaison)
-                                            lstProjHeure.Add(liaison.ProjNom, _ServiceMysql.CompteursProjets(emp.ID, liaison.ProjNom));
-                                        lstProjHeure = (Dictionary<string, float>)lstProjHeure.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value); ;
-                                    }
-
+                                        lstProjHeure = (Dictionary<string, float>)lstProjHeure.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value); 
 
                                     foreach (KeyValuePair<string, float> dict in lstProjHeure)
                                     {
@@ -359,7 +352,6 @@ namespace model.Views
 
                                         layoutRectangle = new XRect(605 , y, page.Width, page.Height);
                                         formatter.DrawString(dict.Value + " heures", font, XBrushes.Black, layoutRectangle);
-
                                     }
                                     if (y > height)
                                         height = y;
@@ -369,9 +361,14 @@ namespace model.Views
                             graph.DrawLine(XPens.Black, 10, height+=20 , 800, height);
 
                         }
-                        string pdfFilename = "RapportEmploye.pdf";
-                        pdf.Save(pdfFilename);
-                        Process.Start(pdfFilename);
+                        StringBuilder fileName = new StringBuilder();
+                        fileName.Append("Rapport_Emp_");
+                        fileName.Append(DateTime.Now.ToString());
+                        fileName.Append(".pdf");
+                        fileName.Replace(":", "");
+                        fileName.Replace(" ", "_");
+                        pdf.Save(fileName.ToString());
+                        Process.Start(fileName.ToString());
                     }
                     else
                         MessageBox.Show("Aucune information choisi");
