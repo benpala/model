@@ -26,6 +26,7 @@ using PdfSharp.Pdf;
 using System.Diagnostics;
 using System.Drawing;
 using PdfSharp.Drawing.Layout;
+using System.Configuration;
 
 namespace model.Views
 {
@@ -41,6 +42,10 @@ namespace model.Views
         private IProjetService _ServiceProjet;
         private IPaiesService _ServicePaie;
         private IApplicationService _applicationService;
+
+        private static readonly string nomEntreprise;
+
+        public string NomEntreprice() { return nomEntreprise; }
 
         public RetrieveEmployeArgs RetrieveArgs { get; set; }
 
@@ -60,6 +65,12 @@ namespace model.Views
             DataContext = this;
 
         }
+
+        static RapportView()
+        {
+            nomEntreprise = ConfigurationManager.AppSettings["nomEntreprise"].ToString();
+        }
+
         #region get set 
         public ObservableCollection<Employe> Employe
         {
@@ -380,78 +391,419 @@ namespace model.Views
             
         }
 
-        private void GenererRapportFinancie(object sender, RoutedEventArgs e)
+        private void GenererRapportProjet(object sender, RoutedEventArgs e)
         {
+            bool date = false;
+            bool heure = false;
+            bool cout = false;
+            List<Projet> LstProjet = new List<Projet>();
+            int NbPaie = 0;
+            float BruteTotal = 0;
+
             try 
             {
-                PeriodePaie tmp = new PeriodePaie(Convert.ToDateTime(dtDateDebut.Text), Convert.ToDateTime(dtDateFin.Text));
-                float BruteTotal = 0;
-
                 PdfDocument pdf = new PdfDocument();
-                pdf.Info.Title = "Rapport Paie";
+                pdf.Info.Title = "Rapport Projet";
                 PdfPage page;
                 page = pdf.AddPage();
-                page.Orientation = PageOrientation.Portrait;
+                page.Orientation = PageOrientation.Landscape;
                 page.Size = PageSize.A4;
                 XGraphics graph = XGraphics.FromPdfPage(page);
 
-                XFont font = new XFont("Arial", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
-                var formatter = new XTextFormatter(graph);
+                XFont font = new XFont("Consolas", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
+                XTextFormatter formatter = new XTextFormatter(graph);
                 int height = 0;
 
-                var layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
+                if (dtDebut.Text.ToString() != "" && dtFin.Text.ToString() != "")
+                    date = true;
+                if (HeureMin.Text.ToString() != "" && HeureMax.Text.ToString() != "")
+                    heure = true;
+                if (CoutMin.Text.ToString() != "" && CoutMax.Text.ToString() != "")
+                    cout = true;
 
-                foreach(Paie paie in Paie)
+                LstProjet = filtreRprojet(date, heure, cout);
+
+                XRect layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
+
+                EnteteDPF(ref formatter, ref font, layoutRectangle);
+
+                graph.DrawLine(XPens.Black, 10, 50, page.Width - 10, 50);
+
+                ColonneA(ref page, ref graph, ref formatter, ref font, layoutRectangle, "PR");
+
+                layoutRectangle = new XRect(10, height += 75, page.Width, page.Height);
+
+                if (date || heure || cout)
                 {
-                    int tmpD = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Debut);
-                    int tmpF = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Fin);
-
-                    if (height > 700)
+                    foreach (Projet p in LstProjet)
                     {
-                        page = pdf.AddPage();
-                        graph = XGraphics.FromPdfPage(page);
-                        formatter = new XTextFormatter(graph);
-                        height = 0;
+                        CorpsProjet(ref page, ref formatter, ref font, layoutRectangle, ref height, p);
+                        BruteTotal = BruteTotal + p.nbHeuresSimule;
+                        NbPaie++;
                     }
-
-                    if (tmpD > 0 && tmpF < 0)
+                }
+                else {
+                    foreach (Projet p in Projet)
                     {
-                        layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
-                        formatter.DrawString((paie.DateGenerationRapport.ToString() + " " + paie.Nom.ToString()+" "+paie.ID), font, XBrushes.Black, layoutRectangle);
-                        layoutRectangle = new XRect(20, height += 15, page.Width, page.Height);
-                        formatter.DrawString(("Montant Brute : " + Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + " $"), font, XBrushes.Black, layoutRectangle);
-                        BruteTotal = BruteTotal + paie.MontantBrute;
+                        CorpsProjet(ref page, ref formatter, ref font, layoutRectangle, ref height, p);
+                        BruteTotal = BruteTotal + p.nbHeuresSimule;
+                        NbPaie++;
                     }
-
-                    graph.DrawLine(XPens.Black, 10, height += 20, 500, height);
                 }
 
-                if(BruteTotal == 0)
+                if (BruteTotal == 0)
                     throw new Exception("erreur");
 
-                layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
-                formatter.DrawString(("Cout Pour la période : " +tmp.Debut+" à "+tmp.Fin+" Montant : "+Math.Round(Convert.ToSingle(BruteTotal), 2) + " $"), font, XBrushes.Black, layoutRectangle);
+                layoutRectangle = new XRect(10, page.Height - 70, page.Width, page.Height);
+                formatter.DrawString(("Montant total : " + Math.Round(Convert.ToSingle(BruteTotal), 2) + " $" + "\t\t\tNombre de Projet : " + NbPaie.ToString()), font, XBrushes.Black, layoutRectangle);
 
-                string pdfFilename = "RapportPaie.pdf";
+                DateTime now = DateTime.Now;
+
+                StringBuilder b = new StringBuilder();
+                b.Append("RProjet_");
+                b.Append(String.Format("{0:yyyy/MM/dd}", now));
+                b.Append("_");
+                b.Append(String.Format("{0:hh:mm:ss}", now));
+                b.Append(".pdf");
+                string pdfFilename = b.ToString().Replace(":", "");
                 pdf.Save(pdfFilename);
                 Process.Start(pdfFilename);
             }
-            catch(Exception E)
-            { 
-                if(E.Message == "erreur")
+            catch (Exception E)
+            {
+                if (E.Message == "erreur")
                     MessageBox.Show("Aucune paie durant cette période");
-                else if(E.Message == "Le processus ne peut pas accéder au fichier 'D:\\model\\model\\bin\\Debug\\RapportPaie.pdf', car il est en cours d'utilisation par un autre processus.")
-                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer");
+                else if (E.Message == "nochecked")
+                    MessageBox.Show("Veuillez cocher atomique ou atomique détail pour afficher le rapport. L'option regrouper n'est pas disponible");
+                else if (E.Message == "PasDate")
+                    MessageBox.Show("Veuillez entrer des dates.");
                 else
-                    MessageBox.Show("Veuillez entrer des dates");
-                    
+                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer.");
             }
+            
+        }
+        private List<Projet> filtreRprojet(bool date = false, bool heures = false, bool cout = false)
+        {
+            List<Projet> listp = new List<Projet>();
+
+            if(date)
+                listp = filtreAppliquerDate();
+            if(heures)
+               listp = filtreAppliquerHeure(listp);
+            if(cout)
+               listp = filtreAppliquerCout(listp);
+
+            return listp;
+        }
+        private List<Projet> filtreAppliquerDate()
+        {
+            PeriodePaie tmp = new PeriodePaie(Convert.ToDateTime(dtDebut.ToString()), Convert.ToDateTime(dtFin.ToString()));
+
+            List<Projet> returnlist = new List<Projet>();
+            foreach (Projet p in Projet)
+            {
+                if (Convert.ToDateTime(p.dateun.ToString()) >= tmp.Debut && Convert.ToDateTime(p.dateun.ToString()) <= tmp.Fin)
+                    returnlist.Add(p);
+            }
+            return returnlist;
+        }
+
+        private List<Projet> filtreAppliquerHeure(List<Projet> listp)
+        {
+            List<Projet> returnlist = new List<Projet>();
+            foreach (Projet p in listp)
+            {
+                if (p.nbHeuresSimule >= Convert.ToInt32(HeureMin.Text.ToString()) && p.nbHeuresSimule <= Convert.ToInt32(HeureMax.Text.ToString()))
+                    returnlist.Add(p);
+            }
+            return returnlist;
+        }
+
+        private List<Projet> filtreAppliquerCout(List<Projet> listp)
+        {
+            List<Projet> returnlist = new List<Projet>();
+            foreach (Projet p in listp)
+            {
+                if (p.prixSimulation >= Convert.ToInt32(CoutMin.Text.ToString()) && p.prixSimulation <= Convert.ToInt32(CoutMax.Text.ToString()))
+                    returnlist.Add(p);
+            }
+            return returnlist;
         }
 
         private void ChoisirTousProjet(object sender, RoutedEventArgs e)
         {
             lstRapportProjet.SelectAll();
-            
+
+        }
+
+        private void GenererRapportFinancie(object sender, RoutedEventArgs e)
+        {
+            int NbPaie = 0;
+            try
+            {
+                if (dtDateDebut.Text.ToString() == "" && dtDateFin.Text.ToString() == "")
+                    throw new Exception("PasDate");
+
+                if (chxA.IsChecked.Value || chxB.IsChecked.Value)
+                {
+                    PeriodePaie tmp = new PeriodePaie(Convert.ToDateTime(dtDateDebut.Text), Convert.ToDateTime(dtDateFin.Text));
+                    float BruteTotal = 0;
+
+                    PdfDocument pdf = new PdfDocument();
+                    pdf.Info.Title = "Rapport Paie";
+                    PdfPage page;
+                    page = pdf.AddPage();
+                    page.Orientation = PageOrientation.Landscape;
+                    page.Size = PageSize.A4;
+                    XGraphics graph = XGraphics.FromPdfPage(page);
+
+                    XFont font = new XFont("Consolas", 12.0); //new XFont("Verdana", 20, XFontStyle.Bold);
+                    XTextFormatter formatter = new XTextFormatter(graph);
+                    int height = 0;
+
+                    XRect layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
+
+                    EnteteDPF(ref formatter, ref font, layoutRectangle);
+
+                    graph.DrawLine(XPens.Black, 10, 50, page.Width - 10, 50);
+
+                    MessageBox.Show(page.Height.ToString());
+                    MessageBox.Show(page.Width.ToString());
+
+                    if (chxA.IsChecked.Value)
+                        ColonneA(ref page, ref graph, ref formatter, ref font, layoutRectangle);
+                    else if (chxB.IsChecked.Value)
+                        ColonneAD(ref page, ref graph, ref formatter, ref font, layoutRectangle);
+
+                    layoutRectangle = new XRect(10, height += 75, page.Width, page.Height);
+
+                    foreach (Paie paie in Paie)
+                    {
+                        int tmpD = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Debut);
+                        int tmpF = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Fin);
+
+                        if (height > 700)
+                        {
+                            page = pdf.AddPage();
+                            graph = XGraphics.FromPdfPage(page);
+                            formatter = new XTextFormatter(graph);
+                            height = 0;
+                        }
+
+                        if (tmpD > 0 && tmpF < 0)
+                        {
+                            if (chxA.IsChecked.Value)
+                                CorpsAtomique(ref page, ref formatter, ref font, layoutRectangle, ref height, paie);
+                            else if (chxB.IsChecked.Value)
+                                CorpsAtomiqueD(ref page, ref formatter, ref font, layoutRectangle, ref height, paie);
+                            BruteTotal = BruteTotal + paie.MontantBrute;
+                            NbPaie++;
+                        }
+
+                    }
+
+                    if (BruteTotal == 0)
+                        throw new Exception("erreur");
+
+                    layoutRectangle = new XRect(10, page.Height - 70, page.Width, page.Height);
+                    formatter.DrawString(("Coût pour la période : " + String.Format("{0:yyyy-MM-dd}", tmp.Debut) + " à " + String.Format("{0:yyyy-MM-dd}", tmp.Fin) + "\t\t\tMontant total : " + Math.Round(Convert.ToSingle(BruteTotal), 2) + " $" + "\t\t\tNombre de Paie : " + NbPaie.ToString()), font, XBrushes.Black, layoutRectangle);
+
+                    DateTime now = DateTime.Now;
+
+                    StringBuilder b = new StringBuilder();
+                    b.Append("RPaie_");
+                    b.Append(String.Format("{0:yyyy/MM/dd}", now));
+                    b.Append("_");
+                    b.Append(String.Format("{0:hh:mm:ss}", now));
+                    b.Append(".pdf");
+                    string pdfFilename = b.ToString().Replace(":", "");
+                    pdf.Save(pdfFilename);
+                    Process.Start(pdfFilename);
+                }
+                else
+                    throw new Exception("nochecked");
+            }
+            catch (Exception E)
+            {
+                if (E.Message == "erreur")
+                    MessageBox.Show("Aucune paie durant cette période");
+                else if (E.Message == "nochecked")
+                    MessageBox.Show("Veuillez cocher atomique ou atomique détail pour afficher le rapport. L'option regrouper n'est pas disponible");
+                else if (E.Message == "PasDate")
+                    MessageBox.Show("Veuillez entrer des dates.");
+                else
+                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer.");
+            }
+        }
+
+        
+        private void EnteteDPF(ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle)
+        {
+            DateTime now = DateTime.Now;
+
+            layoutRectangle = new XRect(25, 25, 200, 25);
+            formatter.DrawString((nomEntreprise + "\t\t\t\t\t Rapport de Paies"), font, XBrushes.Black, layoutRectangle);
+
+            layoutRectangle = new XRect(300, 25, 300, 25);
+            formatter.DrawString(("Date de Génération : " + now.ToString()), font, XBrushes.Black, layoutRectangle);
+        }
+
+        private void ColonneA(ref PdfPage page, ref XGraphics graph, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, string PaieProjet = "PA")
+        {
+            //Étiquette
+            if (PaieProjet == "PA")
+            {
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 55, page.Width - 730, page.Height - 547);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 123, 55, page.Width - 638, page.Height - 547);
+            }
+            else
+            {
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 55, page.Width - 638, page.Height - 547);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 215, 55, page.Width - 730, page.Height - 547);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 554, 55, page.Width - 730, page.Height - 547);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 667, 55, page.Width - 730, page.Height - 547);
+            }
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 328, 55, page.Width - 730, page.Height - 547);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 441, 55, page.Width - 730, page.Height - 547);
+
+            if (PaieProjet == "PA")
+            {
+                layoutRectangle = new XRect(15, 60, page.Width - 730, page.Height - 547);
+                formatter.DrawString("Date Génération Paie", font, XBrushes.Black, layoutRectangle);
+                layoutRectangle = new XRect(185, 60, page.Width - 638, page.Height - 547);
+                formatter.DrawString("Nom Employé", font, XBrushes.Black, layoutRectangle);
+            }
+            else
+            {
+                layoutRectangle = new XRect(80, 60, page.Width - 730, page.Height - 547);
+                formatter.DrawString("Nom du Projet", font, XBrushes.Black, layoutRectangle);
+                layoutRectangle = new XRect(255, 60, page.Width - 638, page.Height - 547);
+                formatter.DrawString("Coût", font, XBrushes.Black, layoutRectangle);
+                layoutRectangle = new XRect(576, 60, page.Width - 730, page.Height - 547);
+                formatter.DrawString("Date Début", font, XBrushes.Black, layoutRectangle);
+                layoutRectangle = new XRect(692, 60, page.Width - 730, page.Height - 547);
+                formatter.DrawString("Date Fin", font, XBrushes.Black, layoutRectangle);
+            }
+            layoutRectangle = new XRect(360, 60, page.Width - 730, page.Height - 547);
+            if (PaieProjet == "PA")
+                formatter.DrawString("ID Paie", font, XBrushes.Black, layoutRectangle);
+            else
+                formatter.DrawString("Nb heure Planifié", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(470, 60, page.Width - 730, page.Height - 547);
+            if (PaieProjet == "PA")
+                formatter.DrawString("Montant Brut", font, XBrushes.Black, layoutRectangle);
+            else
+                formatter.DrawString("Nb heure Travaillé", font, XBrushes.Black, layoutRectangle);
+            //Contenu
+            if (PaieProjet == "PA")
+            {
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 104, page.Width - 730, page.Height - 200);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 123, 104, page.Width - 638, page.Height - 200);
+            }
+            else
+            {
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 104, page.Width - 638, page.Height - 200);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 215, 104, page.Width - 730, page.Height - 200);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 554, 104, page.Width - 730, page.Height - 200);
+                graph.DrawRectangle(XPens.Black, XBrushes.White, 667, 104, page.Width - 730, page.Height - 200);
+            }
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 328, 104, page.Width - 730, page.Height - 200);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 441, 104, page.Width - 730, page.Height - 200);
+        }
+
+        private void ColonneAD(ref PdfPage page, ref XGraphics graph, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle)
+        {
+            //Étiquette
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 55, page.Width - 745, page.Height - 547);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 108, 55, page.Width - 670, page.Height - 547);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 281, 55, page.Width - 770, page.Height - 547);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 354, 55, page.Width - 760, page.Height - 547);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 437, 55, page.Width - 760, page.Height - 547);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 520, 55, page.Width - 760, page.Height - 547);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 603, 55, page.Width - 780, page.Height - 547);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 666, 55, page.Width - 760, page.Height - 547);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 749, 55, page.Width - 760, page.Height - 547);
+
+            layoutRectangle = new XRect(15, 60, page.Width - 750, page.Height - 547);
+            formatter.DrawString("Date Génération Paie", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(153, 60, page.Width - 638, page.Height - 547);
+            formatter.DrawString("Nom Employé", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(292, 60, page.Width - 730, page.Height - 547);
+            formatter.DrawString("ID Paie", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(356, 60, page.Width - 730, page.Height - 547);
+            formatter.DrawString("Montant Brut", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(444, 60, page.Width - 750, page.Height - 547);
+            formatter.DrawString("Heure supp", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(530, 60, page.Width - 638, page.Height - 547);
+            formatter.DrawString("Pourboire", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(605, 60, page.Width - 730, page.Height - 547);
+            formatter.DrawString("Indemnité", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(668, 60, page.Width - 730, page.Height - 547);
+            formatter.DrawString("Taux horaire", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(751, 60, page.Width - 750, page.Height - 547);
+            formatter.DrawString("Nombre heure", font, XBrushes.Black, layoutRectangle);
+            //Contenu
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 10, 104, page.Width - 745, page.Height - 200);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 108, 104, page.Width - 670, page.Height - 200);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 281, 104, page.Width - 770, page.Height - 200);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 354, 104, page.Width - 760, page.Height - 200);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 437, 104, page.Width - 760, page.Height - 200);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 520, 104, page.Width - 760, page.Height - 200);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 603, 104, page.Width - 780, page.Height - 200);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 666, 104, page.Width - 760, page.Height - 200);
+            graph.DrawRectangle(XPens.Black, XBrushes.White, 749, 104, page.Width - 760, page.Height - 200);
+        }
+
+        private void CorpsAtomique(ref PdfPage page, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, ref int height, Paie paie)
+        {
+            layoutRectangle = new XRect(30, height += 15, page.Width, page.Height);
+            formatter.DrawString(String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(paie.DateGenerationRapport)), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(136, height, page.Width, page.Height);
+            formatter.DrawString(paie.Nom.Substring(0, 1).ToString() + "." + paie.Nom.Substring(paie.Nom.IndexOf(' ')).ToString(), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(380, height, page.Width, page.Height);
+            formatter.DrawString(paie.ID.ToString(), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(470, height, page.Width, page.Height);
+            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + " $", font, XBrushes.Black, layoutRectangle);
+        }
+
+        private void CorpsProjet(ref PdfPage page, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, ref int height, Projet projet)
+        {
+            layoutRectangle = new XRect(30, height += 15, page.Width, page.Height);
+            formatter.DrawString(projet.nom, font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(260, height, page.Width, page.Height);
+            formatter.DrawString(projet.prixSimulation.ToString() + "$", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(360, height, page.Width, page.Height);
+            formatter.DrawString(projet.nbHeuresSimule.ToString(), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(470, height, page.Width, page.Height);
+            formatter.DrawString(projet.nbHeuresReel.ToString(), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(581, height, page.Width, page.Height);
+            formatter.DrawString(String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(projet.dateun)), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(697, height, page.Width, page.Height);
+            formatter.DrawString((projet.datedeux != "Indéfini"?String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(projet.datedeux)) : "Indéfini"), font, XBrushes.Black, layoutRectangle);
+        }
+
+        private void CorpsAtomiqueD(ref PdfPage page, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, ref int height, Paie paie)
+        {
+            layoutRectangle = new XRect(25, height += 15, page.Width, page.Height);
+            formatter.DrawString(String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(paie.DateGenerationRapport)), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(116, height, page.Width, page.Height);
+            formatter.DrawString(paie.Nom.Substring(0, 1).ToString() + "." + paie.Nom.Substring(paie.Nom.IndexOf(' ')).ToString(), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(310, height, page.Width, page.Height);
+            formatter.DrawString(paie.ID.ToString(), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(362, height, page.Width, page.Height);
+            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + "$", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(447, height, page.Width, page.Height);
+            formatter.DrawString(Math.Round(Convert.ToSingle(paie.NombreHeureSupp), 2).ToString(), font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(530, height, page.Width, page.Height);
+            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantPourboire), 2).ToString() + "$", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(530, height, page.Width, page.Height);
+            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantPourboire), 2).ToString() + "$", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(613, height, page.Width, page.Height);
+            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantIndemnite), 2).ToString() + "$", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(676, height, page.Width, page.Height);
+            formatter.DrawString(Math.Round(Convert.ToSingle(paie.salaire), 2).ToString() + "$/h", font, XBrushes.Black, layoutRectangle);
+            layoutRectangle = new XRect(759, height, page.Width, page.Height);
+            formatter.DrawString(Math.Round(Convert.ToSingle(paie.NombreHeure), 2).ToString(), font, XBrushes.Black, layoutRectangle);
         }
     }
 }
