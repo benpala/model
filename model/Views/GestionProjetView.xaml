@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             Height="450" Width="1100">
+             Height="Auto" Width="Auto">
     <UserControl.Resources>
         <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource styleHeader}"/>
@@ -63,13 +63,16 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-
-    <StackPanel Name="stackPanel" HorizontalAlignment="Left" Orientation="Horizontal">
-        <StackPanel Width="500" VerticalAlignment="Top"> 
+    <DockPanel>
+        <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,0" HorizontalAlignment="Left" Width="300">
+            <TextBlock TextAlignment="Justify" DockPanel.Dock="Left" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300">Gestion de projets</TextBlock>
+        </StackPanel>
+    <StackPanel Name="stackPanel" HorizontalAlignment="Left" Orientation="Horizontal" Margin="300,-47,0,0">
+        <StackPanel Width="300" VerticalAlignment="Top"> 
             <Label  Width="200" Height="25" Content="ID du projet :" />
             <TextBox IsReadOnly="True"  Name="txtID"  Height="25" Width="200" Text="{Binding Projet.ID}" Background="AliceBlue" ></TextBox>
             <Label Name="lblNomProj" Width="200" Height="26" >Nom du projet :</Label>
-            <TextBox Name="txtNomProjet"  Height="25" Width="200" Text="{Binding Projet.nom}" PreviewTextInput="PreviewTextInput" TextChanged="ValidationNomProjet"></TextBox>
+            <TextBox Name="txtNomProjet"  Height="25" Width="200" MaxLength="30" Text="{Binding Projet.nom}" PreviewTextInput="PreviewTextInput" TextChanged="ValidationNomProjet"></TextBox>
             <Label Name="lblDateDebut" Width="200" Height="30" >Date de début :</Label>
             <DatePicker Name="dtDateDebut" SelectedDate="{Binding Projet.dateun}"  Height="30" Width="200" SelectedDateChanged="CalculerTempsEstime" KeyUp="EffaceDate"></DatePicker>
             <Label x:Name="lblDateFin" Width="200" Height="30" Content="Date de fin prévue :" />
@@ -87,7 +90,7 @@
                 <RadioButton Name="rboEND" Width="15" VerticalAlignment="Center" Checked="ChangerEtat"></RadioButton>
             </DockPanel>
             <Label Name="lblDateTerminerOuAbandonner" HorizontalAlignment="Center"></Label>
-            <TextBox IsReadOnly="True" Name="txtDateTerminerOuAbandonner" Width="200" Margin="150,0,150,10"></TextBox>
+                <TextBox IsReadOnly="True" Name="txtDateTerminerOuAbandonner" Width="200" Margin="50,0,50,10"></TextBox>
 
             <Button  Name="btnEnregistrer" Style="{StaticResource BaseButtonStyle}" Content="Enregistrer"  HorizontalAlignment="Center"  Width="208" Click="EnregistrerProjet" Height="50" VerticalAlignment="Bottom" />
             <Button Style="{StaticResource BaseButtonStyle}" Content="Retour"  HorizontalAlignment="Center"  Width="208" Click="retourMenu" Height="50" VerticalAlignment="Bottom"/>
@@ -174,13 +177,11 @@
                 <Label x:Name="lblRessourcesAdmin" Content="Nombre de ressources" HorizontalAlignment="Center"/>
                 <xctk:IntegerUpDown Name="txtRessourcesAdmin"  Value="1" Minimum="1" HorizontalAlignment="Center" TabIndex="1" KeyUp="CalculerPrixKey" ValueChanged="CalculerPrix1"></xctk:IntegerUpDown>
                 <Label x:Name="lblNbrHeuresEstime" Content="Temps estimé non ouvrable" HorizontalAlignment="Center" Visibility="Collapsed"/>
-                <!--<TextBox x:Name="txtNbrHeuresEstime" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" TextChanged="CalculerPrix" Visibility="Collapsed"/>-->
                 <TextBox x:Name="txtNbrHeuresEstime" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" Visibility="Collapsed"/>
                 <Label x:Name="lblNbrHeuresEstimeOuvrable" Content="Temps estimé ouvrable" HorizontalAlignment="Center" Visibility="Collapsed" />
-                <!--<TextBox x:Name="txtNbrHeuresEstimeOuvrable" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" TextChanged="CalculerPrix" Visibility="Collapsed"/>-->
                 <TextBox x:Name="txtNbrHeuresEstimeOuvrable" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" Visibility="Collapsed"/>
                 <Label Name="lblHeuresEstime" HorizontalAlignment="Center">Heures estimées</Label>
-                <TextBox Name="txtEstimation" Width="50" TextChanged="CalculerPrix"></TextBox>
+                <TextBox Name="txtEstimation" PreviewTextInput="PreviewTextInput" Width="50" TextChanged="CalculerPrix"></TextBox>
                 <Label Name="lblJours" HorizontalAlignment="Center">Jours</Label>
                 <DockPanel>
                     <Label Name="lblOuvrable">ouvrables</Label>
@@ -193,5 +194,5 @@
             </StackPanel>
         </DockPanel>
     </StackPanel>
-
+    </DockPanel>
 </UserControl>

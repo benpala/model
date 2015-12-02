@@ -174,30 +174,34 @@ namespace model.Views
                         }
                     }
                 }
-            } catch
+            } 
+            catch
             {
-                foreach (Control ctrl in stackEtat1.Children)
-                {
-                    if (ctrl.GetType() == typeof(CheckBox))
+                if(stackEtat1 != null &&  stackEtat2 != null)
+                { 
+                    foreach (Control ctrl in stackEtat1.Children)
                     {
-                        if (((CheckBox)ctrl).IsChecked == true)
+                        if (ctrl.GetType() == typeof(CheckBox))
                         {
-                            arguments.Add("etat");
-                            donnees.Add(((CheckBox)ctrl).Name.Substring(3));
+                            if (((CheckBox)ctrl).IsChecked == true)
+                            {
+                                arguments.Add("etat");
+                                donnees.Add(((CheckBox)ctrl).Name.Substring(3));
+                            }
                         }
                     }
+                    foreach (Control ctrl in stackEtat2.Children)
+                    {
+                        if (ctrl.GetType() == typeof(CheckBox))
+                        {
+                            if (((CheckBox)ctrl).IsChecked == true)
+                            {
+                                arguments.Add("etat");
+                                donnees.Add(((CheckBox)ctrl).Name.Substring(3));
+                            }
+                        }
+                    } 
                 }
-                foreach (Control ctrl in stackEtat2.Children)
-                {
-                    if (ctrl.GetType() == typeof(CheckBox))
-                    {
-                        if (((CheckBox)ctrl).IsChecked == true)
-                        {
-                            arguments.Add("etat");
-                            donnees.Add(((CheckBox)ctrl).Name.Substring(3));
-                        }
-                    }
-                } 
             }
             if (arguments.Count == 0 && donnees.Count == 0)
             {
@@ -333,7 +337,7 @@ namespace model.Views
                                             }
                                             else
                                             {
-                                                if (targetDtDebut.Ticks > d1.Ticks || targetDtDebut.Ticks < d2.Ticks && targetDtFin.Ticks > d1.Ticks || targetDtFin.Ticks < d2.Ticks)
+                                                if (targetDtDebut.Ticks > d1.Ticks && targetDtFin.Ticks < d2.Ticks)
                                                 {
                                                     valide = true;
                                                 }

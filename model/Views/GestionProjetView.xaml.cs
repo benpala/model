@@ -32,9 +32,6 @@ namespace model.Views
     {
         private Projet _projet;
         private ObservableCollection<ProjetEmploye> _ProjetEmploye;
-        const float SALAIREADMIN = 50;
-        const float SALAIRESENIOR = 40;
-        const float SALAIREJUNIOR = 30;
         bool siCreation = false;
         MySqlProjetService Requete = new MySqlProjetService();
 
@@ -268,7 +265,7 @@ namespace model.Views
             applicationService.ChangeView<ProjetView>(new ProjetView());
         }
 
-        private void EnregistrerProjet(object sender, RoutedEventArgs e)
+        public void EnregistrerProjet(object sender, RoutedEventArgs e)
         {
             bool estValide = true;
             string date = "";
@@ -383,10 +380,10 @@ namespace model.Views
         private void CalculerPrix(object sender, TextChangedEventArgs e)
         {
             float prixEstimer = 0;
-            try { 
-                if(txtPrixEstimation != null && txtJourOuvr.Text != "" && txtJourNon.Text != "")
+            try {
+                if (txtPrixEstimation != null)
                 {
-                    prixEstimer = int.Parse(txtRessourcesAdmin.Text.ToString()) * 40 * int.Parse(nbHeureJour.Text.ToString()) * (rboRessGen.IsChecked == true ? int.Parse(txtJourOuvr.Text.ToString()) : int.Parse(txtJourNon.Text.ToString()));
+                    prixEstimer = int.Parse(txtRessourcesAdmin.Text.ToString()) * 40 * int.Parse(txtEstimation.Text.ToString());
                     txtPrixEstimation.Text = prixEstimer.ToString() + "$";
                     EstimationDuChampsManquant(sender, null);
                 }
@@ -530,7 +527,7 @@ namespace model.Views
 
         private void EffaceDate(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Back && ((DatePicker)sender).Text == "" /*&& _projet.etat != "SIM"*/)
+            if (e.Key == Key.Back && ((DatePicker)sender).Text == "")
             {
                 if(dtDateDebut.Text == "")
                 {
@@ -647,7 +644,7 @@ namespace model.Views
         private void columnHeader_Click(object sender, RoutedEventArgs e)
         {
             var columnHeader = sender as DataGridColumnHeader;
-            if (columnHeader.Tag.ToString() == "" || columnHeader.Tag.ToString() == "Ascending")
+            if (columnHeader.Tag == null || columnHeader.Tag.ToString() == "Ascending")
                 columnHeader.Tag = "Descending";
             else
                 columnHeader.Tag = "Ascending";
@@ -707,32 +704,52 @@ namespace model.Views
         private void EstimerChampsManquantRb(object sender, RoutedEventArgs e)
         {
             EstimationDuChampsManquant(sender,null);
+            try { 
+                if(dtDateDebut.SelectedDate.ToString() != "" && dtDateFin.SelectedDate.ToString() != "")
+                { 
+                    DateTime dateFin = (DateTime)dtDateDebut.SelectedDate;
+                    if (rboRessGen.IsChecked == true)
+                    {
+                        // Calculer nombre de fds
+                        dateFin = dateFin.AddDays((nbHeureJour.Value < Convert.ToInt32(txtEstimation.Text.ToString()) ? Math.Floor(float.Parse(txtEstimation.Text) / float.Parse(nbHeureJour.Text) / float.Parse(nbQuart.Text) / int.Parse(txtRessourcesAdmin.Text)) : 0));
+                        dateFin = dateFin.AddDays(CalculerJourNonOuvrable());
+                        dtDateFin.SelectedDate = dateFin;
+                    }
+                    else
+                    {
+                        dateFin = dateFin.AddDays((nbHeureJour.Value < Convert.ToInt32(txtEstimation.Text.ToString()) ? Math.Floor(float.Parse(txtEstimation.Text) / float.Parse(nbHeureJour.Text) / float.Parse(nbQuart.Text) / int.Parse(txtRessourcesAdmin.Text)) : 0));
+                        dtDateFin.SelectedDate = dateFin;
+                    }
+                }
+            }
+            catch
+            {
+
+            }
         }
 
         private void EstimationDuChampsManquant(object sender, RoutedEvent e)
         {
-            //if (Projet.etat == "SIM" && txtNbrHeuresEstime != null && !siCreation)
-            //{ 
                     try
-                    { 
-                        if(/*txtNbrHeuresEstime.Text != "" && txtRessourcesAdmin.Text != "0" && dtDateFin.SelectedDate.ToString() ==  ""*/ rboDateFin.IsChecked == true) 
+                    {
+                        if (rboDateFin.IsChecked == true)
                         {
                             // on calcule la date de fin
                             DateTime dateFin = (DateTime)dtDateDebut.SelectedDate;
-                            if(rboRessGen.IsChecked == true)
+                            if (rboRessGen.IsChecked == true)
                             {
                                 // Calculer nombre de fds
-                                dateFin = dateFin.AddDays((nbHeureJour.Value < Convert.ToInt32(txtEstimation.Text.ToString())?Math.Floor(float.Parse(txtEstimation.Text) / float.Parse(nbHeureJour.Text) / float.Parse(nbQuart.Text) / int.Parse(txtRessourcesAdmin.Text)):0));
+                                dateFin = dateFin.AddDays((nbHeureJour.Value < Convert.ToInt32(txtEstimation.Text.ToString()) ? Math.Floor(float.Parse(txtEstimation.Text) / float.Parse(nbHeureJour.Text) / float.Parse(nbQuart.Text) / int.Parse(txtRessourcesAdmin.Text)) : 0));
                                 dateFin = dateFin.AddDays(CalculerJourNonOuvrable());
                                 dtDateFin.SelectedDate = dateFin;
                             }
                             else
                             {
-                                dateFin = dateFin.AddDays((nbHeureJour.Value < Convert.ToInt32(txtEstimation.Text.ToString())?Math.Floor(float.Parse(txtEstimation.Text) / float.Parse(nbHeureJour.Text) / float.Parse(nbQuart.Text) / int.Parse(txtRessourcesAdmin.Text)):0));
+                                dateFin = dateFin.AddDays((nbHeureJour.Value < Convert.ToInt32(txtEstimation.Text.ToString()) ? Math.Ceiling(float.Parse(txtEstimation.Text) / float.Parse(nbHeureJour.Text) / float.Parse(nbQuart.Text) / int.Parse(txtRessourcesAdmin.Text)) : 0));
                                 dtDateFin.SelectedDate = dateFin;
                             }
                         }
-                        if (/*txtEstimation.Text != "" && dtDateFin.Text != ""*/ rboEmploye.IsChecked == true)
+                        if (rboEmploye.IsChecked == true)
                         {
                             float nbRessources = 0;
                             // on cherche le nombre de ressources
@@ -755,7 +772,7 @@ namespace model.Views
                                 txtRessourcesAdmin.Text = Math.Ceiling(nbRessources).ToString();
                             }
                         }
-                        if(/*dtDateFin.Text != "" && txtRessourcesAdmin.Text != "0"*/ rboHeure.IsChecked == true)
+                        if(rboHeure.IsChecked == true)
                         {
                             // on calcule le nombre d'heures
                             float nbHeure= 0;
@@ -783,25 +800,23 @@ namespace model.Views
                     {
                         
                     }
-            //}
         }
 
         private int CalculerJourNonOuvrable()
         {
             DateTime dtFin = Convert.ToDateTime(dtDateFin.SelectedDate);
             DateTime dtDebut = Convert.ToDateTime(dtDateDebut.SelectedDate);
-            //int nombreJour = int.Parse((dtFin - dtDebut).TotalDays.ToString()) + 1;
             int nombreJour = Convert.ToInt32((dtFin - dtDebut).TotalDays) + 1;
-            int nombreJourOuvrable = 0;
+            int nombreJourNonOuvrable = 0;
 
             for (DateTime date = dtDebut; date <= dtFin; date = date.AddDays(1))
             {
-                if (date.DayOfWeek.ToString() == "Saturday" && date.DayOfWeek.ToString() == "Sunday")
-                    nombreJourOuvrable++;
+                if (date.DayOfWeek.ToString() == "Saturday" || date.DayOfWeek.ToString() == "Sunday")
+                    nombreJourNonOuvrable++;
 
             }
 
-            return nombreJourOuvrable;
+            return nombreJourNonOuvrable;
         }
     }
 }
