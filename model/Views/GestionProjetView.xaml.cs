@@ -457,7 +457,7 @@ namespace model.Views
                 }
                 if(sender != null)
                 { 
-                    if(sender.GetType().ToString() == "DatePicker")
+                    if(sender.GetType().ToString() == "System.Windows.Controls.DatePicker")
                     {
                         EstimationDuChampsManquant(sender, null);
                     }
