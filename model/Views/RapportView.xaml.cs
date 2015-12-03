@@ -408,8 +408,16 @@ namespace model.Views
             int NbPaie = 0;
             float BruteTotal = 0;
 
+            List<Projet> lstProj = new List<Projet>();
+            //Tri nom employé
+            foreach (Projet pro in lstRapportProjet.SelectedItems)
+                lstProj.Add(pro);
+
             try 
             {
+                if(lstProj.Count() == 0)
+                    throw new Exception("pasProg");              
+
                 PdfDocument pdf = new PdfDocument();
                 pdf.Info.Title = "Rapport Projet";
                 PdfPage page;
@@ -480,11 +488,9 @@ namespace model.Views
             catch (Exception E)
             {
                 if (E.Message == "erreur")
-                    MessageBox.Show("Aucune paie durant cette période");
-                else if (E.Message == "nochecked")
-                    MessageBox.Show("Veuillez cocher atomique ou atomique détail pour afficher le rapport. L'option regrouper n'est pas disponible");
-                else if (E.Message == "PasDate")
-                    MessageBox.Show("Veuillez entrer des dates.");
+                    MessageBox.Show("Aucune projet n'a c'est paramètre");
+                else if(E.Message == "pasProg")
+                    MessageBox.Show("Veuillez choisir un ou plusieurs projet");
                 else
                     MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer.");
             }
@@ -519,6 +525,13 @@ namespace model.Views
         private List<Projet> filtreAppliquerHeure(List<Projet> listp)
         {
             List<Projet> returnlist = new List<Projet>();
+            if(listp.Count() == 0)
+            {
+                foreach(Projet p in Projet)
+                { 
+                    listp.Add(p);
+                }
+            }
             foreach (Projet p in listp)
             {
                 if (p.nbHeuresSimule >= Convert.ToInt32(HeureMin.Text.ToString()) && p.nbHeuresSimule <= Convert.ToInt32(HeureMax.Text.ToString()))
@@ -530,6 +543,13 @@ namespace model.Views
         private List<Projet> filtreAppliquerCout(List<Projet> listp)
         {
             List<Projet> returnlist = new List<Projet>();
+            if (listp.Count() == 0)
+            {
+                foreach (Projet p in Projet)
+                {
+                    listp.Add(p);
+                }
+            }
             foreach (Projet p in listp)
             {
                 if (p.prixSimulation >= Convert.ToInt32(CoutMin.Text.ToString()) && p.prixSimulation <= Convert.ToInt32(CoutMax.Text.ToString()))
@@ -551,6 +571,15 @@ namespace model.Views
             {
                 if (dtDateDebut.Text.ToString() == "" && dtDateFin.Text.ToString() == "")
                     throw new Exception("PasDate");
+                if (chxA.IsChecked.Value){
+                    if(chxB.IsChecked.Value)
+                    {
+                        if(chxC.IsChecked.Value)
+                            throw new Exception("tropChx");
+                        else
+                            throw new Exception("tropChx");
+                    } 
+                }
 
                 if (chxA.IsChecked.Value || chxB.IsChecked.Value)
                 {
@@ -639,6 +668,8 @@ namespace model.Views
                     MessageBox.Show("Veuillez cocher atomique ou atomique détail pour afficher le rapport. L'option regrouper n'est pas disponible");
                 else if (E.Message == "PasDate")
                     MessageBox.Show("Veuillez entrer des dates.");
+                else if (E.Message == "tropChx")
+                    MessageBox.Show("Veuillez choisir un seul choix à la fois.");
                 else
                     MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer.");
             }
