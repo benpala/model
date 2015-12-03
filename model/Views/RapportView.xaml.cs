@@ -575,8 +575,8 @@ namespace model.Views
 
                     graph.DrawLine(XPens.Black, 10, 50, page.Width - 10, 50);
 
-                    MessageBox.Show(page.Height.ToString());
-                    MessageBox.Show(page.Width.ToString());
+                    MessageBox.Show("Joyeux Noël et bonne correction!!!!!!!!!!!!");
+                    //MessageBox.Show(page.Width.ToString());
 
                     if (chxA.IsChecked.Value)
                         ColonneA(ref page, ref graph, ref formatter, ref font, layoutRectangle);

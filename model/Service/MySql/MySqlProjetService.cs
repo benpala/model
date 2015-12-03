@@ -146,7 +146,7 @@ namespace model.Service.MySql
                 datedeux = (row["dateFin"].ToString() == "0001-01-01 00:00:00" ? "Indéfini" : row["dateFin"].ToString().Substring(0,10)),
                 prixSimulation = prixSimule,
                 prixReel = CalculerPrixReel(Convert.ToInt32(row["idProjet"])),
-                nbHeuresSimule = /*CalculerNbHeuresSimule(*/Convert.ToInt32(row["idProjet"])/*)*/,
+                nbHeuresSimule = /*CalculerNbHeuresSimule(*/Convert.ToInt32(row["nbHeuresSimule"])/*)*/,
                 nbHeuresReel = CalculerNbHeuresReel(Convert.ToInt32(row["idProjet"])),
                 dateTerminer = (row["dateTerminer"].ToString() != ""?row["dateTerminer"].ToString():""),
                 dateAbandon = (row["dateAbandon"].ToString() != "" ? row["dateAbandon"].ToString(): ""),
