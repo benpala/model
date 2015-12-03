@@ -142,12 +142,12 @@ namespace model.Service.MySql
             {
                 ID = row["idProjet"].ToString(),
                 nom = (string)row["nom"],
-                dateun = (row["dateDebut"].ToString() == "0001-01-01 00:00:00"?"Indéfini":row["dateDebut"].ToString()),
-                datedeux = (row["dateFin"].ToString() == "0001-01-01 00:00:00"?"Indéfini":row["dateFin"].ToString()),
+                dateun = (row["dateDebut"].ToString() == "0001-01-01 00:00:00"?"Indéfini":row["dateDebut"].ToString().Substring(0,10)),
+                datedeux = (row["dateFin"].ToString() == "0001-01-01 00:00:00" ? "Indéfini" : row["dateFin"].ToString().Substring(0,10)),
                 prixSimulation = prixSimule,
-                prixReel = CalculerPrixReel((Int32)row["idProjet"]),
-                nbHeuresSimule = CalculerNbHeuresSimule((Int32)row["idProjet"]),
-                nbHeuresReel = CalculerNbHeuresReel((Int32)row["idProjet"]),
+                prixReel = CalculerPrixReel(Convert.ToInt32(row["idProjet"])),
+                nbHeuresSimule = /*CalculerNbHeuresSimule(*/Convert.ToInt32(row["idProjet"])/*)*/,
+                nbHeuresReel = CalculerNbHeuresReel(Convert.ToInt32(row["idProjet"])),
                 dateTerminer = (row["dateTerminer"].ToString() != ""?row["dateTerminer"].ToString():""),
                 dateAbandon = (row["dateAbandon"].ToString() != "" ? row["dateAbandon"].ToString(): ""),
                 nbEmploye = int.Parse(row2.ItemArray[0].ToString()),
@@ -302,7 +302,7 @@ namespace model.Service.MySql
                                 Nom = rowId[1].ToString(),
                                 Poste = rowId[2].ToString(),
                                 Heure = Math.Round(d,2).ToString(),
-                                Cout = Math.Round(((float)rowId[3] * d),2).ToString()
+                                Cout = Math.Round((Convert.ToSingle(rowId[3]) * d),2).ToString()
                             });
                         }
                     }

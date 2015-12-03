@@ -38,10 +38,10 @@
       <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp">
-      <HintPath>P:\Projets\PROJ_420A0-A15\GEM-C\Debug\PdfSharp.dll</HintPath>
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp.Charting">
-      <HintPath>P:\Projets\PROJ_420A0-A15\GEM-C\Debug\PdfSharp.Charting.dll</HintPath>
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp.resources, Version=1.31.1789.0, Culture=de, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

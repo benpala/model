@@ -315,13 +315,13 @@ namespace model.Views
                     {
                         _projet.etat = "SIM";
                         int nombreTexte = txtPrixEstimation.Text.Length;
-                        if (nombreTexte != 0 && txtNbrHeuresEstime.Text != "")
+                        if (nombreTexte != 0 && txtEstimation.Text != "")
                         {
                             string prixEstime = txtPrixEstimation.Text.Substring(0, nombreTexte - 1);
                             float prixSimule = float.Parse(prixEstime);
                             _projet.prixSimulation = prixSimule;
-                            if (txtNbrHeuresEstime.Text != "Infini")
-                                _projet.nbHeuresSimule = int.Parse(txtNbrHeuresEstime.Text);
+                            //if (txtNbrHeuresEstime.Text != "Infini")
+                                _projet.nbHeuresSimule = int.Parse(txtEstimation.Text);
                         }
                         else
                         {
