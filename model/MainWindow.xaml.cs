@@ -81,6 +81,11 @@ namespace model
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
             applicationService.ChangeView<ConfigurationView>(new ConfigurationView());
         }
+
+        private void aideApp_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         
     }
   

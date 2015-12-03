@@ -73,19 +73,58 @@
                     </DataTemplate>
                 </Button.ContentTemplate>
             </Button>
-            <Button Style="{StaticResource MainMenu}" Width="Auto" MinWidth="150" Height="Auto" Margin="0,0,0,0">
-                <Expander Name="hcontCtrl" Header="Gestion">
-                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="15,0,0,0"  >
-                        <Button Style="{StaticResource UnderMenu}" Content="Employés"  Width="100" Height="Auto" Margin="0,0,0,0"  Click="employeLst" />
-                        <Button Style="{StaticResource UnderMenu}" Content="Projets"   Width="100" Height="Auto" Margin="0,0,0,0"  Click="projetLst"/>
-                        <Button Style="{StaticResource UnderMenu}" Content="Paies"     Width="100" Height="Auto" Margin="0,0,0,0"  Click="paieLst" />
-                        <Button Style="{StaticResource UnderMenu}" Content="Rapports"  Width="100" Height="Auto" Margin="0,0,0,0"  Click="EcranRapport" />
-                    </StackPanel>
-                </Expander>
+            <Button Style="{StaticResource MainMenu}" Content="Employés"  Width="110" Height="Auto" Margin="0,0,0,0"  Click="employeLst" >
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <Image Width="20" Height="20" Source="image/emp.png" />
+                            <TextBlock TextAlignment="Center">Employés</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
             </Button>
-           
-            
-           
+            <Button Style="{StaticResource MainMenu}" Content="Projets"   Width="100" Height="Auto" Margin="0,0,0,0"  Click="projetLst">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                                    <Image Width="25" Height="25" Source="image/Close.png" />
+                                    <TextBlock TextAlignment="Center">Projets</TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+            <Button Style="{StaticResource MainMenu}" Content="Paies"     Width="100" Height="Auto" Margin="0,0,0,0"  Click="paieLst" >
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <Image Width="20" Height="20" Source="image/dollar.png" />
+                            <TextBlock TextAlignment="Center">Paies</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Style="{StaticResource MainMenu}" Content="Rapports"  Width="100" Height="Auto" Margin="0,0,0,0"  Click="EcranRapport" >
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <Image Width="25" Height="25" Source="image/pdf.png" />
+                            <TextBlock TextAlignment="Center">Rapports</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button Style="{StaticResource MainMenu}" Content="Besoin d'aide"   Width="160" Height="Auto" Margin="0,0,0,0"  Click="aideApp_Click">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <Image Width="25" Height="25" Source="image/help.png" />
+                            <TextBlock TextAlignment="Center">Besoin d'aide</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+
+
         </StackPanel>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,50,0">
             <Label   FontSize="18" FontStyle="Italic" Foreground="White" Content="GEM-C Générer mieux"/>
