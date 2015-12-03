@@ -242,7 +242,7 @@
                     <CheckBox Name="chkABD" Height="13" Checked="filtreEtat" Unchecked="filtreEtat">Abandonné</CheckBox>
                 </StackPanel>
             </StackPanel>
-            <DataGrid IsReadOnly="True" DockPanel.Dock="Left" CanUserAddRows="False" Name="mygrid" Padding="10" Margin="0,-47,0,0" ItemsSource="{Binding Projet}" VerticalAlignment="Top" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Loaded="RefreshListe" ScrollViewer.ScrollChanged="RefreshListe" EnableRowVirtualization="False">
+            <DataGrid IsReadOnly="True" DockPanel.Dock="Left" CanUserAddRows="False" Name="mygrid" Padding="10" Margin="0,-47,0,0" ItemsSource="{Binding Projet}" VerticalAlignment="Top" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Loaded="RefreshListe" EnableRowVirtualization="False">
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
                         <EventSetter Event="Click" Handler="columnHeader_Click"></EventSetter>
