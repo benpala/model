@@ -92,7 +92,7 @@
                                 <TextBox Background="LightGray" Text="Période :" Width="200"></TextBox>
                                 <TextBox Background="LightGray" Text="Salaire à l'heure :"  Width="150"></TextBox>
                                 <TextBox Background="LightGray" Text="Nombre d'heure :"  Width="150"></TextBox>
-                                <TextBox Background="LightGray" Text="Montant brute : "  Width="150"></TextBox>
+                                <TextBox Background="LightGray" Text="Montant brut : "  Width="150"></TextBox>
                                 <TextBox Background="LightGray" Text="Montant net :"  Width="150"></TextBox>
                                 <TextBox Background="LightGray" Text="Cliquer pour modifier :"  Width="Auto"></TextBox>
                             </DockPanel>

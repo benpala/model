@@ -273,7 +273,7 @@ namespace model.Models
                         }
                     }
                     // change la période paye à terminé.
-                    throw new Exception("Réussite de la génération des paies pour la période de :" + start.Date.ToString() + " aux " + end.Date.ToString());
+                    throw new Exception("Réussite de la génération des paies pour la période de :" + (start.Date).ToString("d") + " au " + (end.Date).ToString("d"));
                 }
             }
             catch (Exception e)
