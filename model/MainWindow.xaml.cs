@@ -56,6 +56,23 @@ namespace model
         private void projetLst(object sender, RoutedEventArgs e)
         {
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
+			if(contentPresenter.Content.ToString() == "model.Views.GestionProjetView")
+            {
+                var result = System.Windows.MessageBox.Show("Voulez-vous sauvegarder avant de quitter?", "Confirmation",MessageBoxButton.YesNoCancel, MessageBoxImage.Warning).ToString();
+                if(result == "Yes")
+                {
+                    GestionProjetView g = (GestionProjetView)contentPresenter.Content;
+                    g.EnregistrerProjet(sender,null);
+                    if(!g.valide)
+                    {
+                        return;
+                    }
+                }
+                if(result == "Cancel")
+                {
+                    return;
+                }
+            }
             applicationService.ChangeView<ProjetView>(new ProjetView());
         }
 

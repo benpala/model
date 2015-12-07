@@ -34,6 +34,7 @@ namespace model.Views
         private ObservableCollection<ProjetEmploye> _ProjetEmploye;
         bool siCreation = false;
         MySqlProjetService Requete = new MySqlProjetService();
+		public bool valide  = false;
 
         public GestionProjetView()
         {
