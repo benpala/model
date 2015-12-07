@@ -437,7 +437,7 @@ namespace model.Views
                 if (CoutMin.Text.ToString() != "" && CoutMax.Text.ToString() != "")
                     cout = true;
 
-                LstProjet = filtreRprojet(date, heure, cout);
+                LstProjet = filtreRprojet(lstProj, date, heure, cout);
 
                 XRect layoutRectangle = new XRect(10, height += 15, page.Width, page.Height);
 
@@ -449,25 +449,14 @@ namespace model.Views
 
                 layoutRectangle = new XRect(10, height += 75, page.Width, page.Height);
 
-                if (date || heure || cout)
+                foreach (Projet p in LstProjet)
                 {
-                    foreach (Projet p in LstProjet)
-                    {
-                        CorpsProjet(ref page, ref formatter, ref font, layoutRectangle, ref height, p);
-                        BruteTotal = BruteTotal + p.nbHeuresSimule;
-                        NbPaie++;
-                    }
+                    CorpsProjet(ref page, ref formatter, ref font, layoutRectangle, ref height, p);
+                    BruteTotal = BruteTotal + p.nbHeuresSimule;
+                    NbPaie++;
                 }
-                else {
-                    foreach (Projet p in Projet)
-                    {
-                        CorpsProjet(ref page, ref formatter, ref font, layoutRectangle, ref height, p);
-                        BruteTotal = BruteTotal + p.nbHeuresSimule;
-                        NbPaie++;
-                    }
-                }
-
-                if (BruteTotal == 0)
+               
+                if (LstProjet.Count() == 0)
                     throw new Exception("erreur");
 
                 layoutRectangle = new XRect(10, page.Height - 70, page.Width, page.Height);
@@ -496,12 +485,10 @@ namespace model.Views
             }
             
         }
-        private List<Projet> filtreRprojet(bool date = false, bool heures = false, bool cout = false)
+        private List<Projet> filtreRprojet(List<Projet> listp, bool date = false, bool heures = false, bool cout = false)
         {
-            List<Projet> listp = new List<Projet>();
-
             if(date)
-                listp = filtreAppliquerDate();
+                listp = filtreAppliquerDate(listp);
             if(heures)
                listp = filtreAppliquerHeure(listp);
             if(cout)
@@ -509,12 +496,12 @@ namespace model.Views
 
             return listp;
         }
-        private List<Projet> filtreAppliquerDate()
+        private List<Projet> filtreAppliquerDate(List<Projet> listp)
         {
             PeriodePaie tmp = new PeriodePaie(Convert.ToDateTime(dtDebut.ToString()), Convert.ToDateTime(dtFin.ToString()));
 
             List<Projet> returnlist = new List<Projet>();
-            foreach (Projet p in Projet)
+            foreach (Projet p in listp)
             {
                 if (Convert.ToDateTime(p.dateun.ToString()) >= tmp.Debut && Convert.ToDateTime(p.dateun.ToString()) <= tmp.Fin)
                     returnlist.Add(p);
@@ -525,13 +512,7 @@ namespace model.Views
         private List<Projet> filtreAppliquerHeure(List<Projet> listp)
         {
             List<Projet> returnlist = new List<Projet>();
-            if(listp.Count() == 0)
-            {
-                foreach(Projet p in Projet)
-                { 
-                    listp.Add(p);
-                }
-            }
+
             foreach (Projet p in listp)
             {
                 if (p.nbHeuresSimule >= Convert.ToInt32(HeureMin.Text.ToString()) && p.nbHeuresSimule <= Convert.ToInt32(HeureMax.Text.ToString()))
@@ -543,13 +524,7 @@ namespace model.Views
         private List<Projet> filtreAppliquerCout(List<Projet> listp)
         {
             List<Projet> returnlist = new List<Projet>();
-            if (listp.Count() == 0)
-            {
-                foreach (Projet p in Projet)
-                {
-                    listp.Add(p);
-                }
-            }
+
             foreach (Projet p in listp)
             {
                 if (p.prixSimulation >= Convert.ToInt32(CoutMin.Text.ToString()) && p.prixSimulation <= Convert.ToInt32(CoutMax.Text.ToString()))
@@ -578,7 +553,13 @@ namespace model.Views
                             throw new Exception("tropChx");
                         else
                             throw new Exception("tropChx");
-                    } 
+                    }
+                } else {
+                    if (chxB.IsChecked.Value)
+                    {
+                        if (chxC.IsChecked.Value)
+                            throw new Exception("tropChx");
+                    }
                 }
 
                 if (chxA.IsChecked.Value || chxB.IsChecked.Value)
