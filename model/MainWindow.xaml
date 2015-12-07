@@ -63,7 +63,7 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal"  Background="#5f5f5f" >
-            <Button Style="{StaticResource MainMenu}" Content="Quitter"   Width="150" Height="Auto" Margin="0,0,0,0"  Click="closeApp_Click">
+            <Button Style="{StaticResource MainMenu}" Content="Quitter"   Width="125" Height="Auto" Margin="0,0,0,0"  Click="closeApp_Click">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
@@ -73,7 +73,7 @@
                     </DataTemplate>
                 </Button.ContentTemplate>
             </Button>
-            <Button Style="{StaticResource MainMenu}" Content="Employés"  Width="110" Height="Auto" Margin="0,0,0,0"  Click="employeLst" >
+            <Button Style="{StaticResource MainMenu}" Content="Employés"  Width="125" Height="Auto" Margin="0,0,0,0"  Click="employeLst" >
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
@@ -83,17 +83,17 @@
                     </DataTemplate>
                 </Button.ContentTemplate>
             </Button>
-            <Button Style="{StaticResource MainMenu}" Content="Projets"   Width="100" Height="Auto" Margin="0,0,0,0"  Click="projetLst">
+            <Button Style="{StaticResource MainMenu}" Content="Projets"   Width="125" Height="Auto" Margin="0,0,0,0"  Click="projetLst">
                         <Button.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                                    <Image Width="25" Height="25" Source="image/Close.png" />
+                                    <Image Width="22" Height="22" Source="image/pr.png" />
                                     <TextBlock TextAlignment="Center">Projets</TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
-            <Button Style="{StaticResource MainMenu}" Content="Paies"     Width="100" Height="Auto" Margin="0,0,0,0"  Click="paieLst" >
+            <Button Style="{StaticResource MainMenu}" Content="Paies"     Width="125" Height="Auto" Margin="0,0,0,0"  Click="paieLst" >
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
@@ -103,7 +103,7 @@
                     </DataTemplate>
                 </Button.ContentTemplate>
             </Button>
-            <Button Style="{StaticResource MainMenu}" Content="Rapports"  Width="100" Height="Auto" Margin="0,0,0,0"  Click="EcranRapport" >
+            <Button Style="{StaticResource MainMenu}" Content="Rapports"  Width="125" Height="Auto" Margin="0,0,0,0"  Click="EcranRapport" >
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
