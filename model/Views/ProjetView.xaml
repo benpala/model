@@ -208,38 +208,39 @@
             <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,0" HorizontalAlignment="Left" Width="300">
                 <TextBlock TextAlignment="Justify" DockPanel.Dock="Left" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300">Liste des projets</TextBlock>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Background="#5f5f5f" Width="Auto" Height="100" Margin="0,0,0,0" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top">
-                <Button Content="Ajouter un projet" Height="50" Click="click_newProject"/>
-                <Button IsEnabled="False" Content="Filtrer les projets" Width="300" Margin="0,0,0,0"  Height="50" VerticalAlignment="Bottom" />
+            <StackPanel Orientation="Vertical" Background="#5f5f5f" Width="Auto" Height="50" Margin="0,0,0,0" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top">
+                <Button Content="Ajouter un projet" Height="50" Width="300" Click="click_newProject"/>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="Auto" Margin="-300,100,0,0" Name="ProjetGrid">
-                <Label Width="50">ID</Label>
-                <TextBox  Name="txtRecherche_idProjet" Width="50" Height="25" Text="ID" Foreground="Gray" GotFocus="txtRechercheID_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
-                <Label Width="100">Nom du projet</Label>
-                <TextBox  Name="txtRecherche_nom" Width="200" Height="25" Text="Nom du projet" Foreground="Gray" GotFocus="txtRechercheNomProjet_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
-                <Label Width="100">Date de début</Label>
-                <DatePicker Name="dtpRecherche_dateDebut" Width="100" Height="25" SelectedDateChanged="changeDate" KeyUp="EffaceDate"></DatePicker>
-                <Label Width="100">Date de fin</Label>
-                <DatePicker Name="dtpRecherche_dateFin" Width="100" Height="25" SelectedDateChanged="changeDate" KeyUp="EffaceDate"></DatePicker>
-                <Label Width="105">Nombre d'heures</Label>
-                <TextBox  Name="txtRecherche_nbHeures" Width="75" Height="25" Text="Nb heures" Foreground="Gray" GotFocus="txtRechercheNbHeures_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
-                <Label Width="85" Margin="10,0,0,0">coût estimé</Label>
-
-                <TextBox Name="txtRecherche_coutEstime" VerticalAlignment="Bottom" Width="40" TextChanged="txtRecherche_textChanged"></TextBox>
-                <Label Width="85" Margin="30,0,0,0">coût réel</Label>
-                <TextBox Name="txtRecherche_coutReel" Width="40" TextChanged="txtRecherche_textChanged"></TextBox>
-                <StackPanel Orientation="Horizontal" Margin="5,0,0,0" HorizontalAlignment="Center">
+            <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="Auto" Margin="-290,50,0,0">
+                <TextBlock Opacity="0.7" FontSize="20" FontWeight="Bold" FontStyle="Italic" Padding="10" Foreground="White" HorizontalAlignment="Center" Margin="-10,0,0,0" Width="300" Height="50" Background="#5f5f5f">Filtrer les projets</TextBlock>
+                <StackPanel Name="ProjetGrid">
+                <Label HorizontalAlignment="Left" Width="50">ID</Label>
+                <TextBox HorizontalAlignment="Left" Name="txtRecherche_idProjet" Width="200" Height="25" Text="ID" Foreground="Gray" GotFocus="txtRechercheID_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
+                <Label HorizontalAlignment="Left" Width="100">Nom du projet</Label>
+                <TextBox HorizontalAlignment="Left"  Name="txtRecherche_nom" Width="200" Height="25" Text="Nom du projet" Foreground="Gray" GotFocus="txtRechercheNomProjet_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
+                <Label HorizontalAlignment="Left" Width="100">Date de début</Label>
+                <DatePicker HorizontalAlignment="Left" Name="dtpRecherche_dateDebut" Width="200" Height="25" SelectedDateChanged="changeDate" KeyUp="EffaceDate"></DatePicker>
+                <Label HorizontalAlignment="Left" Width="100">Date de fin</Label>
+                <DatePicker HorizontalAlignment="Left" Name="dtpRecherche_dateFin" Width="200" Height="25" SelectedDateChanged="changeDate" KeyUp="EffaceDate"></DatePicker>
+                <Label HorizontalAlignment="Left" Width="105">Nombre d'heures</Label>
+                <TextBox HorizontalAlignment="Left"  Name="txtRecherche_nbHeures" Width="200" Height="25" Text="Nb heures" Foreground="Gray" GotFocus="txtRechercheNbHeures_GotFocus" TextChanged="txtRecherche_textChanged"></TextBox>
+                <Label HorizontalAlignment="Left" Width="85">Coût estimé</Label>
+                <TextBox HorizontalAlignment="Left" Name="txtRecherche_coutEstime" VerticalAlignment="Bottom" Width="200" TextChanged="txtRecherche_textChanged"></TextBox>
+                <Label HorizontalAlignment="Left" Width="85">Coût réel</Label>
+                <TextBox HorizontalAlignment="Left" Name="txtRecherche_coutReel" Width="200" TextChanged="txtRecherche_textChanged"></TextBox>
+                <StackPanel Orientation="Horizontal" Margin="-100,0,0,0" HorizontalAlignment="Center" >
                     <RadioButton Name="rboEt" Margin="0,0,10,0" Checked="filtreEtat" VerticalAlignment="Center" IsChecked="True">Et</RadioButton>
                     <RadioButton Name="rboOu" Checked="filtreEtat" VerticalAlignment="Center">Ou</RadioButton>
                 </StackPanel>
-                <Label Width="85" Height="25" Margin="0,-5,0,-10" >État du projet</Label>
-                <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center" Name="stackEtat1">
+                <Label  HorizontalAlignment="Left" Width="85" Height="25" Margin="0,-5,0,-10" >État du projet</Label>
+                <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Left" Name="stackEtat1">
                     <CheckBox Name="chkSIM" Margin="-6,0,10,0" Height="13" Checked="filtreEtat" Unchecked="filtreEtat">Simulé</CheckBox>
                     <CheckBox Name="chkECS" Margin="8,0,0,0" Height="13" Checked="filtreEtat" Unchecked="filtreEtat">En cours</CheckBox>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Name="stackEtat2">
-                    <CheckBox Name="chkTER" Margin="10,0,10,0" Height="13" Checked="filtreEtat" Unchecked="filtreEtat">Terminé</CheckBox>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Name="stackEtat2">
+                    <CheckBox Name="chkTER" Margin="-1,0,10,0" Height="13" Checked="filtreEtat" Unchecked="filtreEtat">Terminé</CheckBox>
                     <CheckBox Name="chkABD" Height="13" Checked="filtreEtat" Unchecked="filtreEtat">Abandonné</CheckBox>
+                </StackPanel>
                 </StackPanel>
             </StackPanel>
             <DataGrid IsReadOnly="True" DockPanel.Dock="Left" CanUserAddRows="False" Name="mygrid" Padding="10" Margin="0,-47,0,0" ItemsSource="{Binding Projet}" VerticalAlignment="Top" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Loaded="RefreshListe" EnableRowVirtualization="False">

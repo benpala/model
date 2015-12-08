@@ -62,12 +62,36 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="FontWeight" Value="ExtraBold"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <DockPanel>
         <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,0" HorizontalAlignment="Left" Width="300">
-            <TextBlock TextAlignment="Justify" DockPanel.Dock="Left" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300">Gestion de projets</TextBlock>
+            <TextBlock TextAlignment="Justify" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300"><Run Text="Gestion de projets"/></TextBlock>
         </StackPanel>
-    <StackPanel Name="stackPanel" HorizontalAlignment="Left" Orientation="Horizontal" Margin="300,-47,0,0">
+        <StackPanel Orientation="Vertical" Background="#5f5f5f" Width="Auto" Height="100" Margin="0,0,0,0" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top">
+            <Button Name="btnEnregistrer" Content="Enregistrer" HorizontalAlignment="Center" Click="EnregistrerProjet" Height="50" Width="300" VerticalAlignment="Bottom" />
+            <Button Content="Retour"  HorizontalAlignment="Center" Click="retourMenu" Width="300" Height="50" VerticalAlignment="Bottom"/>
+        </StackPanel>
+        <StackPanel Name="stackPanel" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,-47,0,0">
         <StackPanel Width="300" VerticalAlignment="Top"> 
             <Label  Width="200" Height="25" Content="ID du projet :" />
             <TextBox IsReadOnly="True"  Name="txtID"  Height="25" Width="200" Text="{Binding Projet.ID}" Background="AliceBlue" ></TextBox>
@@ -91,9 +115,6 @@
             </DockPanel>
             <Label Name="lblDateTerminerOuAbandonner" HorizontalAlignment="Center"></Label>
                 <TextBox IsReadOnly="True" Name="txtDateTerminerOuAbandonner" Width="200" Margin="50,0,50,10"></TextBox>
-
-            <Button  Name="btnEnregistrer" Style="{StaticResource BaseButtonStyle}" Content="Enregistrer"  HorizontalAlignment="Center"  Width="208" Click="EnregistrerProjet" Height="50" VerticalAlignment="Bottom" />
-            <Button Style="{StaticResource BaseButtonStyle}" Content="Retour"  HorizontalAlignment="Center"  Width="208" Click="retourMenu" Height="50" VerticalAlignment="Bottom"/>
         </StackPanel>
 
         <Canvas Name="canvas">
@@ -163,6 +184,7 @@
                 <RadioButton Name="rboHeure" Checked="EstimerChampsManquantRb">Heures</RadioButton>
                 <RadioButton Name="rboEmploye" Checked="EstimerChampsManquantRb">Employés</RadioButton>
                 <RadioButton Name="rboDateFin" Checked="EstimerChampsManquantRb">Date de fin</RadioButton>
+                <RadioButton>Aucun</RadioButton>
                 <StackPanel>
                     <Label FontSize="18">Choix du nombre de jours/semaines</Label>
                     <RadioButton Name="rboRessGen" VerticalAlignment="Center" Checked="EstimerChampsManquantRb">Ouvrables</RadioButton>

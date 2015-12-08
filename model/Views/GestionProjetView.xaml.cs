@@ -32,9 +32,9 @@ namespace model.Views
     {
         private Projet _projet;
         private ObservableCollection<ProjetEmploye> _ProjetEmploye;
-        bool siCreation = false;
+        private bool siCreation = false;
         MySqlProjetService Requete = new MySqlProjetService();
-		public bool valide  = false;
+        public bool valide  = false;
 
         public GestionProjetView()
         {
@@ -56,6 +56,7 @@ namespace model.Views
             gridEmployeProjet.Visibility = Visibility.Hidden; 
             lblEmployesProjet.Visibility = Visibility.Hidden;
             rboEND.IsEnabled = false;
+            rboABD.IsEnabled = false;
             rboRessGen.IsChecked = true;
             txtDateTerminerOuAbandonner.Visibility = Visibility.Hidden;
             canvas.Visibility = Visibility.Hidden;
@@ -263,6 +264,17 @@ namespace model.Views
         private void retourMenu(object sender, RoutedEventArgs e)
         {
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
+
+            var result = System.Windows.MessageBox.Show("Voulez-vous sauvegarder avant de quitter?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning).ToString();
+            if (result == "Yes")
+            {
+                EnregistrerProjet(sender,null);
+                return;
+            }
+            if (result == "Cancel")
+            {
+                return;
+            }
             applicationService.ChangeView<ProjetView>(new ProjetView());
         }
 
@@ -363,7 +375,8 @@ namespace model.Views
                         }
                     }
                     if(estValide)
-                    { 
+                    {
+                        valide = true;
                         System.Windows.MessageBox.Show(txtNomProjet.Text + " à bien été enregistré.");
                         retourMenu(this, null);
                     }
@@ -645,10 +658,10 @@ namespace model.Views
         private void columnHeader_Click(object sender, RoutedEventArgs e)
         {
             var columnHeader = sender as DataGridColumnHeader;
-            if (columnHeader.Tag == null || columnHeader.Tag.ToString() == "Ascending")
-                columnHeader.Tag = "Descending";
-            else
+            if (columnHeader.Tag == null || columnHeader.Tag.ToString() == "Descending")
                 columnHeader.Tag = "Ascending";
+            else
+                columnHeader.Tag = "Descending";
             if (columnHeader != null)
             {
                 switch (columnHeader.Content.ToString())

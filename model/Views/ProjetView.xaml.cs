@@ -444,10 +444,10 @@ namespace model.Views
         private void columnHeader_Click(object sender, RoutedEventArgs e)
         {
             var columnHeader = sender as DataGridColumnHeader;
-            if (columnHeader.Tag == null || columnHeader.Tag.ToString() == "Ascending")
-                columnHeader.Tag = "Descending";
-            else
+            if (columnHeader.Tag == null || columnHeader.Tag.ToString() == "Descending")
                 columnHeader.Tag = "Ascending";
+            else
+                columnHeader.Tag = "Descending";
             if (columnHeader != null)
             {
                 switch (columnHeader.Content.ToString())
