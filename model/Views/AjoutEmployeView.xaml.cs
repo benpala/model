@@ -77,7 +77,7 @@ namespace model.Views
                     txtAjoutEmployeur.Text = null;
                 _ServiceMysql.AjoutUnEmploye(txtAjoutNom.Text, txtAjoutPrenom.Text, txtAjoutPoste.Text, txtAjoutSalaire.Text, this.chxHorsFonction.IsChecked.Value, DateEmbauche.ToString(), txtAjoutEmployeur.Text, LiaisonProjetEmploye);
                 _ServiceMysql.AjouterPhoto(photoData, txtAjoutNom.Text , txtAjoutPrenom.Text, format);
-                MessageBox.Show("Le nouveau employé est ajouté!");
+                MessageBox.Show("Le nouvel employé est ajouté!");
                 retourMenu(this, null);
             }
         }

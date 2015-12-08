@@ -1,8 +1,28 @@
 ﻿<UserControl x:Class="model.Views.AjoutEmployeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Height="720" Width="1280">
+             Height="auto" Width="auto">
     <UserControl.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="FontWeight" Value="ExtraBold"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource styleHeader}"/>
         </Style>
@@ -67,7 +87,9 @@
                 BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
                 <ScrollViewer x:Name="PART_ContentHost"/>
             </Border>
+
             <ControlTemplate.Triggers>
+
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
                     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
@@ -81,79 +103,83 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </UserControl.Resources>
+    <DockPanel>
 
-    <StackPanel Orientation="Vertical" Margin="50,0,50,0">
-        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="35">Ajout d'un employe</Label>
-        <StackPanel Orientation="Horizontal" Height="250" >
-            <StackPanel Orientation="Vertical" >
-            <Label VerticalAlignment="Top" Width="200"  Height="180" FontSize="12" Content="Photo :"/>
-            <Button  Width="140" Height="50"  Name="btnImage" Click="btnUplaod">Ajouter photo</Button>
-            </StackPanel>
-            <Border BorderThickness="2" BorderBrush="DarkOrange"  Width="200" Height="240" >
+        <StackPanel DockPanel.Dock="Top"  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto"  HorizontalAlignment="Stretch"  >
+            <TextBlock  Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" ><Run Text="Ajout d'un employé"/></TextBlock>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="300" HorizontalAlignment="Stretch"  VerticalAlignment="Top">
+            <Button  Content="Ajouter"  Click="AjouterEmploye"   Height="50"/>
+            <Button  Content="Retour"  Click="retourMenu" Height="50" VerticalAlignment="Bottom"/>
+        </StackPanel>
+        <StackPanel Margin="20" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="200">
+            <Label VerticalAlignment="Top" Width="200"  Height="auto" FontSize="12" Content="Photo :"/>
+            <Border BorderThickness="2" BorderBrush="DarkOrange"  Width="200" Height="272" >
                 <Image  Width="200" Height="240" Name="imgPhoto"  ></Image>
             </Border>
-            <StackPanel Height="200" Width="410" Margin="150,0,0,0">
-                <DataGrid IsReadOnly="True"  CanUserAddRows="False" x:Name="gridProjet"  ItemsSource="{Binding LiaisonProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
-                    <DataGrid.Columns >
+            <Button   Height="50"   Background="#5f5f5f"   Name="btnImage" Click="btnUplaod">Ajouter photo</Button>
+        </StackPanel>
+        <StackPanel Height="auto" Orientation="Vertical" >
 
-                        <DataGridTemplateColumn  Width="300" Header="Projet" >
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBox TextAlignment="Center" Name="NomProjetEmploye" Text="{Binding ProjNom}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+            <DataGrid IsReadOnly="True" Margin="20" CanUserAddRows="False" x:Name="gridProjet"  ItemsSource="{Binding LiaisonProjetEmploye}" CanUserSortColumns="True"  AutoGenerateColumns="False"  Style="{DynamicResource DataGridStyle1}" Height="200" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  >
+                <DataGrid.Columns >
 
-                        <DataGridTemplateColumn Width="110" Header="Occupé" >
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox Margin="35,0,0,0" VerticalAlignment="Center" Name="chxProjetEmploye"  IsChecked="{Binding Occupe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Width="540" Header="Projet" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox TextAlignment="Center" Name="NomProjetEmploye" Text="{Binding ProjNom}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                    </DataGrid.Columns>
-                </DataGrid>
+                    <DataGridTemplateColumn Width="110" Header="Occupé" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Margin="35,0,0,0" VerticalAlignment="Center" Name="chxProjetEmploye"  IsChecked="{Binding Occupe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Margin="20" DockPanel.Dock="Left" Orientation="Horizontal" Height="150" Width="auto"  VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Nom de famille :"/>
+                        <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutNom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prenom :"/>
+                        <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" >
+                        <Label Width="200" Height="25" FontSize="12" Content="Poste :"/>
+                        <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutPoste" Width="200"  Height="25" FontSize="12"  MaxLength="20" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure :"/>
+                        <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" MaxLength="6" KeyDown="numSeulement" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Width="200"  Height="25" FontSize="12" Content="Employeur :"/>
+                        <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutEmployeur" Width="200"  Height="25" FontSize="12" MaxLength="30" KeyDown="textSeulement" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" >
+                        <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
+                        <CheckBox Name="chxHorsFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.HorsFonction}"/>
+                    </StackPanel>
+                
+                </StackPanel>
+                <StackPanel Width="250">
+                    <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Date embauche :"  HorizontalAlignment="Center"/>
+                    <DatePicker Name="DateEmbauche"   Height="30" Width="200"  ></DatePicker>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Height="150">
-            <StackPanel Orientation="Vertical" Width="550" Margin="0,0,50,0">
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Nom de famille :"/>
-                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutNom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prenom :"/>
-                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutPrenom" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" >
-                    <Label Width="200" Height="25" FontSize="12" Content="Poste :"/>
-                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutPoste" Width="200"  Height="25" FontSize="12"  MaxLength="20" />
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Width="200"  Height="25" FontSize="12" Content="Salaire par heure :"/>
-                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutSalaire" Width="200"  Height="25" FontSize="12" MaxLength="6" KeyDown="numSeulement" />
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Width="200"  Height="25" FontSize="12" Content="Employeur :"/>
-                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtAjoutEmployeur" Width="200"  Height="25" FontSize="12" MaxLength="30" KeyDown="textSeulement" />
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" >
-                    <Label Width="200"  Height="25" FontSize="12" Content="Hors service :"/>
-                    <CheckBox Name="chxHorsFonction" Margin="100,0,0,0" VerticalAlignment="Center" IsChecked="{Binding Employe.HorsFonction}"/>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Width="250">
-                <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Date embauche :"  HorizontalAlignment="Center"/>
-                <DatePicker Name="DateEmbauche"   Height="30" Width="200"  ></DatePicker>
-            </StackPanel>
-        </StackPanel>
-        <Button Style="{StaticResource BaseButtonStyle}" Content="Ajouter"  Click="AjouterEmploye"  Width="200" Height="50"/>
-        <Button Style="{StaticResource BaseButtonStyle}" Content="Retour"  Width="200" Click="retourMenu" Height="50" VerticalAlignment="Bottom"/>
-    </StackPanel>
+    </DockPanel>
 </UserControl>

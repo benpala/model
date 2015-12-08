@@ -3,6 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="600" Width="1100">
     <UserControl.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="FontWeight" Value="ExtraBold"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="AlternatingListViewItemStyle" TargetType="{x:Type ListBoxItem}">
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="0">
@@ -100,20 +120,28 @@
     </UserControl.Resources>
 
         <DockPanel>
-        <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,0" HorizontalAlignment="Stretch" >
-            <TextBlock TextAlignment="Justify" DockPanel.Dock="Left" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300">Gestion des rapports</TextBlock>
+        <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top"  HorizontalAlignment="Stretch"  >
+            <TextBlock  Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" ><Run Text="Gestion rapport"/></TextBlock>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Height="50" Margin="0,0,0,20" >
-            <Button Style="{StaticResource BaseButtonStyle}" Content="Générer en PDF"  Click="GenererRapportEmploye" Height="50"  VerticalAlignment="Bottom" Margin="25,0,0,0" Width="350"/>
-            <Button Style="{StaticResource BaseButtonStyle}" Content="Générer en PDF"  Click="GenererRapportProjet" Height="50" VerticalAlignment="Bottom" Margin="40,0,0,0" Width="325"/>
-            <Button Style="{StaticResource BaseButtonStyle}" Content="Générer en PDF"  Click="GenererRapportFinancie" Height="50" VerticalAlignment="Bottom" Margin="40,0,0,0" Width="300"/>
+            <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="350" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="25,0,0,0">
+                <Button Content="Générer en PDF"   Click="GenererRapportEmploye" Height="50"  VerticalAlignment="Bottom"  Width="350"/>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="325" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="40,0,0,0">
+                <Button Content="Générer en PDF"   Click="GenererRapportProjet" Height="50" VerticalAlignment="Bottom"  Width="325"/>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="300" HorizontalAlignment="Stretch"  VerticalAlignment="Center"  Margin="40,0,0,0">
+                <Button Content="Générer en PDF"   Click="GenererRapportFinancie" Height="50" VerticalAlignment="Bottom" Width="300"/>
+            </StackPanel>
         </StackPanel>
         <StackPanel  Orientation="Vertical" Margin="20" Width="350" DockPanel.Dock="Left" Height="auto"  >
-                <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport employé</Label>
+            <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport employé</Label>
             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Stretch">
-                    <Label VerticalAlignment="Top"   Height="50" FontSize="20" Content="Choisir un employé :"  HorizontalAlignment="Stretch"/>
-                <Button Style="{StaticResource BaseButtonStyle}" Content="Tous"  HorizontalAlignment="Stretch"  Click="ChoisirTousEmploye" Height="30" VerticalAlignment="Center"  />
+                <Label VerticalAlignment="Top"   Height="50" FontSize="20" Content="Choisir un employé :"  HorizontalAlignment="Stretch"/>
+                <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="auto" HorizontalAlignment="Stretch"  VerticalAlignment="Center">
+                    <Button  Content="Tous"  HorizontalAlignment="Stretch"  Click="ChoisirTousEmploye" Height="30" VerticalAlignment="Center" Width="65"  />
                 </StackPanel>
+            </StackPanel>
 
             <ListBox Name="lstRapportEmploye" ItemsSource="{Binding Employe}"  AlternationCount="2"   SelectionMode="Multiple" Height="100" HorizontalAlignment="Stretch" >
                     <ListBox.ItemTemplate>
@@ -179,11 +207,13 @@
             </StackPanel>
 
         <StackPanel Orientation="Vertical"  Margin="20" Width="325" DockPanel.Dock="Left" Height="auto" >
-                <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport projet</Label>
-                <StackPanel Orientation="Horizontal"  >
-                    <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Choisir un projet :"  HorizontalAlignment="Left"/>
-                <Button Style="{StaticResource BaseButtonStyle}" Content="Tous"  HorizontalAlignment="Stretch"   Click="ChoisirTousProjet" Height="30" VerticalAlignment="Center" />
+            <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport projet</Label>
+            <StackPanel Orientation="Horizontal"  >
+                <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Choisir un projet :"  HorizontalAlignment="Left"/>
+                <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="auto" HorizontalAlignment="Stretch"  VerticalAlignment="Center">
+                    <Button Background="#5f5f5f" Content="Tous"  HorizontalAlignment="Stretch"   Click="ChoisirTousProjet" Height="30" VerticalAlignment="Center" Width="65" />
                 </StackPanel>
+            </StackPanel>
 
             <ListBox Name="lstRapportProjet" ItemsSource="{Binding Projet}"  AlternationCount="2"   SelectionMode="Multiple" Height="100" HorizontalAlignment="Stretch">
                     <ListBox.ItemTemplate>

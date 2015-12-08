@@ -247,10 +247,10 @@ namespace model.Views
                             formatter.DrawString("Détail financiés", font, XBrushes.Black, layoutRectangle);
 
                             layoutRectangle = new XRect(298, height + 20, page.Width, page.Height);
-                            formatter.DrawString("-Saliare par l'heures", font, XBrushes.Black, layoutRectangle);
+                            formatter.DrawString("-Salaire par l'heures", font, XBrushes.Black, layoutRectangle);
 
                             layoutRectangle = new XRect(298, height + 30, page.Width, page.Height);
-                            formatter.DrawString("-(Saliare par l'heures", font, XBrushes.Black, layoutRectangle);
+                            formatter.DrawString("-(Salaire par l'heures", font, XBrushes.Black, layoutRectangle);
 
                             layoutRectangle = new XRect(298, height + 40, page.Width, page.Height);
                             formatter.DrawString(" supplémentaire)", font, XBrushes.Black, layoutRectangle);

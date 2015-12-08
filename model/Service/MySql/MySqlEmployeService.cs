@@ -53,6 +53,7 @@ namespace model.Service.MySql
                 HorsFonction = (bool)row["horsFonction"]
             };
         }
+        
         public string getEmployeur(string ID)
         {
             connexion = new MySqlConnexion();
@@ -105,7 +106,7 @@ namespace model.Service.MySql
                 }
                 else
                 {
-                    buildReq.Append("SELECT nom FROM Projets");
+                    buildReq.Append("SELECT nom FROM Projets WHERE etat = 'ECS'");
                     DataSet dataset = connexion.Query(buildReq.ToString());
                     DataTable table = dataset.Tables[0];
                     if (table.Rows.Count != 0)
