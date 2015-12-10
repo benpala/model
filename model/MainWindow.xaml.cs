@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -101,7 +103,14 @@ namespace model
 
         private void aideApp_Click(object sender, RoutedEventArgs e)
         {
-
+            //System.Diagnostics.Process.Start(@"image/aide.pdf");
+           // Uri chemin = new Uri("pack://application:,,,/image/aide.pdf");
+            string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "aide.pdf");
+            Process P = new Process
+            {
+                StartInfo = { FileName = "AcroRd32.exe", Arguments = path }
+            };
+            P.Start();
         }
         
     }

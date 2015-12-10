@@ -3,14 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="Auto" Width="Auto">
     <UserControl.Resources>
-
         <SolidColorBrush x:Key="PrimaryBrush" Color="Beige" />
         <SolidColorBrush x:Key="PrimaryFont" Color="Black" />
         <Style x:Key="BouttonPrint" TargetType="{x:Type Button}">
             <Setter Property="Background">
                 <Setter.Value>
                     <ImageBrush ImageSource="../image/Edit.png"/>
-
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
@@ -20,16 +18,14 @@
                                 Background="{TemplateBinding Background}"
                                 SnapsToDevicePixels="true">
                             <ContentPresenter Name="Presenter" Margin="{TemplateBinding Padding}"
-                                    RecognizesAccessKey="True"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Border>
                         <ControlTemplate.Triggers>
-
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="RenderTransform">
                                     <Setter.Value>
                                         <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
-
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -65,7 +61,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-       
     </UserControl.Resources>
     <Grid>
         <DockPanel>
@@ -78,17 +73,19 @@
                         <TextBlock>Ce bouton vous permet d'ajouter des périodes de paie.</TextBlock>
                     </Button.ToolTip>
                 </Button>
-                <Button  Content="Générer les relevés"  CommandParameter="{Binding ID}" Width="300" HorizontalAlignment="Left"  Margin="0,0,0,0" Height="50" Click="click_genereReleve"   VerticalAlignment="Bottom"/>
+                <Button  Content="Générer les relevés"  CommandParameter="{Binding ID}" Width="300" HorizontalAlignment="Left"  Margin="0,0,0,0" Height="50" Click="click_genereReleve"   VerticalAlignment="Bottom">
+                    <Button.ToolTip>
+                        <TextBlock>Générer les relevés de la dernière période travaillé.</TextBlock>
+                    </Button.ToolTip>
+                </Button>
             </StackPanel>
             <DataGrid  DockPanel.Dock="Left" HorizontalAlignment="Left" IsReadOnly="True" Padding="10"  CanUserAddRows="False" Name="mygrid" Grid.Row="0"  Margin="0,-47,0,0" ItemsSource="{Binding Paies}" CanUserSortColumns="True"  AutoGenerateColumns="False" >
-               
-            
                 <DataGrid.Columns >
                     <DataGridTextColumn   Width="0.5*" Header="Nom : " Binding="{Binding Nom}" />
                     <DataGridTextColumn   Width="0.5*" Header="Généré le: " Binding="{Binding DateGenerationRapport}" />
                 </DataGrid.Columns >
                 <DataGrid.RowDetailsTemplate>
-                    <DataTemplate>
+                    <DataTemplate >
                         <StackPanel Orientation="Vertical" Background="LightGray" VerticalAlignment="Stretch">
                             <DockPanel   Background="LightGray">
                                 <TextBox Background="LightGray" Text="Période :" Width="200"></TextBox>
@@ -104,13 +101,13 @@
                                 <TextBox Background="LightGray" DockPanel.Dock="Left" Text="{Binding NombreHeure}"  Width="150"></TextBox>
                                 <TextBox Background="LightGray" DockPanel.Dock="Left" Text="{Binding MontantBrute, StringFormat=N2}"  Width="150"></TextBox>
                                 <TextBox Background="LightGray" DockPanel.Dock="Left" Text="{Binding MontantNet,  StringFormat=N2}"  Width="150"></TextBox>
-
-                                <Button Style="{StaticResource BouttonPrint}" Padding="20px" Height="35" Width="40" Click="click_modifierImprimer" CommandParameter="{Binding}"/>
+                                <Button Style="{StaticResource BouttonPrint}" Padding="20px" Height="35" Width="40" Click="click_modifierImprimer" CommandParameter="{Binding}">
+                                    
+                                 </Button>
                             </DockPanel>
                         </StackPanel>
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
-             
             </DataGrid>
         </DockPanel>
     </Grid>
