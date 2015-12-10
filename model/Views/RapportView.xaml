@@ -135,7 +135,7 @@
             </StackPanel>
         </StackPanel>
         <StackPanel  Orientation="Vertical" Margin="20" Width="350" DockPanel.Dock="Left" Height="auto"  >
-            <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport employé</Label>
+            <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport des employés</Label>
             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Stretch">
                 <Label VerticalAlignment="Top"   Height="50" FontSize="20" Content="Choisir un employé :"  HorizontalAlignment="Stretch"/>
                 <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="auto" HorizontalAlignment="Stretch"  VerticalAlignment="Center">
@@ -160,7 +160,7 @@
                 <Border CornerRadius="10" BorderBrush="Gray" Background="LightGray" BorderThickness="5" Padding="1" HorizontalAlignment="Stretch" Margin="5">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
-                            <Label  Width="220"  Height="50" FontSize="20" Content="Information générale :" HorizontalAlignment="Left" />
+                            <Label  Width="220"  Height="50" FontSize="20" Content="Informations générales :" HorizontalAlignment="Left" />
                             <CheckBox Name="chxInfoGenerale" Margin="10,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
 
@@ -173,7 +173,7 @@
             <Border CornerRadius="10" BorderBrush="Gray" Background="LightGray" BorderThickness="5" Padding="1" HorizontalAlignment="Stretch" Margin="5" >
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Height="100" HorizontalAlignment="Stretch" >
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                            <Label  Width="280"  Height="50" FontSize="20" Content="Tri en acsendant | descendant " HorizontalAlignment="Left" />
+                            <Label  Width="280"  Height="50" FontSize="20" Content="Tri acsendant | descendant " HorizontalAlignment="Left" />
                             <StackPanel Orientation="Horizontal">
                                 <Label  Width="230"  Height="50" FontSize="20" Content="nom de l'employé : " HorizontalAlignment="Left" />
                                 <RadioButton GroupName="triNomSalaire" Name="rbtTriNomAZ"  VerticalAlignment="Center" />
@@ -196,7 +196,7 @@
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal">
-                                <Label Width="230"  Height="50" FontSize="20" Content="nombre heure du projet :"  />
+                                <Label Width="230"  Height="50" FontSize="20" Content="nombre d'heures :"  />
                                 <RadioButton GroupName="triProjet" Name="rbtTriNBheureASC"  VerticalAlignment="Center" />
                                 <Label Margin="10,0,0,0"  Height="50" FontSize="20" Content="|" HorizontalAlignment="Center" />
                                 <RadioButton GroupName="triProjet" Name="rbtTriNBheureDESC" Margin="10,0,0,0" VerticalAlignment="Center" />
@@ -207,7 +207,7 @@
             </StackPanel>
 
         <StackPanel Orientation="Vertical"  Margin="20" Width="325" DockPanel.Dock="Left" Height="auto" >
-            <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport projet</Label>
+            <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport des projets</Label>
             <StackPanel Orientation="Horizontal"  >
                 <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Choisir un projet :"  HorizontalAlignment="Left"/>
                 <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="auto" HorizontalAlignment="Stretch"  VerticalAlignment="Center">
@@ -255,12 +255,12 @@
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Margin="20" Width="300" DockPanel.Dock="Left"  Height="auto" >
-                <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport des Paies</Label>
+                <Label VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" FontSize="25">Rapport des paies</Label>
                 <Label VerticalAlignment="Top"   Height="50" FontSize="20" Content="Date de début :"  HorizontalAlignment="Stretch"/>
                 <DatePicker Name="dtDateDebut"   Height="30"  ></DatePicker>
             <Label VerticalAlignment="Top"   Height="50" FontSize="20" Content="Date de fin :"  HorizontalAlignment="Stretch"/>
                 <DatePicker Name="dtDateFin" Height="30"  ></DatePicker>
-                <Label  Width="300"  Height="50" FontSize="20" Content="Choisir information à afficher :"  HorizontalAlignment="Left"/>
+                <Label  Width="305"  Height="50" FontSize="20" Content="Choisir les informations à afficher :"  HorizontalAlignment="Left"/>
             <Border CornerRadius="10" BorderBrush="Gray" Background="LightGray" BorderThickness="5" Padding="1"  HorizontalAlignment="Stretch" Height="180" >
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
                         <StackPanel Orientation="Horizontal" >

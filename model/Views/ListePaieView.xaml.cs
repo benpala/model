@@ -136,5 +136,11 @@ namespace model.Views
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
             applicationService.ChangeView<ajoutPeriode>(new ajoutPeriode());
         }
+
+        private void click_onglets(object sender, RoutedEventArgs e)
+        {
+            IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
+            applicationService.ChangeView<ListePaieView>(new ListePaieView());
+        }
     }
 }

@@ -150,7 +150,7 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
-                        <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prenom :"/>
+                        <Label VerticalAlignment="Top" Width="200"  Height="25" FontSize="12" Content="Prénom :"/>
                         <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Name="txtPrenom" Text="{Binding Employe.Prenom}" Width="200"  Height="25" FontSize="12"  MaxLength="20" KeyDown="textSeulement"/>
                     </StackPanel>
 
@@ -176,7 +176,7 @@
 
                 </StackPanel>
                 <StackPanel Width="250">
-                    <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Date embauche :"  HorizontalAlignment="Center"/>
+                    <Label VerticalAlignment="Top" Width="200"  Height="50" FontSize="20" Content="Date d'embauche :"  HorizontalAlignment="Center"/>
                     <DatePicker Name="DateEmbauche"   Height="30" Width="200"  ></DatePicker>
                 </StackPanel>
             </StackPanel>

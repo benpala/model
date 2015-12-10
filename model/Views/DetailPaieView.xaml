@@ -60,11 +60,11 @@
     <Grid>
         <DockPanel  >
             <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,0" HorizontalAlignment="Left" Width="300">
-                <TextBlock TextAlignment="Justify" DockPanel.Dock="Left" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300">Détail de une paie</TextBlock>
+                <TextBlock TextAlignment="Justify" DockPanel.Dock="Left" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300">Détail d'une paie</TextBlock>
             </StackPanel>
             <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Background="#5f5f5f" Width="300" Height="Auto" Margin="0,0,0,0" HorizontalAlignment="Left"  VerticalAlignment="Top" >
                 <Button  Margin="0,0,0,0" Content="Enregistrer les modifications"  Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="300" Click="click_enregistre"/>
-                <Button  Margin="0,0,0,0" Content="Imprimer le Talon courant    "  Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="300" Click="click_print"/>
+                <Button  Margin="0,0,0,0" Content="Imprimer le talon courant    "  Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="300" Click="click_print"/>
                 <Button  Content="Retour à la liste des paies      " Margin="0,0,0,0" Height="50" VerticalAlignment="Bottom" Click="click_retour" HorizontalAlignment="Left" Width="300"/>
             </StackPanel>
             <StackPanel Background="#E5E4E2" Margin="0,-47,0,0"  DockPanel.Dock="Left" Width="350">
@@ -90,13 +90,13 @@
                 <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeHeure" IsReadOnly="false"  Name="heure"  HorizontalAlignment="Left"  Height="20" Width="150"  Text="{Binding Paies.NombreHeure, StringFormat=N2}" ></TextBox>
                 <Label  Width="Auto" Height="25" >Heure(s) suplémentaire(s) :</Label>
                 <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeHeureSupp" IsReadOnly="false"  Name="heureSupp" HorizontalAlignment="Left"  Height="20" Width="150" Text="{Binding Paies.NombreHeureSupp, StringFormat=N2}" ></TextBox>
-                <Label  Width="Auto" Height="25" >Dernière modification éffectuer :</Label>
+                <Label  Width="Auto" Height="25" >Dernière modification éffectuée :</Label>
                 <TextBlock Margin="5,0,0,0" FontWeight="Bold" Name="update" HorizontalAlignment="Left"  Height="20" Width="150" Text="{Binding Paies.updatedetail, TargetNullValue='Aucunes modifications'}"  ></TextBlock>
             </StackPanel>
             <StackPanel Background="#E5E4E2"  Margin="0,-47,0,0" DockPanel.Dock="Left" >
                 <Label Margin="0,50,0,0" Width="Auto" Height="25" >Montant prime $:</Label>
                 <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculePrime"  IsReadOnly="false"  Name="prime" HorizontalAlignment="Left"  Height="20" Width="150"  Text="{Binding Paies.MontantPrime, StringFormat=N2}" ></TextBox>
-                <Label  Width="Auto" Height="25" >Montant Indemnite $:</Label>
+                <Label  Width="Auto" Height="25" >Montant indemnité $:</Label>
                 <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeIndemite" IsReadOnly="false"  Name="indemite"  HorizontalAlignment="Left"  Height="20" Width="150"  Text="{Binding Paies.MontantIndemnite, StringFormat=N2}" ></TextBox>
                 <Label  Width="Auto" Height="25" >Montant allocation $:</Label>
                 <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" LostFocus="calculeAllocation"  IsReadOnly="false"  Name="allocation"  HorizontalAlignment="Left"  Height="20" Width="150"  Text="{Binding Paies.MontantAllocations, StringFormat=N2}" ></TextBox>

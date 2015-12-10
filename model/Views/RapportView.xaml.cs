@@ -231,7 +231,7 @@ namespace model.Views
                         {
                             graph.DrawRectangle(XPens.Black, new XRect(175, height + 5, 120, 60));
                             layoutRectangle = new XRect(178, height + 5, page.Width, page.Height);
-                            formatter.DrawString("Information général", font, XBrushes.Black, layoutRectangle);
+                            formatter.DrawString("Informations générales", font, XBrushes.Black, layoutRectangle);
 
                             layoutRectangle = new XRect(178, height + 20, page.Width, page.Height);
                             formatter.DrawString("-Titre emploi", font, XBrushes.Black, layoutRectangle);
@@ -240,20 +240,20 @@ namespace model.Views
                             formatter.DrawString("-'Date embauche'", font, XBrushes.Black, layoutRectangle);
 
                             layoutRectangle = new XRect(178, height + 40, page.Width, page.Height);
-                            formatter.DrawString("-(Status)", font, XBrushes.Black, layoutRectangle);
+                            formatter.DrawString("-(Statut)", font, XBrushes.Black, layoutRectangle);
                         
                             graph.DrawRectangle(XPens.Black, new XRect(295, height + 5, 130, 60));
                             layoutRectangle = new XRect(298, height + 5, page.Width, page.Height);
-                            formatter.DrawString("Détail financiés", font, XBrushes.Black, layoutRectangle);
+                            formatter.DrawString("Détails financiés", font, XBrushes.Black, layoutRectangle);
 
                             layoutRectangle = new XRect(298, height + 20, page.Width, page.Height);
-                            formatter.DrawString("-Salaire par l'heures", font, XBrushes.Black, layoutRectangle);
+                            formatter.DrawString("-Salaire" , font, XBrushes.Black, layoutRectangle);
 
                             layoutRectangle = new XRect(298, height + 30, page.Width, page.Height);
-                            formatter.DrawString("-(Salaire par l'heures", font, XBrushes.Black, layoutRectangle);
+                            formatter.DrawString("-(Salaire avec les ", font, XBrushes.Black, layoutRectangle);
 
                             layoutRectangle = new XRect(298, height + 40, page.Width, page.Height);
-                            formatter.DrawString(" supplémentaire)", font, XBrushes.Black, layoutRectangle);
+                            formatter.DrawString("heures supplémentaires)", font, XBrushes.Black, layoutRectangle);
                         }
 
                         if (chxProjetEmploye.IsChecked.Value)
@@ -382,14 +382,14 @@ namespace model.Views
                         Process.Start(fileName.ToString());
                     }
                     else
-                        MessageBox.Show("Aucune information choisi");
+                        MessageBox.Show("Aucune information choisie");
                 }
                 else
-                    MessageBox.Show("Ancune employé selectionné");
+                    MessageBox.Show("Ancun employé sélectionné");
             }
             catch (Exception E)
             {
-                 MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regénérer");
+                 MessageBox.Show("Le fichier est déjà utilisé, veuillez le fermer pour le regénérer");
             }
         }
 
@@ -485,11 +485,11 @@ namespace model.Views
             catch (Exception E)
             {
                 if (E.Message == "erreur")
-                    MessageBox.Show("Aucune projet n'a c'est paramètre");
+                    MessageBox.Show("Aucun projet n'a ces paramètres");
                 else if(E.Message == "pasProg")
-                    MessageBox.Show("Veuillez choisir un ou plusieurs projet");
+                    MessageBox.Show("Veuillez choisir un ou plusieurs projets");
                 else
-                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer.");
+                    MessageBox.Show("Le fichier est déjà utilisé, veuillez le fermer pour le regenerer.");
             }
             
         }
@@ -598,9 +598,6 @@ namespace model.Views
 
                     graph.DrawLine(XPens.Black, 10, 50, page.Width - 10, 50);
 
-                    MessageBox.Show("Joyeux Noël et bonne correction!!!!!!!!!!!!");
-                    //MessageBox.Show(page.Width.ToString());
-
                     if (chxA.IsChecked.Value)
                         ColonneA(ref page, ref graph, ref formatter, ref font, layoutRectangle);
                     else if (chxB.IsChecked.Value)
@@ -673,7 +670,7 @@ namespace model.Views
                 else if (E.Message == "tropChx")
                     MessageBox.Show("Veuillez choisir un seul choix à la fois.");
                 else
-                    MessageBox.Show("Le fichier est déja utilisé, veuillez le fermer pour le regenerer.");
+                    MessageBox.Show("Le fichier est déjà utilisé, veuillez le fermer pour le regenerer.");
             }
         }
 
@@ -729,12 +726,12 @@ namespace model.Views
             if (PaieProjet == "PA")
                 formatter.DrawString("ID Paie", font, XBrushes.Black, layoutRectangle);
             else
-                formatter.DrawString("Nb heure Planifié", font, XBrushes.Black, layoutRectangle);
+                formatter.DrawString("Nb heures Planifiées", font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(470, 60, page.Width - 730, page.Height - 547);
             if (PaieProjet == "PA")
                 formatter.DrawString("Montant Brut", font, XBrushes.Black, layoutRectangle);
             else
-                formatter.DrawString("Nb heure Travaillé", font, XBrushes.Black, layoutRectangle);
+                formatter.DrawString("Nb heures Travaillées", font, XBrushes.Black, layoutRectangle);
             //Contenu
             if (PaieProjet == "PA")
             {

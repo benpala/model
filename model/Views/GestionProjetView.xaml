@@ -85,7 +85,7 @@
     </UserControl.Resources>
     <DockPanel>
         <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,0" HorizontalAlignment="Left" Width="300">
-            <TextBlock TextAlignment="Justify" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300"><Run Text="Gestion de projets"/></TextBlock>
+            <TextBlock TextAlignment="Justify" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300"><Run Text="Gestion d'un projet"/></TextBlock>
         </StackPanel>
         <StackPanel Orientation="Vertical" Background="#5f5f5f" Width="Auto" Height="100" Margin="0,0,0,0" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top">
             <Button Name="btnEnregistrer" Content="Enregistrer" HorizontalAlignment="Center" Click="EnregistrerProjet" Height="50" Width="300" VerticalAlignment="Bottom" />
@@ -180,23 +180,49 @@
         </Canvas>
         <DockPanel Name="DockSimule">
             <StackPanel Name="DockChoixRessources" VerticalAlignment="Top">
-                <Label FontSize="18">Estimation du champs</Label>
-                <RadioButton Name="rboHeure" Checked="EstimerChampsManquantRb">Heures</RadioButton>
-                <RadioButton Name="rboEmploye" Checked="EstimerChampsManquantRb">Employés</RadioButton>
-                <RadioButton Name="rboDateFin" Checked="EstimerChampsManquantRb">Date de fin</RadioButton>
-                <RadioButton>Aucun</RadioButton>
+                <Label FontSize="18">Estimation du champ</Label>
+                <RadioButton Name="rboHeure" Checked="EstimerChampsManquantRb">Heures
+                        <RadioButton.ToolTip>
+                            <TextBox>Estimer le nombre d'heures requises pour le projet simulé</TextBox>
+                        </RadioButton.ToolTip>
+                </RadioButton>
+                <RadioButton Name="rboEmploye" Checked="EstimerChampsManquantRb">Employés
+                        <RadioButton.ToolTip>
+                            <TextBox>Estimer le nombre d'employés requis pour le projet simulé</TextBox>
+                        </RadioButton.ToolTip>
+                    </RadioButton>
+                <RadioButton Name="rboDateFin" Checked="EstimerChampsManquantRb">Date de fin
+                        <RadioButton.ToolTip>
+                            <TextBox>Estimer la date de fin prévue pour le projet simulé</TextBox>
+                        </RadioButton.ToolTip>
+                    </RadioButton>
+                <RadioButton>Aucun
+                        <RadioButton.ToolTip>
+                            <TextBox>Annuler l'estimation sur un champ</TextBox>
+                        </RadioButton.ToolTip>
+                    </RadioButton>
                 <StackPanel>
                     <Label FontSize="18">Choix du nombre de jours/semaines</Label>
-                    <RadioButton Name="rboRessGen" VerticalAlignment="Center" Checked="EstimerChampsManquantRb">Ouvrables</RadioButton>
-                    <RadioButton Name="rboRessGen2" VerticalAlignment="Center" Checked="EstimerChampsManquantRb">Tout</RadioButton>
+                    <RadioButton Name="rboRessGen" VerticalAlignment="Center" Checked="EstimerChampsManquantRb">Ouvrables
+                            <RadioButton.ToolTip>
+                                <TextBox>Les employés vont travailler les jours de la semaine (5 jours/semaines)</TextBox>
+                            </RadioButton.ToolTip>
+                        </RadioButton>
+                    <RadioButton Name="rboRessGen2" VerticalAlignment="Center" Checked="EstimerChampsManquantRb">Tout
+                            <RadioButton.ToolTip>
+                                <TextBox>Les employés vont travailler tous les jours (7 jours/semaines)</TextBox>
+                            </RadioButton.ToolTip>
+                        </RadioButton>
                 </StackPanel>
                 <Label Name="lblHeure">Heures de travail /jour</Label>
-                <xctk:IntegerUpDown Name="nbHeureJour" Margin="30,0,0,0" HorizontalAlignment="Left" Value="7" Maximum="24" Minimum="1" KeyUp="ValidationNombre" ValueChanged="CalculerPrix1" MaxWidth="40"/>
-                <Label Name="lblQuart">Quarts de travail</Label>
-                <xctk:IntegerUpDown Name="nbQuart" Margin="30,0,0,0" HorizontalAlignment="Left" Value="1" Maximum="24" Minimum="1" KeyUp="ValidationNombre" ValueChanged="CalculerPrix1" MaxWidth="40"/>
-            </StackPanel>
+                    <xctk:IntegerUpDown Name="nbHeureJour" Margin="30,0,0,0" HorizontalAlignment="Left" Value="7" Maximum="24" Minimum="1" KeyUp="ValidationNombre" ValueChanged="CalculerPrix1" MaxWidth="40">
+                    </xctk:IntegerUpDown>
+                    <Label Name="lblQuart">Quarts de travail</Label>
+                    <xctk:IntegerUpDown Name="nbQuart" Margin="30,0,0,0" HorizontalAlignment="Left" Value="1" Maximum="24" Minimum="1" KeyUp="ValidationNombre" ValueChanged="CalculerPrix1" MaxWidth="40">
+                    </xctk:IntegerUpDown>
+                </StackPanel>
             <StackPanel>
-                <Label x:Name="lblRessourcesAdmin" Content="Nombre de ressources" HorizontalAlignment="Center"/>
+                <Label x:Name="lblRessourcesAdmin" Content="Ressources engagées" HorizontalAlignment="Center"/>
                 <xctk:IntegerUpDown Name="txtRessourcesAdmin"  Value="1" Minimum="1" HorizontalAlignment="Center" TabIndex="1" KeyUp="CalculerPrixKey" ValueChanged="CalculerPrix1"></xctk:IntegerUpDown>
                 <Label x:Name="lblNbrHeuresEstime" Content="Temps estimé non ouvrable" HorizontalAlignment="Center" Visibility="Collapsed"/>
                 <TextBox x:Name="txtNbrHeuresEstime" Width="50" PreviewTextInput="PreviewTextInput" IsReadOnly="True" IsEnabled="False" Visibility="Collapsed"/>

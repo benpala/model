@@ -1,7 +1,7 @@
 ﻿<Window x:Class="model.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="GEM-C" Height="720" Width="1280"  MinHeight="720" MinWidth="1280">
+        Title="GEM-C" Height="760" Width="1280"  MinHeight="720" MinWidth="1280">
     <Window.Background>
         <SolidColorBrush Color="#fff3e5"></SolidColorBrush>
     </Window.Background>

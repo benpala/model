@@ -35,6 +35,7 @@ namespace model.Views
         private bool siCreation = false;
         MySqlProjetService Requete = new MySqlProjetService();
         public bool valide  = false;
+        public bool enregistrer = false;
 
         public GestionProjetView()
         {
@@ -265,15 +266,18 @@ namespace model.Views
         {
             IApplicationService applicationService = ServiceFactory.Instance.GetService<IApplicationService>();
 
-            var result = System.Windows.MessageBox.Show("Voulez-vous sauvegarder avant de quitter?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning).ToString();
-            if (result == "Yes")
-            {
-                EnregistrerProjet(sender,null);
-                return;
-            }
-            if (result == "Cancel")
-            {
-                return;
+            if(!enregistrer)
+            { 
+                var result = System.Windows.MessageBox.Show("Voulez-vous sauvegarder avant de quitter?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning).ToString();
+                if (result == "Yes")
+                {
+                    EnregistrerProjet(sender,null);
+                    return;
+                }
+                if (result == "Cancel")
+                {
+                    return;
+                }
             }
             applicationService.ChangeView<ProjetView>(new ProjetView());
         }
@@ -377,6 +381,7 @@ namespace model.Views
                     if(estValide)
                     {
                         valide = true;
+                        enregistrer = true;
                         System.Windows.MessageBox.Show(txtNomProjet.Text + " à bien été enregistré.");
                         retourMenu(this, null);
                     }
@@ -632,7 +637,6 @@ namespace model.Views
                                 _projet.dateun = DateTime.Now.ToString();
                                 dtDateFin.SelectedDate = DateTime.Now.AddHours(_projet.nbHeuresSimule);
                                 dtDateDebut.SelectedDate = DateTime.Now;
-                                rboSIM.IsEnabled = false;
                             }
                             _projet.etat = "ECS";
                             break;

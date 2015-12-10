@@ -208,10 +208,11 @@
             <StackPanel  Opacity="0.7" Background="#5f5f5f" Orientation="Horizontal"  Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,0" HorizontalAlignment="Left" Width="300">
                 <TextBlock TextAlignment="Justify" DockPanel.Dock="Left" Padding="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" Width="300">Liste des projets</TextBlock>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Background="#5f5f5f" Width="Auto" Height="50" Margin="0,0,0,0" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical" Background="#5f5f5f" Width="Auto" Height="100" Margin="0,0,0,0" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top">
                 <Button Content="Ajouter un projet" Height="50" Width="300" Click="click_newProject"/>
+                <Button Content="Effacer tout" Height="50" Width="300" Click="effacerFiltre"/>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="Auto" Margin="-290,50,0,0">
+            <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="Auto" Margin="-290,100,0,0">
                 <TextBlock Opacity="0.7" FontSize="20" FontWeight="Bold" FontStyle="Italic" Padding="10" Foreground="White" HorizontalAlignment="Center" Margin="-10,0,0,0" Width="300" Height="50" Background="#5f5f5f">Filtrer les projets</TextBlock>
                 <StackPanel Name="ProjetGrid">
                 <Label HorizontalAlignment="Left" Width="50">ID</Label>
@@ -326,7 +327,17 @@
                     <DataGridTemplateColumn Width="0.3*" Header="État">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox IsReadOnly="True" Text="{Binding etat}"></TextBox>
+                                <TextBox IsReadOnly="True" Text="{Binding etat}">
+                                    <TextBox.ToolTip>
+                                        <TextBlock>
+                                         État du projet
+                                        <LineBreak /> ECS = En cours
+                                        <LineBreak /> SIM = Simulé
+                                        <LineBreak /> ABD = Abandonné
+                                        <LineBreak /> TER = Terminé
+                                        </TextBlock>
+                                        </TextBox.ToolTip>
+                                </TextBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

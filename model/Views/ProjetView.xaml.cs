@@ -580,5 +580,53 @@ namespace model.Views
             }
         }
 
+        private void effacerFiltre(object sender, RoutedEventArgs e)
+        {
+            try 
+            { 
+                foreach (Control ctrl in ProjetGrid.Children)
+                {
+                    if (ctrl.GetType() == typeof(TextBox))
+                    {
+                        if (((TextBox)ctrl).Text != "")
+                        {
+                            ((TextBox)ctrl).Text = "";
+                        }
+                    }
+
+                    if(ctrl.GetType() == typeof(DatePicker))
+                    {
+                        ((DatePicker)ctrl).Text = "";
+                    }
+                }
+            } 
+            catch
+            {
+
+
+
+            foreach (Control ctrl in stackEtat1.Children)
+            {
+                if (ctrl.GetType() == typeof(CheckBox))
+                {
+                    if (((CheckBox)ctrl).IsChecked == true)
+                    {
+                        ((CheckBox)ctrl).IsChecked = false;
+                    }
+                }
+            }
+
+            foreach (Control ctrl in stackEtat2.Children)
+            {
+                if (ctrl.GetType() == typeof(CheckBox))
+                {
+                    if (((CheckBox)ctrl).IsChecked == true)
+                    {
+                        ((CheckBox)ctrl).IsChecked = false;
+                    }
+                }
+            }
+        }
+    }
    }
 }
