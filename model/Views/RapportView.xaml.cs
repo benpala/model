@@ -407,11 +407,19 @@ namespace model.Views
             List<Projet> LstProjet = new List<Projet>();
             int NbPaie = 0;
             float BruteTotal = 0;
+            int tailleCout = 0;
+            int tailleHP = 0;
+            int tailleHT = 0;
 
             List<Projet> lstProj = new List<Projet>();
             //Tri nom employé
             foreach (Projet pro in lstRapportProjet.SelectedItems)
+            {
                 lstProj.Add(pro);
+                tailleCout = VerifeTaille(pro.prixSimulation.ToString().Length, tailleCout);
+                tailleHP = VerifeTaille(pro.nbHeuresSimule.ToString().Length, tailleHP);
+                tailleHT = VerifeTaille(pro.nbHeuresReel.ToString().Length, tailleHT);
+            }
 
             try 
             {
@@ -451,7 +459,7 @@ namespace model.Views
 
                 foreach (Projet p in LstProjet)
                 {
-                    CorpsProjet(ref page, ref formatter, ref font, layoutRectangle, ref height, p);
+                    CorpsProjet(ref page, ref formatter, ref font, layoutRectangle, ref height, p, tailleCout, tailleHP, tailleHT);
                     BruteTotal = BruteTotal + p.nbHeuresSimule;
                     NbPaie++;
                 }
@@ -542,6 +550,11 @@ namespace model.Views
         private void GenererRapportFinancie(object sender, RoutedEventArgs e)
         {
             int NbPaie = 0;
+            int tailleB = 0;
+            int tailleHS = 0;
+            int tailleP = 0;
+            int tailleI = 0;
+
             try
             {
                 if (dtDateDebut.Text.ToString() == "" && dtDateFin.Text.ToString() == "")
@@ -597,6 +610,14 @@ namespace model.Views
 
                     foreach (Paie paie in Paie)
                     {
+                        tailleB = VerifeTaille(paie.MontantBrute.ToString().Length, tailleB);
+                        tailleHS = VerifeTaille(paie.NombreHeureSupp.ToString().Length, tailleHS);
+                        tailleP = VerifeTaille(paie.MontantPourboire.ToString().Length, tailleP);
+                        tailleI = VerifeTaille(paie.MontantIndemnite.ToString().Length, tailleI);
+                    }
+
+                    foreach (Paie paie in Paie)
+                    {
                         int tmpD = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Debut);
                         int tmpF = DateTime.Compare(Convert.ToDateTime(paie.DateGenerationRapport), tmp.Fin);
 
@@ -611,9 +632,9 @@ namespace model.Views
                         if (tmpD > 0 && tmpF < 0)
                         {
                             if (chxA.IsChecked.Value)
-                                CorpsAtomique(ref page, ref formatter, ref font, layoutRectangle, ref height, paie);
+                                CorpsAtomique(ref page, ref formatter, ref font, layoutRectangle, ref height, paie, tailleB);
                             else if (chxB.IsChecked.Value)
-                                CorpsAtomiqueD(ref page, ref formatter, ref font, layoutRectangle, ref height, paie);
+                                CorpsAtomiqueD(ref page, ref formatter, ref font, layoutRectangle, ref height, paie, tailleB, tailleHS, tailleP, tailleI);
                             BruteTotal = BruteTotal + paie.MontantBrute;
                             NbPaie++;
                         }
@@ -774,7 +795,7 @@ namespace model.Views
             graph.DrawRectangle(XPens.Black, XBrushes.White, 749, 104, page.Width - 760, page.Height - 200);
         }
 
-        private void CorpsAtomique(ref PdfPage page, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, ref int height, Paie paie)
+        private void CorpsAtomique(ref PdfPage page, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, ref int height, Paie paie, int tB)
         {
             layoutRectangle = new XRect(30, height += 15, page.Width, page.Height);
             formatter.DrawString(String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(paie.DateGenerationRapport)), font, XBrushes.Black, layoutRectangle);
@@ -783,26 +804,26 @@ namespace model.Views
             layoutRectangle = new XRect(380, height, page.Width, page.Height);
             formatter.DrawString(paie.ID.ToString(), font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(470, height, page.Width, page.Height);
-            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + " $", font, XBrushes.Black, layoutRectangle);
+            formatter.DrawString(String.Format("{0,"+tB+"}",Math.Round(Convert.ToSingle(paie.MontantBrute), 2)) + " $", font, XBrushes.Black, layoutRectangle);
         }
 
-        private void CorpsProjet(ref PdfPage page, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, ref int height, Projet projet)
+        private void CorpsProjet(ref PdfPage page, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, ref int height, Projet projet, int tC, int tHP, int tHT)
         {
             layoutRectangle = new XRect(30, height += 15, page.Width, page.Height);
             formatter.DrawString(projet.nom, font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(260, height, page.Width, page.Height);
-            formatter.DrawString(projet.prixSimulation.ToString() + "$", font, XBrushes.Black, layoutRectangle);
+            formatter.DrawString(String.Format("{0,"+tC+"}",projet.prixSimulation.ToString()) + "$", font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(360, height, page.Width, page.Height);
-            formatter.DrawString(projet.nbHeuresSimule.ToString(), font, XBrushes.Black, layoutRectangle);
+            formatter.DrawString(String.Format("{0,"+tHP+"}",projet.nbHeuresSimule.ToString()), font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(470, height, page.Width, page.Height);
-            formatter.DrawString(projet.nbHeuresReel.ToString(), font, XBrushes.Black, layoutRectangle);
+            formatter.DrawString(String.Format("{0,"+tHT+"}",projet.nbHeuresReel.ToString()), font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(581, height, page.Width, page.Height);
             formatter.DrawString(String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(projet.dateun)), font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(697, height, page.Width, page.Height);
             formatter.DrawString((projet.datedeux != "Indéfini"?String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(projet.datedeux)) : "Indéfini"), font, XBrushes.Black, layoutRectangle);
         }
 
-        private void CorpsAtomiqueD(ref PdfPage page, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, ref int height, Paie paie)
+        private void CorpsAtomiqueD(ref PdfPage page, ref XTextFormatter formatter, ref XFont font, XRect layoutRectangle, ref int height, Paie paie, int tB, int tHS, int tP, int tI)
         {
             layoutRectangle = new XRect(25, height += 15, page.Width, page.Height);
             formatter.DrawString(String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(paie.DateGenerationRapport)), font, XBrushes.Black, layoutRectangle);
@@ -811,19 +832,25 @@ namespace model.Views
             layoutRectangle = new XRect(310, height, page.Width, page.Height);
             formatter.DrawString(paie.ID.ToString(), font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(362, height, page.Width, page.Height);
-            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantBrute), 2) + "$", font, XBrushes.Black, layoutRectangle);
+            formatter.DrawString(String.Format("{0,"+tB+"}",Math.Round(Convert.ToSingle(paie.MontantBrute), 2)) + "$", font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(447, height, page.Width, page.Height);
-            formatter.DrawString(Math.Round(Convert.ToSingle(paie.NombreHeureSupp), 2).ToString(), font, XBrushes.Black, layoutRectangle);
+            formatter.DrawString(String.Format("{0,"+tHS+"}",Math.Round(Convert.ToSingle(paie.NombreHeureSupp), 2).ToString()), font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(530, height, page.Width, page.Height);
-            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantPourboire), 2).ToString() + "$", font, XBrushes.Black, layoutRectangle);
-            layoutRectangle = new XRect(530, height, page.Width, page.Height);
-            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantPourboire), 2).ToString() + "$", font, XBrushes.Black, layoutRectangle);
+            formatter.DrawString(String.Format("{0,"+tP+"}",Math.Round(Convert.ToSingle(paie.MontantPourboire), 2).ToString()) + "$", font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(613, height, page.Width, page.Height);
-            formatter.DrawString(Math.Round(Convert.ToSingle(paie.MontantIndemnite), 2).ToString() + "$", font, XBrushes.Black, layoutRectangle);
+            formatter.DrawString(String.Format("{0,"+tI+"}",Math.Round(Convert.ToSingle(paie.MontantIndemnite), 2).ToString()) + "$", font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(676, height, page.Width, page.Height);
             formatter.DrawString(Math.Round(Convert.ToSingle(paie.salaire), 2).ToString() + "$/h", font, XBrushes.Black, layoutRectangle);
             layoutRectangle = new XRect(759, height, page.Width, page.Height);
             formatter.DrawString(Math.Round(Convert.ToSingle(paie.NombreHeure), 2).ToString(), font, XBrushes.Black, layoutRectangle);
+        }
+
+        private int VerifeTaille (int tObjet, int tComparer)
+        {
+            if (tObjet > tComparer)
+                tComparer = tObjet;
+
+            return tComparer;
         }
     }
 }
